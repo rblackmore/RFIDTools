@@ -1,0 +1,25 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
+  "settings": {
+    "documentationRules": {
+      "xmlHeader": false,
+      "companyName": "Ryan Blackmore",
+      "copyrightText": "<copyright file=\"{fileName}\" company=\"{companyName}\">.\nCopyright © {year} {companyName}. All rights Reserved.\n</copyright>",
+      "variables": {
+        "year": "2021"
+      }
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "insideNamespace",
+      "blankLinesBetweenUsingGroups": "require",
+      "systemUsingDirectivesFirst": true,
+      "elementOrder": [
+        "kind",
+        "static",
+        "constant",
+        "accessibility",
+        "readonly"
+      ]
+    }
+  }
+}

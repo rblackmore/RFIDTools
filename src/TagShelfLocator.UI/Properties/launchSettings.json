@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TagShelfLocator.UI": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
