@@ -3,11 +3,15 @@
 using System.Configuration;
 using System.Windows;
 
+using FEDM;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using Serilog;
+
+using TagShelfLocator.UI.Services;
 
 /// <summary>
 /// Interaction logic for App.xaml
@@ -19,6 +23,7 @@ public partial class App : Application
   public App()
   {
     var builder = Host.CreateApplicationBuilder();
+
     this.ConfigureLogging(builder);
     this.ConfigureAppConfiguration(builder);
     this.ConfigureServices(builder);
@@ -43,7 +48,11 @@ public partial class App : Application
 
   private void ConfigureServices(HostApplicationBuilder builder)
   {
+    var reader = new ReaderModule(RequestMode.UniDirectional);
+    
+    builder.Services.AddSingleton(reader);
     builder.Services.AddSingleton<MainWindow>();
+    builder.Services.AddHostedService<ReaderConnectionListener>();
   }
 
   private async void Application_Startup(object sender, StartupEventArgs e)

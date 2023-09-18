@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Serilog" Version="3.0.1" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="7.0.0" />
@@ -16,7 +17,7 @@
 
   <ItemGroup>
     <Reference Include="fedm-cs-net5.0">
-      <HintPath>..\..\..\..\.libs\OBID NET x64\net5.0\6.6.0\fedm-cs-net5.0.dll</HintPath>
+      <HintPath>$(LOCAL_LIBS)\OBID NET x64\net5.0\6.6.0\fedm-cs-net5.0.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -28,5 +29,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(LOCAL_LIBS)\OBID NET x64\net5.0\6.6.0\*&quot; $(TargetDir)" />
+  </Target>
 
 </Project>
