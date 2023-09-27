@@ -3,8 +3,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using CommunityToolkit.Mvvm.Messaging;
+
 using FEDM;
-using FEDM.ReaderConfig;
+
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -12,12 +14,18 @@ using Microsoft.Extensions.Logging;
 public class ReaderConnectionListener : IHostedService, IUsbListener
 {
   private readonly ILogger<ReaderConnectionListener> logger;
+  private readonly IMessenger messenger;
+
   private readonly ReaderModule reader;
 
-  public ReaderConnectionListener(ILogger<ReaderConnectionListener> logger, ReaderModule reader)
+  public ReaderConnectionListener(
+    ILogger<ReaderConnectionListener> logger,
+    IMessenger messenger,
+    ReaderModule reader)
   {
     this.logger = logger;
     this.reader = reader;
+    this.messenger = messenger;
   }
 
   public void onUsbEvent()
@@ -32,6 +40,14 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
         var usbConnector = scanInfo.connector();
         this.reader.connect(usbConnector);
 
+        var connectionMessage = new ReaderConnectionStateChangedMessage()
+        {
+          DeviceID = scanInfo.deviceId(),
+          NewConnectionStatus = true,
+        };
+
+        this.messenger.Send(connectionMessage);
+
         this.logger.LogInformation("Reader Connected: {deviceID}", scanInfo.deviceId());
       }
 
@@ -39,8 +55,18 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
         if (this.reader.info().deviceId() == scanInfo.deviceId())
         {
           this.reader.disconnect();
+
+          var connectionMessage = new ReaderConnectionStateChangedMessage()
+          {
+            DeviceID = scanInfo.deviceId(),
+            NewConnectionStatus = false,
+          };
+
+          this.messenger.Send(connectionMessage);
+
           this.logger.LogInformation("Reader Disconnected: {deviceId}", scanInfo.deviceId());
         }
+
       scanInfo = UsbManager.popDiscover();
     }
   }
@@ -56,4 +82,10 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
     UsbManager.stopDiscover();
     return Task.CompletedTask;
   }
+}
+
+public class ReaderConnectionStateChangedMessage
+{
+  public uint DeviceID { get; set; }
+  public bool NewConnectionStatus { get; set; }
 }

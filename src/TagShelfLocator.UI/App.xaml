@@ -4,7 +4,4 @@
              xmlns:local="clr-namespace:TagShelfLocator.UI"
              Startup="Application_Startup"
              Exit="Application_Exit">
-    <Application.Resources>
-         
-    </Application.Resources>
 </Application>

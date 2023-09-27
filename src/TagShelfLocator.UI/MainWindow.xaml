@@ -4,9 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TagShelfLocator.UI"
+        xmlns:vm="clr-namespace:TagShelfLocator.UI.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <StackPanel>
-        <TextBlock x:Name="txtMessage" Margin="5" Height="24"/>
-    </StackPanel>
+    <Window.Resources>
+        <vm:MainViewModelLocator x:Key="viewModelLocator"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <Binding Source="{StaticResource viewModelLocator}" Path="ViewModel"/>
+    </Window.DataContext>
+    <DockPanel Margin="5">
+        <StackPanel DockPanel.Dock="Right" Width="150">
+            <WrapPanel>
+                <TextBlock Text="Connection Status: "/>
+                <TextBlock Text="{Binding IsReaderConnected}"/>
+            </WrapPanel>
+            <Button Margin="2" Content="Start" Command="{Binding StartInventoryAsync}"/>
+            <Button Margin="2" Content="Stop" Command="{Binding StopInventoryAsync}"/>
+        </StackPanel>
+        <Grid Margin="0,0,5,0">
+            <ListView ItemsSource="{Binding TagList}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel>
+                            <TextBlock Text="{Binding Path=IDD}"/>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </DockPanel>
 </Window>
