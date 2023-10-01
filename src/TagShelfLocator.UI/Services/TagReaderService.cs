@@ -30,10 +30,10 @@ public class TagReaderService
     this.messenger = messenger;
     this.reader = reader;
 
-    this.messenger.Register<ReaderDisconnecting>(this, (r, m) =>
+    this.messenger.Register<ReaderDisconnecting>(this, async (r, m) =>
     {
-      this.cancellationTokenSource.Cancel();
       m.RunningTask = this.RunningTask;
+      await StopAsync();
     });
   }
 
@@ -79,8 +79,6 @@ public class TagReaderService
 
       if (state != ErrorCode.Ok)
         continue;
-
-      ulong count = this.reader.hm().queueItemCount();
 
       while (this.reader.hm().queueItemCount() > 0)
       {

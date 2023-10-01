@@ -58,7 +58,8 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
 
           var message = this.messenger.Send(disconnectingMessage);
 
-          await message.RunningTask;
+          if (message.RunningTask is not null)
+            await message.RunningTask;
 
           this.reader.disconnect();
 
