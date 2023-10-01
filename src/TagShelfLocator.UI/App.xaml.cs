@@ -76,6 +76,7 @@ public partial class App : Application
 
     builder.Services.AddSingleton(reader);
     builder.Services.AddSingleton<MainWindow>();
+    builder.Services.AddSingleton<Shell>();
     builder.Services.AddHostedService<ReaderConnectionListener>();
     builder.Services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
     builder.Services.AddSingleton<TagReaderService>();
@@ -86,11 +87,11 @@ public partial class App : Application
   {
     DispatcherHelper.Initialize();
     var logger = this.host.Services.GetRequiredService<ILogger<App>>();
-    logger.LogInformation("Loading and Showing {windowName}", nameof(MainWindow));
-    var mainWindow = this.host.Services.GetRequiredService<MainWindow>();
-    mainWindow.Show();
 
-    logger.LogInformation("Starting Host");
+    var shell = this.host.Services.GetRequiredService<Shell>();
+
+    shell.Show();
+
     await this.host.StartAsync();
   }
 

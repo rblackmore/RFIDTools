@@ -34,6 +34,7 @@ public class MainViewModel : ObservableObject, IMainViewModel
     this.messenger.Register<ReaderConnectionStateChangedMessage>(this, async (r, m) =>
     {
       this.IsReaderConnected = m.NewConnectionStatus;
+
       if (!m.NewConnectionStatus)
         await StopInventoryExecuteAsync();
     });
@@ -74,6 +75,9 @@ public class MainViewModel : ObservableObject, IMainViewModel
 
   private async Task StopInventoryExecuteAsync()
   {
+    if (this.readTask.IsCompleted)
+      return;
+
     this.readTaskTokenSource.Cancel();
     await this.tagReaderService.StopAsync();
     await this.readTask;
@@ -103,7 +107,7 @@ public class MainViewModel : ObservableObject, IMainViewModel
         this.TagList.Add(tag);
       }
     }
-    catch (OperationCanceledException ex)
+    catch (OperationCanceledException)
     {
       // it's fine ignore this, it's to be expected.
     }

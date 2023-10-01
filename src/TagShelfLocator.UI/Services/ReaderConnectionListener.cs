@@ -28,23 +28,22 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
     this.messenger = messenger;
   }
 
-  public void onUsbEvent()
+  public async void onUsbEvent()
   {
-    this.logger.LogInformation("New USB Event");
     var scanInfo = UsbManager.popDiscover();
 
     while (scanInfo.isValid())
     {
       if (scanInfo.isNewReader())
       {
+        if (this.reader.isConnected())
+          return;
+
         var usbConnector = scanInfo.connector();
+
         this.reader.connect(usbConnector);
 
-        var connectionMessage = new ReaderConnectionStateChangedMessage()
-        {
-          DeviceID = scanInfo.deviceId(),
-          NewConnectionStatus = true,
-        };
+        var connectionMessage = new ReaderConnectionStateChangedMessage(scanInfo.deviceId(), true);
 
         this.messenger.Send(connectionMessage);
 
@@ -52,20 +51,24 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
       }
 
       if (scanInfo.isReaderGone())
+      {
         if (this.reader.info().deviceId() == scanInfo.deviceId())
         {
+          var disconnectingMessage = new ReaderDisconnecting(scanInfo.deviceId());
+
+          var message = this.messenger.Send(disconnectingMessage);
+
+          await message.RunningTask;
+
           this.reader.disconnect();
 
-          var connectionMessage = new ReaderConnectionStateChangedMessage()
-          {
-            DeviceID = scanInfo.deviceId(),
-            NewConnectionStatus = false,
-          };
+          var connectionMessage = new ReaderConnectionStateChangedMessage(scanInfo.deviceId(), false);
 
           this.messenger.Send(connectionMessage);
 
           this.logger.LogInformation("Reader Disconnected: {deviceId}", scanInfo.deviceId());
         }
+      }
 
       scanInfo = UsbManager.popDiscover();
     }
@@ -84,8 +87,16 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
   }
 }
 
-public class ReaderConnectionStateChangedMessage
+public class ReaderDisconnecting
 {
-  public uint DeviceID { get; set; }
-  public bool NewConnectionStatus { get; set; }
+  public ReaderDisconnecting(uint deviceID)
+  {
+    this.DeviceID = deviceID;
+  }
+
+  public uint DeviceID { get; }
+
+  public Task RunningTask { get; set; }
 }
+
+public record ReaderConnectionStateChangedMessage(uint DeviceID, bool NewConnectionStatus);
