@@ -27,9 +27,15 @@
             <ListView ItemsSource="{Binding TagList}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <WrapPanel>
-                            <TextBlock Text="{Binding Path=IDD}"/>
-                        </WrapPanel>
+                        <StackPanel>
+                            <WrapPanel>
+                                <TextBlock Text="EPC: "/>
+                                <TextBlock Text="{Binding Path=EPC}"/>
+                                <TextBlock Text=" "/>
+                                <TextBlock Text="TID: "/>
+                                <TextBlock Text="{Binding Path=TID}"/>
+                            </WrapPanel>
+                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

@@ -5,11 +5,22 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-using TagShelfLocator.UI.Services;
+using TagShelfLocator.UI.Model;
 
 public class DummyMainViewModel : ObservableObject, IMainViewModel
 {
-  public ObservableCollection<TagReadViewModel> TagList => throw new System.NotImplementedException();
+  public ObservableCollection<ObservableTagDetails> TagList
+  {
+    get
+    {
+      return new ObservableCollection<ObservableTagDetails>(
+        new[] {
+        new DummyTagDetails(),
+        new DummyTagDetails(),
+        new DummyTagDetails(),
+        });
+    }
+  }
 
   public IAsyncRelayCommand StartInventoryAsync => throw new System.NotImplementedException();
 

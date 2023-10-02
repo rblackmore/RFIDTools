@@ -10,17 +10,22 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
+using Microsoft.Extensions.Logging;
+
 using TagShelfLocator.UI.Helpers;
+using TagShelfLocator.UI.Model;
 using TagShelfLocator.UI.Services;
 
 public class MainViewModel : ObservableObject, IMainViewModel
 {
+  private readonly ILogger<MainViewModel> logger;
   private readonly IMessenger messenger;
   private readonly TagReaderService tagReaderService;
   private bool isReaderConnected;
 
-  public MainViewModel(IMessenger messenger, TagReaderService tagReaderService)
+  public MainViewModel(ILogger<MainViewModel> logger, IMessenger messenger, TagReaderService tagReaderService)
   {
+    this.logger = logger;
     this.messenger = messenger;
     this.tagReaderService = tagReaderService;
     this.TagList = new();
@@ -54,7 +59,7 @@ public class MainViewModel : ObservableObject, IMainViewModel
 
   public bool IsReaderDisconnected => !IsReaderConnected;
 
-  public ObservableCollection<TagReadViewModel> TagList { get; }
+  public ObservableCollection<ObservableTagDetails> TagList { get; }
   public IAsyncRelayCommand StartInventoryAsync { get; private set; }
   public IAsyncRelayCommand StopInventoryAsync { get; private set; }
 
@@ -64,7 +69,7 @@ public class MainViewModel : ObservableObject, IMainViewModel
 
   private async Task StartInventoryExecuteAsync()
   {
-    var channel = Channel.CreateUnbounded<TagReadViewModel>();
+    var channel = Channel.CreateUnbounded<ObservableTagDetails>();
     await this.tagReaderService.StartAsync(channel);
 
     this.readTaskTokenSource = new();
@@ -95,7 +100,7 @@ public class MainViewModel : ObservableObject, IMainViewModel
   }
 
   private async Task ReadChannelAsync(
-    ChannelReader<TagReadViewModel> channelReader,
+    ChannelReader<ObservableTagDetails> channelReader,
     CancellationToken cancellationToken = default)
   {
     try
@@ -107,9 +112,9 @@ public class MainViewModel : ObservableObject, IMainViewModel
         this.TagList.Add(tag);
       }
     }
-    catch (OperationCanceledException)
+    catch (OperationCanceledException ex)
     {
-      // it's fine ignore this, it's to be expected.
+      this.logger.LogInformation("Read Channel Task Cancelled: {message}", ex.Message);
     }
   }
 

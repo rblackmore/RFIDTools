@@ -30,6 +30,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Framework\" />
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy &quot;$(LOCAL_LIBS)\OBID NET x64\net5.0\6.6.0\*&quot; $(TargetDir)" />
   </Target>

@@ -1,18 +1,15 @@
 ﻿namespace TagShelfLocator.UI.Services;
-
-using System;
-using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 
 using FEDM;
 
 using Microsoft.Extensions.Logging;
+
+using TagShelfLocator.UI.Model;
 
 public class TagReaderService
 {
@@ -41,7 +38,7 @@ public class TagReaderService
 
   public bool IsNotRunning => this.RunningTask is null || this.RunningTask.IsCompleted;
 
-  public Task StartAsync(Channel<TagReadViewModel> channel, CancellationToken cancellationToken = default)
+  public Task StartAsync(Channel<ObservableTagDetails> channel, CancellationToken cancellationToken = default)
   {
     if (this.IsRunning)
       return Task.CompletedTask;
@@ -65,7 +62,7 @@ public class TagReaderService
     await this.RunningTask;
   }
 
-  public async Task RunAsync(ChannelWriter<TagReadViewModel> channelWriter, CancellationToken cancellationToken = default)
+  public async Task RunAsync(ChannelWriter<ObservableTagDetails> channelWriter, CancellationToken cancellationToken = default)
   {
     this.reader.hm().setUsageMode(Hm.UsageMode.UseQueue);
 
@@ -87,27 +84,9 @@ public class TagReaderService
         if (tagItem is null)
           continue;
 
-        await channelWriter.WriteAsync(new TagReadViewModel(tagItem.iddToHexString()));
-
+        await channelWriter.WriteAsync(OBIDTagData.CreateFrom(this.reader.hm().createTagHandler(tagItem)));
         tagItem.clear();
       }
     }
-  }
-}
-
-
-public class TagReadViewModel : ObservableObject
-{
-  private string idd = string.Empty;
-
-  public TagReadViewModel(string iDD)
-  {
-    IDD = iDD;
-  }
-
-  public string IDD
-  {
-    get => this.idd;
-    set => SetProperty(ref this.idd, value);
   }
 }

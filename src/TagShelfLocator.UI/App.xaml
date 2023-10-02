@@ -6,9 +6,4 @@
              xmlns:views="clr-namespace:TagShelfLocator.UI.Views"
              Startup="Application_Startup"
              Exit="Application_Exit">
-    <Application.Resources>
-        <DataTemplate x:Key="InventoryView" DataType="{x:Type viewModels:MainViewModel}">
-            <views:InventoryView/>
-        </DataTemplate>
-    </Application.Resources>
 </Application>

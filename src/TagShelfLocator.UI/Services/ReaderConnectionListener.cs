@@ -59,6 +59,9 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
       if (this.reader.isConnected())
         return;
 
+      if (!ReaderType.isUhfReader(scanInfo.readerType()))
+        return;
+
       var usbConnector = scanInfo.connector();
 
       this.reader.connect(usbConnector);
@@ -106,7 +109,7 @@ public class ReaderDisconnecting
 
   public uint DeviceID { get; }
 
-  public Task RunningTask { get; set; }
+  public Task? RunningTask { get; set; }
 }
 
 public record ReaderConnectionStateChangedMessage(uint DeviceID, bool NewConnectionStatus);

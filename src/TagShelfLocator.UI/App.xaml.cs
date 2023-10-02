@@ -75,7 +75,6 @@ public partial class App : Application
     }
 
     builder.Services.AddSingleton(reader);
-    builder.Services.AddSingleton<MainWindow>();
     builder.Services.AddSingleton<Shell>();
     builder.Services.AddHostedService<ReaderConnectionListener>();
     builder.Services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);

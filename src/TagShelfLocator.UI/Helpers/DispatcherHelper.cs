@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Threading;
 
 /// <summary>
+/// Allows marshalling an Action to the UI thread, if not already on the UI Thread.
 /// Code referenced from MVVMLight.
 /// https://github.com/lbugnion/mvvmlight
 /// </summary>
