@@ -34,42 +34,7 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
 
     while (scanInfo.isValid())
     {
-      if (scanInfo.isNewReader())
-      {
-        if (this.reader.isConnected())
-          return;
-
-        var usbConnector = scanInfo.connector();
-
-        this.reader.connect(usbConnector);
-
-        var connectionMessage = new ReaderConnectionStateChangedMessage(scanInfo.deviceId(), true);
-
-        this.messenger.Send(connectionMessage);
-
-        this.logger.LogInformation("Reader Connected: {deviceID}", scanInfo.deviceId());
-      }
-
-      if (scanInfo.isReaderGone())
-      {
-        if (this.reader.info().deviceId() == scanInfo.deviceId())
-        {
-          var disconnectingMessage = new ReaderDisconnecting(scanInfo.deviceId());
-
-          var message = this.messenger.Send(disconnectingMessage);
-
-          if (message.RunningTask is not null)
-            await message.RunningTask;
-
-          this.reader.disconnect();
-
-          var connectionMessage = new ReaderConnectionStateChangedMessage(scanInfo.deviceId(), false);
-
-          this.messenger.Send(connectionMessage);
-
-          this.logger.LogInformation("Reader Disconnected: {deviceId}", scanInfo.deviceId());
-        }
-      }
+      await ProcessUsbEventAsync(scanInfo);
 
       scanInfo = UsbManager.popDiscover();
     }
@@ -85,6 +50,50 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
   {
     UsbManager.stopDiscover();
     return Task.CompletedTask;
+  }
+
+  private async Task ProcessUsbEventAsync(UsbScanInfo scanInfo)
+  {
+    if (scanInfo.isNewReader())
+    {
+      if (this.reader.isConnected())
+        return;
+
+      var usbConnector = scanInfo.connector();
+
+      this.reader.connect(usbConnector);
+
+      var connectionMessage = new ReaderConnectionStateChangedMessage(scanInfo.deviceId(), true);
+
+      this.messenger.Send(connectionMessage);
+
+      this.logger.LogInformation("Reader Connected: {deviceID}", scanInfo.deviceId());
+    }
+
+    if (isReaderDisconnected(scanInfo))
+    {
+      var disconnectingMessage = new ReaderDisconnecting(scanInfo.deviceId());
+
+      var message = this.messenger.Send(disconnectingMessage);
+
+      if (message.RunningTask is not null)
+        await message.RunningTask;
+
+      this.reader.disconnect();
+
+      var connectionMessage = new ReaderConnectionStateChangedMessage(scanInfo.deviceId(), false);
+
+      this.messenger.Send(connectionMessage);
+
+      this.logger.LogInformation("Reader Disconnected: {deviceId}", scanInfo.deviceId());
+    }
+  }
+
+  private bool isReaderDisconnected(UsbScanInfo scanInfo)
+  {
+    return
+      scanInfo.isReaderGone() &&
+      this.reader.info().deviceId() == scanInfo.deviceId();
   }
 }
 
