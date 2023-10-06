@@ -2,12 +2,11 @@
 
 using System.Collections.ObjectModel;
 
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using TagShelfLocator.UI.Model;
 
-public class DummyMainViewModel : ObservableObject, IMainViewModel
+public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
 {
   public ObservableCollection<ObservableTagDetails> TagList
   {

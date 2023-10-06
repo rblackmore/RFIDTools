@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using TagShelfLocator.UI.Model;
 
-public interface IMainViewModel
+public interface IInventoryViewModel : IViewModel
 {
   public bool IsReaderConnected { get; }
   public bool IsReaderDisconnected { get; }

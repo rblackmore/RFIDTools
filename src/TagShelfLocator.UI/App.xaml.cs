@@ -1,7 +1,6 @@
 ﻿namespace TagShelfLocator.UI;
 
 using System;
-using System.Configuration;
 using System.Windows;
 
 using CommunityToolkit.Mvvm.Messaging;
@@ -79,24 +78,37 @@ public partial class App : Application
     builder.Services.AddHostedService<ReaderConnectionListener>();
     builder.Services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
     builder.Services.AddSingleton<TagReaderService>();
-    builder.Services.AddTransient<IMainViewModel, MainViewModel>();
+    builder.Services.AddSingleton<INavigationService, NavigationService>();
+
+    builder.Services.AddSingleton<IInventoryViewModel, InventoryViewModel>();
+    builder.Services.AddSingleton<ISettingsViewModel, SettingsViewModel>();
+
+    builder.Services.AddSingleton<IShellViewModel, ShellViewModel>();
+
+    builder.Services
+      .AddSingleton<Func<Type, IViewModel>>(provider =>
+        viewModelType =>
+          (ViewModel)provider.GetRequiredService(viewModelType));
   }
 
-  private async void Application_Startup(object sender, StartupEventArgs e)
+  protected override async void OnStartup(StartupEventArgs e)
   {
     DispatcherHelper.Initialize();
-    var logger = this.host.Services.GetRequiredService<ILogger<App>>();
+    var navigation = this.host.Services.GetRequiredService<INavigationService>();
+
+    navigation.NavigateTo<IInventoryViewModel>();
 
     var shell = this.host.Services.GetRequiredService<Shell>();
 
     shell.Show();
 
     await this.host.StartAsync();
+    base.OnStartup(e);
   }
-
-  private async void Application_Exit(object sender, ExitEventArgs e)
+  protected override async void OnExit(ExitEventArgs e)
   {
     await this.host.StopAsync();
     this.host.Dispose();
+    base.OnExit(e);
   }
 }

@@ -8,12 +8,20 @@
         xmlns:views="clr-namespace:TagShelfLocator.UI.Views"
         mc:Ignorable="d"
         Title="Shell" Height="600" Width="1080">
+    <Window.Resources>
+        <viewModels:ShellViewModelLocator x:Key="vml"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <Binding Source="{StaticResource vml}" Path="ViewModel"/>
+    </Window.DataContext>
     <DockPanel>
         <StackPanel DockPanel.Dock="Left" Width="200">
-
+            <Button Margin="8" Height="24" Content="Inventory" Command="{Binding NavigateToInventory}"/>
+            <Button Margin="8" Height="24" Content="Settings" Command="{Binding NavigateToSettings}"/>
         </StackPanel>
         <Grid>
-            <views:InventoryView/>
+            <ContentControl Content="{Binding Path=NavigationService.CurrentViewModel}"/>
         </Grid>
     </DockPanel>
 </Window>
+        

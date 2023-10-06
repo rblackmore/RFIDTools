@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
@@ -16,14 +15,14 @@ using TagShelfLocator.UI.Helpers;
 using TagShelfLocator.UI.Model;
 using TagShelfLocator.UI.Services;
 
-public class MainViewModel : ObservableObject, IMainViewModel
+public class InventoryViewModel : ViewModel, IInventoryViewModel
 {
-  private readonly ILogger<MainViewModel> logger;
+  private readonly ILogger<InventoryViewModel> logger;
   private readonly IMessenger messenger;
   private readonly TagReaderService tagReaderService;
   private bool isReaderConnected;
 
-  public MainViewModel(ILogger<MainViewModel> logger, IMessenger messenger, TagReaderService tagReaderService)
+  public InventoryViewModel(ILogger<InventoryViewModel> logger, IMessenger messenger, TagReaderService tagReaderService)
   {
     this.logger = logger;
     this.messenger = messenger;

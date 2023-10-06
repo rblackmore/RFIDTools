@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 
 public abstract class ViewModelLocatorBase<TViewModel>
-  : ObservableObject where TViewModel : class
+  : ObservableObject where TViewModel : IViewModel
 {
   private static DependencyObject dummy = new();
 
@@ -47,5 +47,4 @@ public abstract class ViewModelLocatorBase<TViewModel>
 
   public TViewModel ViewModel =>
     IsInDesignMode ? this.DesignTimeViewModel : this.RuntimeViewModel;
-
 }

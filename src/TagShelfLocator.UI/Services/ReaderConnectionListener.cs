@@ -7,9 +7,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 using FEDM;
 
-
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
 
 public class ReaderConnectionListener : IHostedService, IUsbListener
 {
