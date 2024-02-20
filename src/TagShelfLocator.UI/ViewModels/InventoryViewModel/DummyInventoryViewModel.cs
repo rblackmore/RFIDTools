@@ -25,7 +25,10 @@ public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
 
   public IAsyncRelayCommand StopInventoryAsync => throw new System.NotImplementedException();
 
+  public IRelayCommand OpenSettings => throw new System.NotImplementedException();
+
   public bool IsReaderConnected => true;
 
   public bool IsReaderDisconnected => false;
+
 }

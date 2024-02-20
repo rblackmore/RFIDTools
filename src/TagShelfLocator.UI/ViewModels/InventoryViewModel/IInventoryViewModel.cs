@@ -13,4 +13,5 @@ public interface IInventoryViewModel : IViewModel
   public ObservableCollection<ObservableTagDetails> TagList { get; }
   public IAsyncRelayCommand StartInventoryAsync { get; }
   public IAsyncRelayCommand StopInventoryAsync { get; }
+  public IRelayCommand OpenSettings { get; }
 }

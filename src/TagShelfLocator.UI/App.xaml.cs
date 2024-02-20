@@ -85,6 +85,9 @@ public partial class App : Application
 
     builder.Services.AddSingleton<IShellViewModel, ShellViewModel>();
 
+    // Register IViewModel Factory.
+    // This factory takes in a Type, Gets this service from the standard provider.
+    // Type must be of type 'IViewModel'
     builder.Services
       .AddSingleton<Func<Type, IViewModel>>(provider =>
         viewModelType =>

@@ -20,13 +20,19 @@ public class InventoryViewModel : ViewModel, IInventoryViewModel
   private readonly ILogger<InventoryViewModel> logger;
   private readonly IMessenger messenger;
   private readonly TagReaderService tagReaderService;
+  private readonly INavigationService navigationService;
   private bool isReaderConnected;
 
-  public InventoryViewModel(ILogger<InventoryViewModel> logger, IMessenger messenger, TagReaderService tagReaderService)
+  public InventoryViewModel(
+    ILogger<InventoryViewModel> logger,
+    IMessenger messenger,
+    TagReaderService tagReaderService,
+    INavigationService navigationService)
   {
     this.logger = logger;
     this.messenger = messenger;
     this.tagReaderService = tagReaderService;
+    this.navigationService = navigationService;
     this.TagList = new();
 
     this.StartInventoryAsync =
@@ -34,6 +40,11 @@ public class InventoryViewModel : ViewModel, IInventoryViewModel
 
     this.StopInventoryAsync =
       new AsyncRelayCommand(StopInventoryExecuteAsync, StopInventoryCanExecute);
+
+    this.OpenSettings = new RelayCommand(() =>
+    {
+      this.navigationService.NavigateTo<ISettingsViewModel>();
+    });
 
     this.messenger.Register<ReaderConnectionStateChangedMessage>(this, async (r, m) =>
     {
@@ -61,6 +72,7 @@ public class InventoryViewModel : ViewModel, IInventoryViewModel
   public ObservableCollection<ObservableTagDetails> TagList { get; }
   public IAsyncRelayCommand StartInventoryAsync { get; private set; }
   public IAsyncRelayCommand StopInventoryAsync { get; private set; }
+  public IRelayCommand OpenSettings { get; private set; }
 
   private CancellationTokenSource readTaskTokenSource = new();
 
