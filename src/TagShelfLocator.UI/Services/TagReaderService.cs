@@ -1,4 +1,6 @@
 ﻿namespace TagShelfLocator.UI.Services;
+
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -6,10 +8,11 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Messaging;
 
 using FEDM;
+using FEDM.TagHandler;
 
 using Microsoft.Extensions.Logging;
 
-using TagShelfLocator.UI.Model;
+using TagShelfLocator.UI.Core.Model;
 
 public class TagReaderService
 {
@@ -38,7 +41,7 @@ public class TagReaderService
 
   public bool IsNotRunning => this.RunningTask is null || this.RunningTask.IsCompleted;
 
-  public Task StartAsync(Channel<ObservableTagDetails> channel, CancellationToken cancellationToken = default)
+  public Task StartAsync(Channel<EPCTagEntry> channel, CancellationToken cancellationToken = default)
   {
     if (this.IsRunning)
       return Task.CompletedTask;
@@ -62,7 +65,7 @@ public class TagReaderService
     await this.RunningTask;
   }
 
-  public async Task RunAsync(ChannelWriter<ObservableTagDetails> channelWriter, CancellationToken cancellationToken = default)
+  public async Task RunAsync(ChannelWriter<EPCTagEntry> channelWriter, CancellationToken cancellationToken = default)
   {
     this.reader.hm().setUsageMode(Hm.UsageMode.UseQueue);
 
@@ -84,9 +87,29 @@ public class TagReaderService
         if (tagItem is null)
           continue;
 
-        await channelWriter.WriteAsync(OBIDTagData.CreateFrom(this.reader.hm().createTagHandler(tagItem)));
+        await channelWriter.WriteAsync(CreateEPCTagEntry(tagItem));
         tagItem.clear();
       }
     }
+  }
+
+  private EPCTagEntry CreateEPCTagEntry(TagItem tagItem)
+  {
+    var th = this.reader.hm().createTagHandler(tagItem);
+
+    if (th is not ThEpcClass1Gen2 thEPC)
+      throw new System.Exception("Tag Item is not EpcClass2Gen2 Tag");
+
+
+    var rssiValues = new List<Antenna>();
+
+    foreach (var rssi in tagItem.rssiValues())
+      rssiValues.Add(new Antenna(rssi.antennaNumber(), rssi.rssi()));
+
+    return new EPCTagEntry(
+      thEPC.idd(),
+      thEPC.epcToHexString(),
+      thEPC.tidToHexString(),
+      rssiValues.AsReadOnly());
   }
 }

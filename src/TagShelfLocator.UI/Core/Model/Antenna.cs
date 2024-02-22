@@ -1,13 +1,15 @@
 ﻿namespace TagShelfLocator.UI.Core.Model;
-
-using System.Collections.Generic;
-
-using TagShelfLocator.UI.Core.Shared;
-
-public class Antenna : ValueObject
+public class Antenna
 {
-  protected override IEnumerable<object> GetEqualityComponents()
+  private int antennaNumber;
+  private int rssi;
+
+  public Antenna(int antennaNumber, int rssi)
   {
-    throw new System.NotImplementedException();
+    this.antennaNumber = antennaNumber;
+    this.rssi = rssi;
   }
+
+  public int AntennaNumber => antennaNumber;
+  public int RSSI => rssi;
 }

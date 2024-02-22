@@ -14,15 +14,15 @@
         <Binding Source="{StaticResource viewModelLocator}" Path="ViewModel"/>
     </UserControl.DataContext>
     <DockPanel Margin="8">
-        <StackPanel DockPanel.Dock="Right" Width="150">
+        <StackPanel DockPanel.Dock="Left" Width="150">
             <WrapPanel>
                 <TextBlock Text="Connection Status: "/>
                 <TextBlock Text="{Binding IsReaderConnected}"/>
             </WrapPanel>
-            <Button Margin="4" Height="24" Content="Start" Command="{Binding StartInventoryAsync}"/>
-            <Button Margin="4" Height="24" Content="Stop" Command="{Binding StopInventoryAsync}"/>
+            <Button Margin="8" Height="32" Content="Start" Command="{Binding StartInventoryAsync}"/>
+            <Button Margin="8" Height="32" Content="Stop" Command="{Binding StopInventoryAsync}"/>
         </StackPanel>
-        <Grid Margin="0,0,8,0">
+        <Grid Margin="8,0">
             <ListView ItemsSource="{Binding TagList}">
                 <ListView.ItemTemplate>
                     <DataTemplate>

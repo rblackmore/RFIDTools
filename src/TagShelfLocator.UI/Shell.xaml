@@ -7,7 +7,7 @@
         xmlns:viewModels="clr-namespace:TagShelfLocator.UI.ViewModels"
         xmlns:views="clr-namespace:TagShelfLocator.UI.Views"
         mc:Ignorable="d"
-        Title="Shell" Height="600" Width="1080">
+        Title="Shell" Height="900" Width="1540">
     <Window.Resources>
         <viewModels:ShellViewModelLocator x:Key="vml"/>
     </Window.Resources>
@@ -15,9 +15,9 @@
         <Binding Source="{StaticResource vml}" Path="ViewModel"/>
     </Window.DataContext>
     <DockPanel>
-        <StackPanel DockPanel.Dock="Left" Width="200">
-            <Button Margin="8" Height="24" Content="Inventory" Command="{Binding NavigateToInventory}"/>
-            <Button Margin="8" Height="24" Content="Settings" Command="{Binding NavigateToSettings}"/>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button Margin="8" Height="75" Width="75" Content="Inventory" Command="{Binding NavigateToInventory}"/>
+            <Button Margin="8" Height="75" Width="75" Content="Settings" Command="{Binding NavigateToSettings}"/>
         </StackPanel>
         <Grid>
             <ContentControl Content="{Binding Path=NavigationService.CurrentViewModel}"/>

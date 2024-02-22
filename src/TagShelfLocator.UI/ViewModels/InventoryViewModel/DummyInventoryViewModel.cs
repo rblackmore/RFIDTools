@@ -1,22 +1,24 @@
 ﻿namespace TagShelfLocator.UI.ViewModels;
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Documents;
 
 using CommunityToolkit.Mvvm.Input;
 
-using TagShelfLocator.UI.Model;
+using TagShelfLocator.UI.Core.Model;
 
 public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
 {
-  public ObservableCollection<ObservableTagDetails> TagList
+  public ObservableCollection<EPCTagEntry> TagList
   {
     get
     {
-      return new ObservableCollection<ObservableTagDetails>(
+      return new ObservableCollection<EPCTagEntry>(
         new[] {
-        new DummyTagDetails(),
-        new DummyTagDetails(),
-        new DummyTagDetails(),
+        new EPCTagEntry(new byte[] {0x02, 0x03, 0x04}, "020304", "E2008113", new List<Antenna>().AsReadOnly()),
+        new EPCTagEntry(new byte[] {0x02, 0x03, 0x04}, "020304", "E2008113", new List<Antenna>().AsReadOnly()),
+        new EPCTagEntry(new byte[] {0x02, 0x03, 0x04}, "020304", "E2008113", new List<Antenna>().AsReadOnly()),
         });
     }
   }

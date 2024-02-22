@@ -14,6 +14,6 @@
         <Binding Source="{StaticResource viewModelLocator}" Path="ViewModel"/>
     </UserControl.DataContext>
     <Grid>
-        <TextBlock Text="{Binding Title}" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="{Binding Title}" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center">Settings View</TextBlock>
     </Grid>
 </UserControl>

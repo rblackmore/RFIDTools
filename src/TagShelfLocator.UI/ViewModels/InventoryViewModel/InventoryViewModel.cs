@@ -11,8 +11,8 @@ using CommunityToolkit.Mvvm.Messaging;
 
 using Microsoft.Extensions.Logging;
 
+using TagShelfLocator.UI.Core.Model;
 using TagShelfLocator.UI.Helpers;
-using TagShelfLocator.UI.Model;
 using TagShelfLocator.UI.Services;
 
 public class InventoryViewModel : ViewModel, IInventoryViewModel
@@ -69,7 +69,7 @@ public class InventoryViewModel : ViewModel, IInventoryViewModel
 
   public bool IsReaderDisconnected => !IsReaderConnected;
 
-  public ObservableCollection<ObservableTagDetails> TagList { get; }
+  public ObservableCollection<EPCTagEntry> TagList { get; }
   public IAsyncRelayCommand StartInventoryAsync { get; private set; }
   public IAsyncRelayCommand StopInventoryAsync { get; private set; }
   public IRelayCommand OpenSettings { get; private set; }
@@ -80,7 +80,7 @@ public class InventoryViewModel : ViewModel, IInventoryViewModel
 
   private async Task StartInventoryExecuteAsync()
   {
-    var channel = Channel.CreateUnbounded<ObservableTagDetails>();
+    var channel = Channel.CreateUnbounded<EPCTagEntry>();
     await this.tagReaderService.StartAsync(channel);
 
     this.readTaskTokenSource = new();
@@ -111,7 +111,7 @@ public class InventoryViewModel : ViewModel, IInventoryViewModel
   }
 
   private async Task ReadChannelAsync(
-    ChannelReader<ObservableTagDetails> channelReader,
+    ChannelReader<EPCTagEntry> channelReader,
     CancellationToken cancellationToken = default)
   {
     try
