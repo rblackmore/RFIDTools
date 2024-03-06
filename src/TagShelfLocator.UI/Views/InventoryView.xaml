@@ -21,22 +21,19 @@
             </WrapPanel>
             <Button Margin="8" Height="32" Content="Start" Command="{Binding StartInventoryAsync}"/>
             <Button Margin="8" Height="32" Content="Stop" Command="{Binding StopInventoryAsync}"/>
+            <Button Margin="8" Height="32" Content="Add Tag Entry Test Button" Command="{Binding AddTagEntry}"/>
         </StackPanel>
         <Grid Margin="8,0">
             <ListView ItemsSource="{Binding TagList}">
-                <ListView.ItemTemplate>
+                <!--<ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel>
                             <WrapPanel>
-                                <TextBlock Text="EPC: "/>
-                                <TextBlock Text="{Binding Path=EPC}"/>
-                                <TextBlock Text=" "/>
-                                <TextBlock Text="TID: "/>
-                                <TextBlock Text="{Binding Path=TID}"/>
+                                <TextBlock Text="{Binding }"/>
                             </WrapPanel>
                         </StackPanel>
                     </DataTemplate>
-                </ListView.ItemTemplate>
+                </ListView.ItemTemplate>-->
             </ListView>
         </Grid>
     </DockPanel>

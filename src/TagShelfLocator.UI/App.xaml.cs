@@ -77,7 +77,7 @@ public partial class App : Application
     builder.Services.AddSingleton<Shell>();
     builder.Services.AddHostedService<ReaderConnectionListener>();
     builder.Services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
-    builder.Services.AddSingleton<TagReaderService>();
+    builder.Services.AddSingleton<OBIDTagInventoryService>();
     builder.Services.AddSingleton<INavigationService, NavigationService>();
 
     builder.Services.AddSingleton<IInventoryViewModel, InventoryViewModel>();

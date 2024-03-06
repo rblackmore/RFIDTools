@@ -59,8 +59,8 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
       if (this.reader.isConnected())
         return;
 
-      if (!ReaderType.isUhfReader(scanInfo.readerType()))
-        return;
+      //if (!ReaderType.isUhfReader(scanInfo.readerType()))
+      //  return;
 
       var usbConnector = scanInfo.connector();
 
