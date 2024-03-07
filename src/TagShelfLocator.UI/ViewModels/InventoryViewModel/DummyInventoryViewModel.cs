@@ -1,8 +1,6 @@
 ﻿namespace TagShelfLocator.UI.ViewModels;
 
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Documents;
 
 using CommunityToolkit.Mvvm.Input;
 
@@ -10,15 +8,16 @@ using TagShelfLocator.UI.Core.Model;
 
 public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
 {
-  public ObservableCollection<EPCTagEntry> TagList
+  public ObservableCollection<TagEntry> TagList
   {
     get
     {
-      return new ObservableCollection<EPCTagEntry>(
+      return new ObservableCollection<TagEntry>(
         new[] {
-        new EPCTagEntry(new byte[] {0x02, 0x03, 0x04}, "020304", "E2008113", new List<Antenna>().AsReadOnly()),
-        new EPCTagEntry(new byte[] {0x02, 0x03, 0x04}, "020304", "E2008113", new List<Antenna>().AsReadOnly()),
-        new EPCTagEntry(new byte[] {0x02, 0x03, 0x04}, "020304", "E2008113", new List<Antenna>().AsReadOnly()),
+          new TagEntry(1, "EPC Class 1 Gen 2", "1234", -13),
+          new TagEntry(2, "ISO14443-A Mifare DESFire", "ABCD", -16),
+          new TagEntry(3, "EPC Class 1 Gen 2", "4321", -11),
+          new TagEntry(4, "EPC Class 1 Gen 2", "DEF1", -9),
         });
     }
   }
@@ -33,4 +32,5 @@ public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
 
   public bool IsReaderDisconnected => false;
 
+  public IRelayCommand AddTagEntry => throw new System.NotImplementedException();
 }
