@@ -42,6 +42,5 @@ public class TagEntry
     }
 
     return Task.FromResult(new TagEntry(count, tagType, serialNumber, rssi));
-    //var rssi = (tagItem.rssiValues() is not null) ? tagItem.rssiValues()[0].rssi() : 0;
   }
 }

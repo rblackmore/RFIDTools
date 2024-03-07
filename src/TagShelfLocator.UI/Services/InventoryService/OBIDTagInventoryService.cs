@@ -1,4 +1,4 @@
-﻿namespace TagShelfLocator.UI.Services;
+﻿namespace TagShelfLocator.UI.Services.InventoryService;
 
 using System.Collections.Generic;
 using System.Threading;
@@ -13,11 +13,12 @@ using FEDM.TagHandler;
 using Microsoft.Extensions.Logging;
 
 using TagShelfLocator.UI.Core.Model;
-using TagShelfLocator.UI.Services.Events;
+using TagShelfLocator.UI.Services;
+using TagShelfLocator.UI.Services.InventoryService.Events;
 
 // TODO: Eventually intend to extract an Interface from this,
 // so i can create different versions for different readers.
-public class OBIDTagInventoryService
+public class OBIDTagInventoryService : ITagInventoryService
 {
   private readonly ILogger<OBIDTagInventoryService> logger;
   private readonly IMessenger messenger;
@@ -35,32 +36,27 @@ public class OBIDTagInventoryService
 
     this.messenger.Register<ReaderDisconnecting>(this, async (r, m) =>
     {
-      m.RunningTask = this.RunningTask;
+      m.RunningTask = RunningTask;
       await StopAsync("Reader Disconnected");
     });
   }
-  public event InventoryStoppedHandler InventoryStopped;
+  //public event InventoryStoppedHandler InventoryStopped;
 
-  public bool IsRunning => !this.IsNotRunning;
+  public bool IsRunning => !IsNotRunning;
 
-  public bool IsNotRunning => this.RunningTask is null || this.RunningTask.IsCompleted;
+  public bool IsNotRunning => RunningTask is null || RunningTask.IsCompleted;
 
-  public async Task StartAsync(Channel<TagEntry> channel, CancellationToken cancellationToken = default)
+  public async Task StartAsync(Channel<TagEntry> channel, string message = "", CancellationToken cancellationToken = default)
   {
-    if (this.IsRunning)
+    if (IsRunning)
       return;
 
-    this.cancellationTokenSource = new CancellationTokenSource();
+    cancellationTokenSource = new CancellationTokenSource();
 
-    // Wy Can't I do this.
-    //this.RunningTask = RunAsync(channel.Writer, this.cancellationTokenSource.Token);
-
-    // I have to do this?
-    this.RunningTask = Task.Run(async () =>
+    RunningTask = Task.Run(async () =>
     {
-      await this.RunAsync(channel.Writer, this.cancellationTokenSource.Token);
+      await RunAsync(channel.Writer, cancellationTokenSource.Token);
     })
-    // This task may throw an exception before I cancel it, so we handle that here.
     .ContinueWith(async tsk =>
     {
 
@@ -74,28 +70,30 @@ public class OBIDTagInventoryService
 
       foreach (var ex in tsk.Exception.Flatten().InnerExceptions)
       {
-        this.logger.LogError("Exception in Running Task {exType} {exMessage}", ex.GetType(), ex.Message);
+        logger.LogError("Exception in Running Task {exType} {exMessage}", ex.GetType(), ex.Message);
       }
     });
+
+    this.messenger.Send(new InventoryStartedMessage(message));
   }
 
   public async Task StopAsync(string message, CancellationToken cancellationToken = default)
   {
-    if (this.IsNotRunning)
+    if (IsNotRunning)
       return;
 
-    this.cancellationTokenSource?.Cancel();
-    await this.RunningTask;
-    this.InventoryStopped?.Invoke(this, new InventoryStoppedEventArgs(message));
+    cancellationTokenSource?.Cancel();
+    await RunningTask;
+    this.messenger.Send(new InventoryStoppedMessage(message));
   }
 
   public async Task RunAsync(ChannelWriter<TagEntry> channelWriter, CancellationToken cancellationToken = default)
   {
-    this.reader.hm().setUsageMode(Hm.UsageMode.UseQueue);
+    reader.hm().setUsageMode(Hm.UsageMode.UseQueue);
 
     while (!cancellationToken.IsCancellationRequested)
     {
-      int state = this.reader.hm().inventory();
+      var state = reader.hm().inventory();
 
       // TODO: I should handle a few other error codes depending on what may go wrong.
       // eg. Code 0x01 means no tags, this is fine to continue
@@ -103,15 +101,15 @@ public class OBIDTagInventoryService
       // or display the error and continue anyway.
       if (state != ErrorCode.Ok)
       {
-        this.logger.LogError("{status} - {message}", state, this.reader.lastErrorStatusText());
+        logger.LogError("{status} - {message}", state, reader.lastErrorStatusText());
         continue;
       }
 
-      int count = 0;
+      var count = 0;
 
-      while (this.reader.hm().queueItemCount() > 0)
+      while (reader.hm().queueItemCount() > 0)
       {
-        var tagItem = this.reader.hm().popItem();
+        var tagItem = reader.hm().popItem();
 
         if (tagItem is null)
           continue;
@@ -126,7 +124,7 @@ public class OBIDTagInventoryService
 
   private EPCTagEntry CreateEPCTagEntry(TagItem tagItem)
   {
-    var th = this.reader.hm().createTagHandler(tagItem);
+    var th = reader.hm().createTagHandler(tagItem);
 
     if (th is not ThEpcClass1Gen2 thEPC)
       throw new System.Exception("Tag Item is not EpcClass2Gen2 Tag");

@@ -15,6 +15,7 @@ using Serilog;
 
 using TagShelfLocator.UI.Helpers;
 using TagShelfLocator.UI.Services;
+using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.ViewModels;
 
 using DateTime = System.DateTime;
@@ -77,13 +78,14 @@ public partial class App : Application
     builder.Services.AddSingleton<Shell>();
     builder.Services.AddHostedService<ReaderConnectionListener>();
     builder.Services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
-    builder.Services.AddSingleton<OBIDTagInventoryService>();
+    builder.Services.AddSingleton<ITagInventoryService, OBIDTagInventoryService>();
     builder.Services.AddSingleton<INavigationService, NavigationService>();
 
     builder.Services.AddSingleton<IInventoryViewModel, InventoryViewModel>();
     builder.Services.AddSingleton<ISettingsViewModel, SettingsViewModel>();
 
     builder.Services.AddSingleton<IShellViewModel, ShellViewModel>();
+
 
     // Register IViewModel Factory.
     // This factory takes in a Type, Gets this service from the standard provider.

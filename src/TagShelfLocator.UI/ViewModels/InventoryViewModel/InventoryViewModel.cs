@@ -14,19 +14,26 @@ using Microsoft.Extensions.Logging;
 using TagShelfLocator.UI.Core.Model;
 using TagShelfLocator.UI.Helpers;
 using TagShelfLocator.UI.Services;
+using TagShelfLocator.UI.Services.InventoryService;
+using TagShelfLocator.UI.Services.InventoryService.Events;
 
-public class InventoryViewModel : ViewModel, IInventoryViewModel, IDisposable
+public class InventoryViewModel : ViewModel,
+  IInventoryViewModel,
+  IDisposable,
+  IRecipient<InventoryStartedMessage>,
+  IRecipient<InventoryStoppedMessage>,
+  IRecipient<ReaderConnectionStateChangedMessage>
 {
   private readonly ILogger<InventoryViewModel> logger;
   private readonly IMessenger messenger;
-  private readonly OBIDTagInventoryService tagInventoryService;
+  private readonly ITagInventoryService tagInventoryService;
   private readonly INavigationService navigationService;
   private bool isReaderConnected;
 
   public InventoryViewModel(
     ILogger<InventoryViewModel> logger,
     IMessenger messenger,
-    OBIDTagInventoryService tagInventoryService,
+    ITagInventoryService tagInventoryService,
     INavigationService navigationService)
   {
     this.logger = logger;
@@ -35,22 +42,26 @@ public class InventoryViewModel : ViewModel, IInventoryViewModel, IDisposable
     this.navigationService = navigationService;
     this.TagList = new();
 
+    this.messenger.RegisterAll(this);
+
     this.ConfigureCommands();
-
-    this.tagInventoryService.InventoryStopped += TagReaderService_InventoryStopped;
-
-    this.messenger.Register<ReaderConnectionStateChangedMessage>(this, async (r, m) =>
-    {
-      this.IsReaderConnected = m.NewConnectionStatus;
-
-      if (!m.NewConnectionStatus)
-        await StopInventoryExecuteAsync();
-    });
   }
 
-  private async void TagReaderService_InventoryStopped(object sender, Services.Events.InventoryStoppedEventArgs e)
+  public async void Receive(ReaderConnectionStateChangedMessage message)
   {
-    this.logger.LogInformation("Inventory Stopped {message}", e.Reasonforstopping);
+    this.IsReaderConnected = message.NewConnectionStatus;
+
+    if (!message.NewConnectionStatus)
+      await StopInventoryExecuteAsync();
+  }
+
+  public void Receive(InventoryStartedMessage message)
+  {
+    this.OnInventoryTaskCanExecuteChanged();
+  }
+
+  public async void Receive(InventoryStoppedMessage message)
+  {
     await this.CancelInventoryReadingAsync();
     this.OnInventoryTaskCanExecuteChanged();
   }
@@ -106,7 +117,6 @@ public class InventoryViewModel : ViewModel, IInventoryViewModel, IDisposable
     this.readTaskTokenSource = new();
 
     this.readTask = ReadChannelAsync(channel.Reader, readTaskTokenSource.Token);
-    OnInventoryTaskCanExecuteChanged();
   }
 
   private async Task StopInventoryExecuteAsync()
@@ -118,8 +128,6 @@ public class InventoryViewModel : ViewModel, IInventoryViewModel, IDisposable
     var channelReaderCancelationTask = CancelInventoryReadingAsync();
 
     await Task.WhenAll(tagServiceStopTask, channelReaderCancelationTask);
-
-    OnInventoryTaskCanExecuteChanged();
   }
 
   private async Task CancelInventoryReadingAsync()
@@ -172,6 +180,5 @@ public class InventoryViewModel : ViewModel, IInventoryViewModel, IDisposable
 
   public void Dispose()
   {
-    this.tagInventoryService.InventoryStopped -= TagReaderService_InventoryStopped;
   }
 }
