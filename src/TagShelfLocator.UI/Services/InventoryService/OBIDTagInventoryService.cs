@@ -1,7 +1,6 @@
 ﻿namespace TagShelfLocator.UI.Services.InventoryService;
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -9,13 +8,11 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Messaging;
 
 using FEDM;
-using FEDM.TagHandler;
 
 using Microsoft.Extensions.Logging;
 
 using TagShelfLocator.UI.Core.Model;
 using TagShelfLocator.UI.Services.InventoryService.Events;
-using TagShelfLocator.UI.Services.ReaderConnectionListenerService;
 using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
 
 // TODO: Eventually intend to extract an Interface from this,
@@ -123,26 +120,6 @@ public class OBIDTagInventoryService :
         tagItem.clear();
       }
     }
-  }
-
-  private EPCTagEntry CreateEPCTagEntry(TagItem tagItem)
-  {
-    var th = reader.hm().createTagHandler(tagItem);
-
-    if (th is not ThEpcClass1Gen2 thEPC)
-      throw new System.Exception("Tag Item is not EpcClass2Gen2 Tag");
-
-
-    var rssiValues = new List<Antenna>();
-
-    foreach (var rssi in tagItem.rssiValues())
-      rssiValues.Add(new Antenna(rssi.antennaNumber(), rssi.rssi()));
-
-    return new EPCTagEntry(
-      thEPC.idd(),
-      thEPC.epcToHexString(),
-      thEPC.tidToHexString(),
-      rssiValues.AsReadOnly());
   }
 
   public void Dispose()
