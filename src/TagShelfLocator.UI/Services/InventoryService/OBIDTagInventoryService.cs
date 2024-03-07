@@ -1,5 +1,6 @@
 ﻿namespace TagShelfLocator.UI.Services.InventoryService;
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Channels;
@@ -13,12 +14,16 @@ using FEDM.TagHandler;
 using Microsoft.Extensions.Logging;
 
 using TagShelfLocator.UI.Core.Model;
-using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService.Events;
+using TagShelfLocator.UI.Services.ReaderConnectionListenerService;
+using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
 
 // TODO: Eventually intend to extract an Interface from this,
 // so i can create different versions for different readers.
-public class OBIDTagInventoryService : ITagInventoryService
+public class OBIDTagInventoryService :
+  IDisposable,
+  ITagInventoryService,
+  IRecipient<ReaderDisconnecting>
 {
   private readonly ILogger<OBIDTagInventoryService> logger;
   private readonly IMessenger messenger;
@@ -34,17 +39,18 @@ public class OBIDTagInventoryService : ITagInventoryService
     this.messenger = messenger;
     this.reader = reader;
 
-    this.messenger.Register<ReaderDisconnecting>(this, async (r, m) =>
-    {
-      m.RunningTask = RunningTask;
-      await StopAsync("Reader Disconnected");
-    });
+    this.messenger.RegisterAll(this);
   }
-  //public event InventoryStoppedHandler InventoryStopped;
 
   public bool IsRunning => !IsNotRunning;
 
   public bool IsNotRunning => RunningTask is null || RunningTask.IsCompleted;
+
+  public async void Receive(ReaderDisconnecting message)
+  {
+    message.AddTask(this.RunningTask);
+    await StopAsync("Reader Disconnecting");
+  }
 
   public async Task StartAsync(Channel<TagEntry> channel, string message = "", CancellationToken cancellationToken = default)
   {
@@ -87,7 +93,7 @@ public class OBIDTagInventoryService : ITagInventoryService
     this.messenger.Send(new InventoryStoppedMessage(message));
   }
 
-  public async Task RunAsync(ChannelWriter<TagEntry> channelWriter, CancellationToken cancellationToken = default)
+  private async Task RunAsync(ChannelWriter<TagEntry> channelWriter, CancellationToken cancellationToken = default)
   {
     reader.hm().setUsageMode(Hm.UsageMode.UseQueue);
 
@@ -100,10 +106,7 @@ public class OBIDTagInventoryService : ITagInventoryService
       // Code 0x84 Means RF-Warning, the reader has noise issues, perhaps I should stop the loop,
       // or display the error and continue anyway.
       if (state != ErrorCode.Ok)
-      {
-        logger.LogError("{status} - {message}", state, reader.lastErrorStatusText());
         continue;
-      }
 
       var count = 0;
 
@@ -140,5 +143,10 @@ public class OBIDTagInventoryService : ITagInventoryService
       thEPC.epcToHexString(),
       thEPC.tidToHexString(),
       rssiValues.AsReadOnly());
+  }
+
+  public void Dispose()
+  {
+    this.messenger.UnregisterAll(this);
   }
 }

@@ -17,7 +17,7 @@
         <StackPanel DockPanel.Dock="Left" Width="150">
             <WrapPanel>
                 <TextBlock Text="Connection Status: "/>
-                <TextBlock Text="{Binding IsReaderConnected}"/>
+                <TextBlock Text="{Binding IsReaderConnected, Mode=OneWay}"/>
             </WrapPanel>
             <Button Margin="8" Height="32" Content="Start" Command="{Binding StartInventoryAsync}"/>
             <Button Margin="8" Height="32" Content="Stop" Command="{Binding StopInventoryAsync}"/>

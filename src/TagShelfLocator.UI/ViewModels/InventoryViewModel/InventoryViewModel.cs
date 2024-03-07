@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
+using FEDM;
+
 using Microsoft.Extensions.Logging;
 
 using TagShelfLocator.UI.Core.Model;
@@ -16,13 +18,16 @@ using TagShelfLocator.UI.Helpers;
 using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.Services.InventoryService.Events;
+using TagShelfLocator.UI.Services.ReaderConnectionListenerService;
+using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
 
 public class InventoryViewModel : ViewModel,
   IInventoryViewModel,
   IDisposable,
   IRecipient<InventoryStartedMessage>,
   IRecipient<InventoryStoppedMessage>,
-  IRecipient<ReaderConnectionStateChangedMessage>
+  IRecipient<ReaderConnected>,
+  IRecipient<ReaderDisconnected>
 {
   private readonly ILogger<InventoryViewModel> logger;
   private readonly IMessenger messenger;
@@ -47,12 +52,16 @@ public class InventoryViewModel : ViewModel,
     this.ConfigureCommands();
   }
 
-  public async void Receive(ReaderConnectionStateChangedMessage message)
+  public async void Receive(ReaderConnected message)
   {
-    this.IsReaderConnected = message.NewConnectionStatus;
+    this.IsReaderConnected = true;
+  }
 
-    if (!message.NewConnectionStatus)
-      await StopInventoryExecuteAsync();
+  public async void Receive(ReaderDisconnected message)
+  {
+    this.IsReaderConnected = false;
+    await CancelInventoryChannelReaderAsync();
+    this.OnInventoryTaskCanExecuteChanged();
   }
 
   public void Receive(InventoryStartedMessage message)
@@ -62,7 +71,7 @@ public class InventoryViewModel : ViewModel,
 
   public async void Receive(InventoryStoppedMessage message)
   {
-    await this.CancelInventoryReadingAsync();
+    await this.CancelInventoryChannelReaderAsync();
     this.OnInventoryTaskCanExecuteChanged();
   }
 
@@ -112,6 +121,7 @@ public class InventoryViewModel : ViewModel,
   private async Task StartInventoryExecuteAsync()
   {
     var channel = Channel.CreateUnbounded<TagEntry>();
+
     await this.tagInventoryService.StartAsync(channel);
 
     this.readTaskTokenSource = new();
@@ -121,17 +131,14 @@ public class InventoryViewModel : ViewModel,
 
   private async Task StopInventoryExecuteAsync()
   {
-    if (this.readTask.IsCompleted)
-      return;
-
-    var tagServiceStopTask = this.tagInventoryService.StopAsync("Stop Requested by User");
-    var channelReaderCancelationTask = CancelInventoryReadingAsync();
-
-    await Task.WhenAll(tagServiceStopTask, channelReaderCancelationTask);
+    await this.tagInventoryService.StopAsync("Stop Requested by User");
   }
 
-  private async Task CancelInventoryReadingAsync()
+  private async Task CancelInventoryChannelReaderAsync()
   {
+    if (this.readTask is null)
+      return;
+
     this.readTaskTokenSource.Cancel();
     await this.readTask;
   }
@@ -180,5 +187,6 @@ public class InventoryViewModel : ViewModel,
 
   public void Dispose()
   {
+    this.messenger.UnregisterAll(this);
   }
 }
