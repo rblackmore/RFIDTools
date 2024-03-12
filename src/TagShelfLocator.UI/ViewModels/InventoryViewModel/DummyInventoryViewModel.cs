@@ -21,6 +21,7 @@ public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
         });
     }
   }
+  public IRelayCommand ClearTagList => throw new System.NotImplementedException();
 
   public IAsyncRelayCommand StartInventoryAsync => throw new System.NotImplementedException();
 
@@ -33,4 +34,5 @@ public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
   public bool IsReaderDisconnected => false;
 
   public IRelayCommand AddTagEntry => throw new System.NotImplementedException();
+
 }

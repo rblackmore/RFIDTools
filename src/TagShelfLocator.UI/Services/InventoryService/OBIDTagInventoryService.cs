@@ -120,6 +120,8 @@ public class OBIDTagInventoryService :
         tagItem.clear();
       }
     }
+
+    channelWriter.Complete();
   }
 
   public void Dispose()

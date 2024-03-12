@@ -11,9 +11,8 @@ public interface IInventoryViewModel : IViewModel
   public bool IsReaderConnected { get; }
   public bool IsReaderDisconnected { get; }
   public ObservableCollection<TagEntry> TagList { get; }
+  public IRelayCommand ClearTagList { get; }
   public IAsyncRelayCommand StartInventoryAsync { get; }
   public IAsyncRelayCommand StopInventoryAsync { get; }
   public IRelayCommand OpenSettings { get; }
-
-  public IRelayCommand AddTagEntry { get; }
 }
