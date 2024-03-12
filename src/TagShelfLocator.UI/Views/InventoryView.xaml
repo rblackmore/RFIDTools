@@ -15,10 +15,11 @@
     </UserControl.DataContext>
     <DockPanel Margin="8">
         <StackPanel DockPanel.Dock="Left" Width="128" Orientation="Vertical">
-            <WrapPanel>
+            <WrapPanel Margin="0, 8">
                 <TextBlock Text="Connection Status: "/>
                 <TextBlock Text="{Binding IsReaderConnected, Mode=OneWay}"/>
             </WrapPanel>
+            <CheckBox HorizontalAlignment="Center" Margin="8" IsChecked="{Binding ClearOnStart, Mode=TwoWay}" Content="Clear On Start"/>
             <Button Margin="8" Padding="4" Content="Start" Command="{Binding StartInventoryAsync}"/>
             <Button Margin="8" Padding="4" Content="Stop" Command="{Binding StopInventoryAsync}"/>
             <Button Margin="8" Padding="4" Content="Clear" Command="{Binding ClearTagList}"/>

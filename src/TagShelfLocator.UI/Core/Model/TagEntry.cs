@@ -1,5 +1,6 @@
 ﻿namespace TagShelfLocator.UI.Core.Model;
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,7 +26,7 @@ public class TagEntry
     return $"No. {Number} - Type: {TagType} - Serial: {SerialNumber} - RSSI: {RSSI}";
   }
 
-  public static Task<TagEntry> FromOBIDTagItem(int count, TagItem tagItem)
+  public static TagEntry FromOBIDTagItem(int count, TagItem tagItem)
   {
     var tagType = TransponderType.toString(tagItem.trType());
     var serialNumber = tagItem.iddToHexString();
@@ -41,6 +42,6 @@ public class TagEntry
       }
     }
 
-    return Task.FromResult(new TagEntry(count, tagType, serialNumber, rssi));
+    return new TagEntry(count, tagType, serialNumber, rssi);
   }
 }

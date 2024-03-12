@@ -17,6 +17,7 @@ using TagShelfLocator.UI.Helpers;
 using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.Services.InventoryService.Events;
+using TagShelfLocator.UI.Services.InventoryService.Messages;
 using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
 
 public class InventoryViewModel : ViewModel,
@@ -25,7 +26,8 @@ public class InventoryViewModel : ViewModel,
   IRecipient<InventoryStartedMessage>,
   IRecipient<InventoryStoppedMessage>,
   IRecipient<ReaderConnected>,
-  IRecipient<ReaderDisconnected>
+  IRecipient<ReaderDisconnected>,
+  IRecipient<InventoryTagItemsDetectedMessage>
 {
   private readonly ILogger<InventoryViewModel> logger;
   private readonly IMessenger messenger;
@@ -34,6 +36,7 @@ public class InventoryViewModel : ViewModel,
   private readonly INavigationService navigationService;
 
   private bool isReaderConnected;
+  private bool clearOnStart;
 
   private Task readTask = Task.CompletedTask;
 
@@ -43,6 +46,7 @@ public class InventoryViewModel : ViewModel,
     ITagInventoryService tagInventoryService,
     INavigationService navigationService)
   {
+    this.ClearOnStart = true;
     this.logger = logger;
     this.messenger = messenger;
     this.tagInventoryService = tagInventoryService;
@@ -83,6 +87,11 @@ public class InventoryViewModel : ViewModel,
   public bool IsReaderDisconnected => !IsReaderConnected;
 
   public ObservableCollection<TagEntry> TagList { get; }
+  public bool ClearOnStart
+  {
+    get => this.clearOnStart;
+    set => SetProperty(ref this.clearOnStart, value);
+  }
   public IRelayCommand ClearTagList { get; private set; }
   public IAsyncRelayCommand StartInventoryAsync { get; private set; }
   public IAsyncRelayCommand StopInventoryAsync { get; private set; }
@@ -101,11 +110,10 @@ public class InventoryViewModel : ViewModel,
 
   private async Task StartInventoryExecuteAsync()
   {
-    var channel = Channel.CreateUnbounded<TagEntry>();
+    if (this.ClearOnStart)
+      this.ClearTagListExecute();
 
-    await this.tagInventoryService.StartAsync(channel);
-
-    this.readTask = ReadChannelAsync(channel.Reader);
+    await this.tagInventoryService.StartAsync();
   }
 
   private async Task StopInventoryExecuteAsync()
@@ -154,21 +162,17 @@ public class InventoryViewModel : ViewModel,
     this.OnInventoryTaskCanExecuteChanged();
   }
 
-  // I should perhaps extract this out to a new class.
-  // Or Change the InventoryService to Send a Message instead of using the Channel.
-  private async Task ReadChannelAsync(
-  ChannelReader<TagEntry> channelReader,
-  CancellationToken cancellationToken = default)
+  public void Receive(InventoryTagItemsDetectedMessage message)
   {
-    while (await channelReader.WaitToReadAsync())
+    DispatcherHelper.CheckBeginInvokeOnUI(() =>
     {
-      var tag = await channelReader.ReadAsync();
+      this.ClearTagListExecute();
 
-      DispatcherHelper.CheckBeginInvokeOnUI(() =>
+      foreach (var tag in message.Tags)
       {
         this.TagList.Add(tag);
-      });
-    }
+      }
+    });
   }
 
   private void OnInventoryTaskCanExecuteChanged()

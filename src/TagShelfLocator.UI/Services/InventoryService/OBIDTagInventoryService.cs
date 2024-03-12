@@ -1,8 +1,8 @@
 ﻿namespace TagShelfLocator.UI.Services.InventoryService;
 
 using System;
+using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.Messaging;
@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 
 using TagShelfLocator.UI.Core.Model;
 using TagShelfLocator.UI.Services.InventoryService.Events;
+using TagShelfLocator.UI.Services.InventoryService.Messages;
 using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
 
 // TODO: Eventually intend to extract an Interface from this,
@@ -49,7 +50,7 @@ public class OBIDTagInventoryService :
     await StopAsync("Reader Disconnecting");
   }
 
-  public async Task StartAsync(Channel<TagEntry> channel, string message = "", CancellationToken cancellationToken = default)
+  public async Task StartAsync(string message = "", CancellationToken cancellationToken = default)
   {
     if (IsRunning)
       return;
@@ -58,29 +59,38 @@ public class OBIDTagInventoryService :
 
     RunningTask = Task.Run(async () =>
     {
-      await RunAsync(channel.Writer, cancellationTokenSource.Token);
+      await RunAsync(cancellationTokenSource.Token);
     })
-    .ContinueWith(async tsk =>
-    {
-
-      if (!tsk.IsFaulted)
-        return;
-
-      await StopAsync("Exception in Running Task");
-
-      if (tsk.Exception is null)
-        return;
-
-      foreach (var ex in tsk.Exception.Flatten().InnerExceptions)
-      {
-        logger.LogError("Exception in Running Task {exType} {exMessage}", ex.GetType(), ex.Message);
-      }
-    });
+    .ContinueWith(HandleRunningTaskCompletion);
 
     this.messenger.Send(new InventoryStartedMessage(message));
   }
 
-  public async Task StopAsync(string message, CancellationToken cancellationToken = default)
+  /// <summary>
+  /// Handles the completion of the Running Task, and any exceptions that may have occurred.
+  /// This is required as Running Task is infinite, and never awaited until StopAsync is called.
+  /// If an exception happens, it won't be caught until it's awaited.
+  /// This Method will handle the exception, and also gracefully stop the RUnning Task.
+  /// </summary>
+  /// <param name="tsk">The Completed Task.</param>
+  /// <returns>An Awaitable Task.</returns>
+  private async Task HandleRunningTaskCompletion(Task tsk)
+  {
+    if (!tsk.IsFaulted)
+      return;
+
+    await StopAsync("Exception in Running Task");
+
+    if (tsk.Exception is null)
+      return;
+
+    foreach (var ex in tsk.Exception.Flatten().InnerExceptions)
+    {
+      logger.LogError("Exception in Running Task {exType} {exMessage}", ex.GetType(), ex.Message);
+    }
+  }
+
+  public async Task StopAsync(string message = "", CancellationToken cancellationToken = default)
   {
     if (IsNotRunning)
       return;
@@ -90,9 +100,10 @@ public class OBIDTagInventoryService :
     this.messenger.Send(new InventoryStoppedMessage(message));
   }
 
-  private async Task RunAsync(ChannelWriter<TagEntry> channelWriter, CancellationToken cancellationToken = default)
+  private async Task RunAsync(CancellationToken cancellationToken = default)
   {
     reader.hm().setUsageMode(Hm.UsageMode.UseQueue);
+
 
     while (!cancellationToken.IsCancellationRequested)
     {
@@ -107,21 +118,26 @@ public class OBIDTagInventoryService :
 
       var count = 0;
 
+      var tagList = new List<TagEntry>();
+
       while (reader.hm().queueItemCount() > 0)
       {
+        count++;
+
         var tagItem = reader.hm().popItem();
 
         if (tagItem is null)
           continue;
 
-        var tagEntry = await TagEntry.FromOBIDTagItem(count, tagItem);
-        await channelWriter.WriteAsync(tagEntry);
+        var entry = TagEntry.FromOBIDTagItem(count, tagItem);
+
+        tagList.Add(entry);
 
         tagItem.clear();
       }
-    }
 
-    channelWriter.Complete();
+      this.messenger.Send(new InventoryTagItemsDetectedMessage(tagList));
+    }
   }
 
   public void Dispose()
