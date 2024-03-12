@@ -2,14 +2,13 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-
-using FEDM;
 
 using Microsoft.Extensions.Logging;
 
@@ -18,7 +17,7 @@ using TagShelfLocator.UI.Helpers;
 using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.Services.InventoryService.Events;
-using TagShelfLocator.UI.Services.ReaderConnectionListenerService;
+using TagShelfLocator.UI.Services.InventoryService.Messages;
 using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
 
 public class InventoryViewModel : ViewModel,
@@ -27,13 +26,19 @@ public class InventoryViewModel : ViewModel,
   IRecipient<InventoryStartedMessage>,
   IRecipient<InventoryStoppedMessage>,
   IRecipient<ReaderConnected>,
-  IRecipient<ReaderDisconnected>
+  IRecipient<ReaderDisconnected>,
+  IRecipient<InventoryTagItemsDetectedMessage>
 {
   private readonly ILogger<InventoryViewModel> logger;
   private readonly IMessenger messenger;
+
   private readonly ITagInventoryService tagInventoryService;
   private readonly INavigationService navigationService;
+
   private bool isReaderConnected;
+  private bool clearOnStart;
+
+  private Task readTask = Task.CompletedTask;
 
   public InventoryViewModel(
     ILogger<InventoryViewModel> logger,
@@ -41,6 +46,7 @@ public class InventoryViewModel : ViewModel,
     ITagInventoryService tagInventoryService,
     INavigationService navigationService)
   {
+    this.ClearOnStart = true;
     this.logger = logger;
     this.messenger = messenger;
     this.tagInventoryService = tagInventoryService;
@@ -49,7 +55,88 @@ public class InventoryViewModel : ViewModel,
 
     this.messenger.RegisterAll(this);
 
-    this.ConfigureCommands();
+    this.ClearTagList =
+      new RelayCommand(ClearTagListExecute);
+
+    this.OpenSettings =
+      new RelayCommand(NavigateToSettingsMenuExecute);
+
+    this.StartInventoryAsync =
+      new AsyncRelayCommand(
+        StartInventoryExecuteAsync,
+        StartInventoryCanExecute);
+
+    this.StopInventoryAsync =
+      new AsyncRelayCommand(
+        StopInventoryExecuteAsync,
+        StopInventoryCanExecute);
+  }
+
+  public bool IsReaderConnected
+  {
+    get => this.isReaderConnected;
+    private set
+    {
+      OnPropertyChanging(nameof(IsReaderDisconnected));
+      SetProperty(ref this.isReaderConnected, value);
+      OnPropertyChanged(nameof(IsReaderDisconnected));
+      OnInventoryTaskCanExecuteChanged();
+    }
+  }
+
+  public bool IsReaderDisconnected => !IsReaderConnected;
+
+  public ObservableCollection<TagEntry> TagList { get; }
+  public bool ClearOnStart
+  {
+    get => this.clearOnStart;
+    set => SetProperty(ref this.clearOnStart, value);
+  }
+  public IRelayCommand ClearTagList { get; private set; }
+  public IAsyncRelayCommand StartInventoryAsync { get; private set; }
+  public IAsyncRelayCommand StopInventoryAsync { get; private set; }
+  public IRelayCommand OpenSettings { get; private set; }
+
+  private void ClearTagListExecute()
+  {
+    if (this.TagList.Any())
+      this.TagList.Clear();
+  }
+
+  private void NavigateToSettingsMenuExecute()
+  {
+    this.navigationService.NavigateTo<ISettingsViewModel>();
+  }
+
+  private async Task StartInventoryExecuteAsync()
+  {
+    if (this.ClearOnStart)
+      this.ClearTagListExecute();
+
+    await this.tagInventoryService.StartAsync();
+  }
+
+  private async Task StopInventoryExecuteAsync()
+  {
+    await this.tagInventoryService.StopAsync("Stop Requested by User");
+  }
+
+  private async Task CancelInventoryChannelReaderAsync()
+  {
+    if (this.readTask is null)
+      return;
+
+    await this.readTask;
+  }
+
+  private bool StartInventoryCanExecute()
+  {
+    return this.IsReaderConnected && this.tagInventoryService.IsNotRunning;
+  }
+
+  private bool StopInventoryCanExecute()
+  {
+    return this.tagInventoryService.IsRunning;
   }
 
   public async void Receive(ReaderConnected message)
@@ -75,108 +162,20 @@ public class InventoryViewModel : ViewModel,
     this.OnInventoryTaskCanExecuteChanged();
   }
 
-  private void ConfigureCommands()
+  public void Receive(InventoryTagItemsDetectedMessage message)
   {
-    this.StartInventoryAsync =
-      new AsyncRelayCommand(StartInventoryExecuteAsync, StartInventoryCanExecute);
-
-    this.StopInventoryAsync =
-      new AsyncRelayCommand(StopInventoryExecuteAsync, StopInventoryCanExecute);
-
-    this.OpenSettings = new RelayCommand(() =>
+    DispatcherHelper.CheckBeginInvokeOnUI(() =>
     {
-      this.navigationService.NavigateTo<ISettingsViewModel>();
-    });
+      this.ClearTagListExecute();
 
-    this.AddTagEntry = new RelayCommand(() =>
-    {
-      this.TagList.Add(new TagEntry(1, "DESFire", "1234", -17));
-    });
-  }
-
-  public bool IsReaderConnected
-  {
-    get => this.isReaderConnected;
-    private set
-    {
-      OnPropertyChanging(nameof(IsReaderDisconnected));
-      SetProperty(ref this.isReaderConnected, value);
-      OnPropertyChanged(nameof(IsReaderDisconnected));
-      OnInventoryTaskCanExecuteChanged();
-    }
-  }
-
-  public bool IsReaderDisconnected => !IsReaderConnected;
-
-  public ObservableCollection<TagEntry> TagList { get; }
-  public IAsyncRelayCommand StartInventoryAsync { get; private set; }
-  public IAsyncRelayCommand StopInventoryAsync { get; private set; }
-  public IRelayCommand OpenSettings { get; private set; }
-  public IRelayCommand AddTagEntry { get; private set; }
-
-  private CancellationTokenSource readTaskTokenSource = new();
-
-  private Task readTask = Task.CompletedTask;
-
-  private async Task StartInventoryExecuteAsync()
-  {
-    var channel = Channel.CreateUnbounded<TagEntry>();
-
-    await this.tagInventoryService.StartAsync(channel);
-
-    this.readTaskTokenSource = new();
-
-    this.readTask = ReadChannelAsync(channel.Reader, readTaskTokenSource.Token);
-  }
-
-  private async Task StopInventoryExecuteAsync()
-  {
-    await this.tagInventoryService.StopAsync("Stop Requested by User");
-  }
-
-  private async Task CancelInventoryChannelReaderAsync()
-  {
-    if (this.readTask is null)
-      return;
-
-    this.readTaskTokenSource.Cancel();
-    await this.readTask;
-  }
-
-  private bool StartInventoryCanExecute()
-  {
-    return this.IsReaderConnected && this.tagInventoryService.IsNotRunning;
-  }
-
-  private bool StopInventoryCanExecute()
-  {
-    return this.tagInventoryService.IsRunning;
-  }
-
-  private async Task ReadChannelAsync(
-    ChannelReader<TagEntry> channelReader,
-    CancellationToken cancellationToken = default)
-  {
-    try
-    {
-
-      while (await channelReader.WaitToReadAsync(cancellationToken))
+      foreach (var tag in message.Tags)
       {
-        var tag = await channelReader.ReadAsync(cancellationToken);
-
-        DispatcherHelper.CheckBeginInvokeOnUI(() =>
-        {
-          this.TagList.Add(tag);
-        });
+        this.TagList.Add(tag);
       }
-    }
-    catch (OperationCanceledException ex)
-    {
-      this.logger.LogInformation("Read Channel Task Cancelled: {message}", ex.Message);
-    }
+    });
   }
 
-  public void OnInventoryTaskCanExecuteChanged()
+  private void OnInventoryTaskCanExecuteChanged()
   {
     DispatcherHelper.CheckBeginInvokeOnUI(() =>
     {

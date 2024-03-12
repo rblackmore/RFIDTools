@@ -12,6 +12,6 @@ public interface ITagInventoryService
   bool IsRunning { get; }
 
   // TODO: I likely should change this to have the channel writer, not the whole channel.
-  Task StartAsync(Channel<TagEntry> channel, string message = "", CancellationToken cancellationToken = default);
-  Task StopAsync(string message, CancellationToken cancellationToken = default);
+  Task StartAsync(string message = "", CancellationToken cancellationToken = default);
+  Task StopAsync(string message = "", CancellationToken cancellationToken = default);
 }
