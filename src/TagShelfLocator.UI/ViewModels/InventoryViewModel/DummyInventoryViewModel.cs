@@ -14,10 +14,25 @@ public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
     {
       return new ObservableCollection<TagEntry>(
         new[] {
-          new TagEntry(1, "EPC Class 1 Gen 2", "1234", -13),
-          new TagEntry(2, "ISO14443-A Mifare DESFire", "ABCD", -16),
-          new TagEntry(3, "EPC Class 1 Gen 2", "4321", -11),
-          new TagEntry(4, "EPC Class 1 Gen 2", "DEF1", -9),
+          new TagEntry{
+            Number = 1,
+            TagType =  "EPC Class 1 Gen 2",
+            SerialNumber =  "1234" },
+
+          new TagEntry{
+            Number = 2,
+            TagType =  "ISO14443-A Mifare DESFire",
+            SerialNumber =  "ABCD" },
+
+          new TagEntry{
+            Number = 3,
+            TagType =  "EPC Class 1 Gen 2",
+            SerialNumber =  "4321" },
+
+          new TagEntry{
+            Number = 4,
+            TagType =  "EPC Class 1 Gen 2",
+            SerialNumber =  "DEF1" },
         });
     }
   }
