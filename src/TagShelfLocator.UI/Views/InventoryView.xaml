@@ -9,6 +9,7 @@
              d:DesignHeight="600" d:DesignWidth="1080">
     <UserControl.Resources>
         <viewModels:InventoryViewModelLocator x:Key="viewModelLocator"/>
+
     </UserControl.Resources>
     <UserControl.DataContext>
         <Binding Source="{StaticResource viewModelLocator}" Path="ViewModel"/>
@@ -26,15 +27,29 @@
         </StackPanel>
         <Grid Margin="8,0">
             <ListView ItemsSource="{Binding TagList}">
-                <!--<ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <WrapPanel>
-                                <TextBlock Text="{Binding }"/>
-                            </WrapPanel>
-                        </StackPanel>
+                <ListView.Resources>
+                    <DataTemplate x:Key="cellSerialNumberTemplate">
+                        <DockPanel>
+                            <TextBlock FontWeight="Bold" HorizontalAlignment="Center">
+                                <TextBlock.Text>
+                                    <Binding Path="SerialNumber"/>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DockPanel>
                     </DataTemplate>
-                </ListView.ItemTemplate>-->
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView AllowsColumnReorder="True" ColumnHeaderToolTip="Tag Information">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Number}" Header="No." Width="Auto"/>
+                        <GridViewColumn 
+                            Header="Serial"
+                            Width="Auto"
+                            CellTemplate="{StaticResource cellSerialNumberTemplate}">
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding TagType}" Header="TrType" Width="Auto"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding ManufacturerName}" Header="Manufacturer" Width="Auto"/>
+                    </GridView>
+                </ListView.View>
             </ListView>
         </Grid>
     </DockPanel>
