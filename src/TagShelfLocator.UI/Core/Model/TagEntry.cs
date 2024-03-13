@@ -1,47 +1,126 @@
 ﻿namespace TagShelfLocator.UI.Core.Model;
 
 using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 using FEDM;
 
 public class TagEntry
 {
-  public int Number { get; set; }
-  public string TagType { get; set; }
-  public string SerialNumber { get; set; }
-  public int RSSI { get; set; }
+  // General
+  public int Number { get; init; } = 0;
 
-  public TagEntry(int number, string tagType, string serialNumber, int rssi)
-  {
-    this.Number = number;
-    this.TagType = tagType;
-    this.SerialNumber = serialNumber;
-    this.RSSI = rssi;
-  }
+  // General Tag Details
+  public string TagType { get; init; } = String.Empty;
+  public string SerialNumber { get; init; } = String.Empty;
+  public int RSSI { get; init; } = 0;
+
+  // ISO14443-A and ISO15693
+  public bool IsISO14443A { get; init; } = false;
+  public bool IsISO15693 { get; init; } = false;
+  public string ManufacturerName { get; init; } = String.Empty;
+  public int Afi { get; init; } = 0;
+
+  // EPC Class 1 Gen 2
+  public bool IsEPCC1G2 { get; init; } = false;
+  public uint ProtocolControl { get; init; } = 0;
+  public string EPCHex { get; init; } = String.Empty;
+  public string TIDHex { get; init; } = String.Empty;
+
+  public int TagModelNumber { get; init; } = 0;
+  public string TagDesignerName { get; init; } = String.Empty;
+
 
   public override string ToString()
   {
-    return $"No. {Number} - Type: {TagType} - Serial: {SerialNumber} - RSSI: {RSSI}";
+    return $"{Number}: '{SerialNumber}' - ⭐ {ManufacturerName}";
+  }
+  
+  public static TagEntry FromOBIDTagItem(int count, TagItem tagItem)
+  {
+
+    if (tagItem.isIso14443A())
+      return CreateISO1443A_TagEntry(count, tagItem);
+
+    if (tagItem.isIso15693())
+      return CreateISO15693_TagEntry(count, tagItem);
+
+    if (tagItem.isEpcClass1Gen2())
+      return CreateEPCClass1Gen2_TagEntry(count, tagItem);
+
+    // If tag type is not discovered above, we get a default entry.
+    var tagType = TransponderType.toString(tagItem.trType());
+    var serialNumber = tagItem.iddToHexString();
+
+    return new TagEntry
+    {
+      Number = count,
+      TagType = tagType,
+      SerialNumber = serialNumber,
+    };
   }
 
-  public static TagEntry FromOBIDTagItem(int count, TagItem tagItem)
+  private static TagEntry CreateISO1443A_TagEntry(int count, TagItem tagItem)
   {
     var tagType = TransponderType.toString(tagItem.trType());
     var serialNumber = tagItem.iddToHexString();
-    var rssi = 0;
+    var manufacturerName = tagItem.manufacturerName();
 
-    var rssiValues = tagItem.rssiValues();
-
-    if (rssiValues is not null)
+    return new TagEntry
     {
-      foreach (var value in rssiValues)
-      {
-        rssi = value.rssi();
-      }
+      IsISO14443A = true,
+      Number = count,
+      TagType = tagType,
+      SerialNumber = serialNumber,
+      ManufacturerName = manufacturerName,
+    };
+  }
+
+  private static TagEntry CreateISO15693_TagEntry(int count, TagItem tagItem)
+  {
+    var tagType = TransponderType.toString(tagItem.trType());
+    var serialNumber = tagItem.iddToHexString();
+    var afi = tagItem.iso15693_Afi();
+
+    return new TagEntry
+    {
+      IsISO15693 = true,
+      Number = count,
+      TagType = tagType,
+      SerialNumber = serialNumber,
+      Afi = afi,
+    };
+  }
+
+  private static TagEntry CreateEPCClass1Gen2_TagEntry(int count, TagItem tagItem)
+  {
+    var tagType = TransponderType.toString(tagItem.trType());
+    var serialNumber = tagItem.iddToHexString();
+
+    ushort pc = tagItem.epcC1G2_Pc();
+    string epchex = tagItem.epcC1G2_EpcToHexString();
+
+    string tidhex = String.Empty;
+    int tagModelNumber = 0;
+    string tagDesignerName = String.Empty;
+
+    if (tagItem.epcC1G2_IsEpcAndTid())
+    {
+      tidhex = tagItem.epcC1G2_TidToHexString();
+      tagModelNumber = tagItem.epcC1G2_TagModelNumber();
+      tagDesignerName = tagItem.epcC1G2_MaskDesignerName();
     }
 
-    return new TagEntry(count, tagType, serialNumber, rssi);
+    return new TagEntry
+    {
+      IsEPCC1G2 = true,
+      Number = count,
+      TagType = tagType,
+      SerialNumber = serialNumber,
+      ProtocolControl = pc,
+      EPCHex = epchex,
+      TIDHex = tidhex,
+      TagModelNumber = tagModelNumber,
+      TagDesignerName = tagDesignerName,
+    };
   }
 }
