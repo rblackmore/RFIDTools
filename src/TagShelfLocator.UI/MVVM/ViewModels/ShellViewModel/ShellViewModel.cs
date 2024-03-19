@@ -1,4 +1,4 @@
-﻿namespace TagShelfLocator.UI.ViewModels;
+﻿namespace TagShelfLocator.UI.MVVM.ViewModels;
 
 using CommunityToolkit.Mvvm.Input;
 
@@ -10,15 +10,15 @@ public class ShellViewModel : ViewModel, IShellViewModel
 
   public ShellViewModel(INavigationService navigationService)
   {
-    this.NavigationService = navigationService;
-    this.NavigateToInventory = new RelayCommand(NavigateToInventoryExecute);
-    this.NavigateToSettings = new RelayCommand(NavigateToSettingsExecute);
+    NavigationService = navigationService;
+    NavigateToInventory = new RelayCommand(NavigateToInventoryExecute);
+    NavigateToSettings = new RelayCommand(NavigateToSettingsExecute);
   }
 
   public INavigationService? NavigationService
   {
     get { return navigationService; }
-    private set { SetProperty(ref this.navigationService, value); }
+    private set { SetProperty(ref navigationService, value); }
   }
 
   public IRelayCommand NavigateToInventory { get; set; }
@@ -27,11 +27,11 @@ public class ShellViewModel : ViewModel, IShellViewModel
 
   private void NavigateToInventoryExecute()
   {
-    this.NavigationService?.NavigateTo<IInventoryViewModel>();
+    NavigationService?.NavigateTo<IInventoryViewModel>();
   }
 
   private void NavigateToSettingsExecute()
   {
-    this.NavigationService?.NavigateTo<ISettingsViewModel>();
+    NavigationService?.NavigateTo<ISettingsViewModel>();
   }
 }

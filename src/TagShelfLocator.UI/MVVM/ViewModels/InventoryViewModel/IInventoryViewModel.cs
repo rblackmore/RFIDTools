@@ -1,10 +1,10 @@
-﻿namespace TagShelfLocator.UI.ViewModels;
+﻿namespace TagShelfLocator.UI.MVVM.ViewModels;
 
 using System.Collections.ObjectModel;
 
 using CommunityToolkit.Mvvm.Input;
 
-using TagShelfLocator.UI.Core.Model;
+using TagShelfLocator.UI.MVVM.Modal;
 
 public interface IInventoryViewModel : IViewModel
 {

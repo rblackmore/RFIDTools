@@ -1,9 +1,8 @@
-﻿namespace TagShelfLocator.UI.ViewModels;
-
+﻿namespace TagShelfLocator.UI.MVVM.ViewModels;
 public class InventoryViewModelLocator : ViewModelLocatorBase<IInventoryViewModel>
 {
   public InventoryViewModelLocator()
   {
-    this.DesignTimeViewModel = new DummyInventoryViewModel();
+    DesignTimeViewModel = new DummyInventoryViewModel();
   }
 }

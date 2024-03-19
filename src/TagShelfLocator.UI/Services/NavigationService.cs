@@ -4,7 +4,7 @@ using System;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-using TagShelfLocator.UI.ViewModels;
+using TagShelfLocator.UI.MVVM.ViewModels;
 
 public interface INavigationService
 {

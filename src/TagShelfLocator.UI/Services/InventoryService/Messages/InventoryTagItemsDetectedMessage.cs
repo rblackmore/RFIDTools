@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-using TagShelfLocator.UI.Core.Model;
+using TagShelfLocator.UI.MVVM.Modal;
 
 public class InventoryTagItemsDetectedMessage
 {

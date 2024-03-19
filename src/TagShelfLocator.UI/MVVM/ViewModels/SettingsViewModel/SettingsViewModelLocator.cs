@@ -1,9 +1,8 @@
-﻿namespace TagShelfLocator.UI.ViewModels;
-
+﻿namespace TagShelfLocator.UI.MVVM.ViewModels;
 public class SettingsViewModelLocator : ViewModelLocatorBase<ISettingsViewModel>
 {
   public SettingsViewModelLocator()
   {
-    this.DesignTimeViewModel = new DummySettingsViewModel();
+    DesignTimeViewModel = new DummySettingsViewModel();
   }
 }

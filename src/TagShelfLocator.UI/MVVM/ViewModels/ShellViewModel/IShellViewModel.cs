@@ -1,4 +1,4 @@
-﻿namespace TagShelfLocator.UI.ViewModels;
+﻿namespace TagShelfLocator.UI.MVVM.ViewModels;
 
 using CommunityToolkit.Mvvm.Input;
 

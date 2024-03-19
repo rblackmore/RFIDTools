@@ -14,10 +14,10 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 
 using TagShelfLocator.UI.Helpers;
+using TagShelfLocator.UI.MVVM.ViewModels;
 using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.Services.ReaderConnectionListenerService;
-using TagShelfLocator.UI.ViewModels;
 
 using DateTime = System.DateTime;
 

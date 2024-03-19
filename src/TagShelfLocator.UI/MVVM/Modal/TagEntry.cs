@@ -1,4 +1,4 @@
-﻿namespace TagShelfLocator.UI.Core.Model;
+﻿namespace TagShelfLocator.UI.MVVM.Modal;
 
 using System;
 
@@ -10,31 +10,31 @@ public class TagEntry
   public int Number { get; init; } = 0;
 
   // General Tag Details
-  public string TagType { get; init; } = String.Empty;
-  public string SerialNumber { get; init; } = String.Empty;
+  public string TagType { get; init; } = string.Empty;
+  public string SerialNumber { get; init; } = string.Empty;
   public int RSSI { get; init; } = 0;
 
   // ISO14443-A and ISO15693
   public bool IsISO14443A { get; init; } = false;
   public bool IsISO15693 { get; init; } = false;
-  public string ManufacturerName { get; init; } = String.Empty;
+  public string ManufacturerName { get; init; } = string.Empty;
   public int Afi { get; init; } = 0;
 
   // EPC Class 1 Gen 2
   public bool IsEPCC1G2 { get; init; } = false;
   public uint ProtocolControl { get; init; } = 0;
-  public string EPCHex { get; init; } = String.Empty;
-  public string TIDHex { get; init; } = String.Empty;
+  public string EPCHex { get; init; } = string.Empty;
+  public string TIDHex { get; init; } = string.Empty;
 
   public int TagModelNumber { get; init; } = 0;
-  public string TagDesignerName { get; init; } = String.Empty;
+  public string TagDesignerName { get; init; } = string.Empty;
 
 
   public override string ToString()
   {
     return $"{Number}: '{SerialNumber}' - ⭐ {ManufacturerName}";
   }
-  
+
   public static TagEntry FromOBIDTagItem(int count, TagItem tagItem)
   {
 
@@ -96,12 +96,12 @@ public class TagEntry
     var tagType = TransponderType.toString(tagItem.trType());
     var serialNumber = tagItem.iddToHexString();
 
-    ushort pc = tagItem.epcC1G2_Pc();
-    string epchex = tagItem.epcC1G2_EpcToHexString();
+    var pc = tagItem.epcC1G2_Pc();
+    var epchex = tagItem.epcC1G2_EpcToHexString();
 
-    string tidhex = String.Empty;
-    int tagModelNumber = 0;
-    string tagDesignerName = String.Empty;
+    var tidhex = string.Empty;
+    var tagModelNumber = 0;
+    var tagDesignerName = string.Empty;
 
     if (tagItem.epcC1G2_IsEpcAndTid())
     {

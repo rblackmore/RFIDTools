@@ -1,4 +1,4 @@
-﻿namespace TagShelfLocator.UI.Views;
+﻿namespace TagShelfLocator.UI.MVVM.Views;
 
 using System.Windows.Controls;
 

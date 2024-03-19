@@ -11,7 +11,7 @@ using FEDM;
 
 using Microsoft.Extensions.Logging;
 
-using TagShelfLocator.UI.Core.Model;
+using TagShelfLocator.UI.MVVM.Modal;
 using TagShelfLocator.UI.Services.InventoryService.Events;
 using TagShelfLocator.UI.Services.InventoryService.Messages;
 using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;

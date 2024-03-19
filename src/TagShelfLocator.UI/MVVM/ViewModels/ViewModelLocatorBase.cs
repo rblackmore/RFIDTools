@@ -1,4 +1,4 @@
-﻿namespace TagShelfLocator.UI.ViewModels;
+﻿namespace TagShelfLocator.UI.MVVM.ViewModels;
 
 using System.ComponentModel;
 using System.Windows;
@@ -31,20 +31,20 @@ public abstract class ViewModelLocatorBase<TViewModel>
   {
     get
     {
-      if (this.runtimeViewModel is null)
-        this.RuntimeViewModel = App.Current.Services.GetRequiredService<TViewModel>();
+      if (runtimeViewModel is null)
+        RuntimeViewModel = App.Current.Services.GetRequiredService<TViewModel>();
 
-      return this.runtimeViewModel!;
+      return runtimeViewModel!;
     }
-    set => SetProperty(ref this.runtimeViewModel, value);
+    set => SetProperty(ref runtimeViewModel, value);
   }
 
   public TViewModel DesignTimeViewModel
   {
-    get => this.designTimeViewModel!;
-    set => SetProperty(ref this.designTimeViewModel, value);
+    get => designTimeViewModel!;
+    set => SetProperty(ref designTimeViewModel, value);
   }
 
   public TViewModel ViewModel =>
-    IsInDesignMode ? this.DesignTimeViewModel : this.RuntimeViewModel;
+    IsInDesignMode ? DesignTimeViewModel : RuntimeViewModel;
 }

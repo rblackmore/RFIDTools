@@ -1,10 +1,8 @@
-﻿namespace TagShelfLocator.UI.ViewModels;
+﻿namespace TagShelfLocator.UI.MVVM.ViewModels;
 
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.Input;
@@ -12,8 +10,8 @@ using CommunityToolkit.Mvvm.Messaging;
 
 using Microsoft.Extensions.Logging;
 
-using TagShelfLocator.UI.Core.Model;
 using TagShelfLocator.UI.Helpers;
+using TagShelfLocator.UI.MVVM.Modal;
 using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.Services.InventoryService.Events;
@@ -46,27 +44,27 @@ public class InventoryViewModel : ViewModel,
     ITagInventoryService tagInventoryService,
     INavigationService navigationService)
   {
-    this.ClearOnStart = true;
+    ClearOnStart = true;
     this.logger = logger;
     this.messenger = messenger;
     this.tagInventoryService = tagInventoryService;
     this.navigationService = navigationService;
-    this.TagList = new();
+    TagList = new();
 
     this.messenger.RegisterAll(this);
 
-    this.ClearTagList =
+    ClearTagList =
       new RelayCommand(ClearTagListExecute);
 
-    this.OpenSettings =
+    OpenSettings =
       new RelayCommand(NavigateToSettingsMenuExecute);
 
-    this.StartInventoryAsync =
+    StartInventoryAsync =
       new AsyncRelayCommand(
         StartInventoryExecuteAsync,
         StartInventoryCanExecute);
 
-    this.StopInventoryAsync =
+    StopInventoryAsync =
       new AsyncRelayCommand(
         StopInventoryExecuteAsync,
         StopInventoryCanExecute);
@@ -74,11 +72,11 @@ public class InventoryViewModel : ViewModel,
 
   public bool IsReaderConnected
   {
-    get => this.isReaderConnected;
+    get => isReaderConnected;
     private set
     {
       OnPropertyChanging(nameof(IsReaderDisconnected));
-      SetProperty(ref this.isReaderConnected, value);
+      SetProperty(ref isReaderConnected, value);
       OnPropertyChanged(nameof(IsReaderDisconnected));
       OnInventoryTaskCanExecuteChanged();
     }
@@ -89,8 +87,8 @@ public class InventoryViewModel : ViewModel,
   public ObservableCollection<TagEntry> TagList { get; }
   public bool ClearOnStart
   {
-    get => this.clearOnStart;
-    set => SetProperty(ref this.clearOnStart, value);
+    get => clearOnStart;
+    set => SetProperty(ref clearOnStart, value);
   }
   public IRelayCommand ClearTagList { get; private set; }
   public IAsyncRelayCommand StartInventoryAsync { get; private set; }
@@ -99,78 +97,78 @@ public class InventoryViewModel : ViewModel,
 
   private void ClearTagListExecute()
   {
-    if (this.TagList.Any())
-      this.TagList.Clear();
+    if (TagList.Any())
+      TagList.Clear();
   }
 
   private void NavigateToSettingsMenuExecute()
   {
-    this.navigationService.NavigateTo<ISettingsViewModel>();
+    navigationService.NavigateTo<ISettingsViewModel>();
   }
 
   private async Task StartInventoryExecuteAsync()
   {
-    if (this.ClearOnStart)
-      this.ClearTagListExecute();
+    if (ClearOnStart)
+      ClearTagListExecute();
 
-    await this.tagInventoryService.StartAsync();
+    await tagInventoryService.StartAsync();
   }
 
   private async Task StopInventoryExecuteAsync()
   {
-    await this.tagInventoryService.StopAsync("Stop Requested by User");
+    await tagInventoryService.StopAsync("Stop Requested by User");
   }
 
   private async Task CancelInventoryChannelReaderAsync()
   {
-    if (this.readTask is null)
+    if (readTask is null)
       return;
 
-    await this.readTask;
+    await readTask;
   }
 
   private bool StartInventoryCanExecute()
   {
-    return this.IsReaderConnected && this.tagInventoryService.IsNotRunning;
+    return IsReaderConnected && tagInventoryService.IsNotRunning;
   }
 
   private bool StopInventoryCanExecute()
   {
-    return this.tagInventoryService.IsRunning;
+    return tagInventoryService.IsRunning;
   }
 
   public async void Receive(ReaderConnected message)
   {
-    this.IsReaderConnected = true;
+    IsReaderConnected = true;
   }
 
   public async void Receive(ReaderDisconnected message)
   {
-    this.IsReaderConnected = false;
+    IsReaderConnected = false;
     await CancelInventoryChannelReaderAsync();
-    this.OnInventoryTaskCanExecuteChanged();
+    OnInventoryTaskCanExecuteChanged();
   }
 
   public void Receive(InventoryStartedMessage message)
   {
-    this.OnInventoryTaskCanExecuteChanged();
+    OnInventoryTaskCanExecuteChanged();
   }
 
   public async void Receive(InventoryStoppedMessage message)
   {
-    await this.CancelInventoryChannelReaderAsync();
-    this.OnInventoryTaskCanExecuteChanged();
+    await CancelInventoryChannelReaderAsync();
+    OnInventoryTaskCanExecuteChanged();
   }
 
   public void Receive(InventoryTagItemsDetectedMessage message)
   {
     DispatcherHelper.CheckBeginInvokeOnUI(() =>
     {
-      this.ClearTagListExecute();
+      ClearTagListExecute();
 
       foreach (var tag in message.Tags)
       {
-        this.TagList.Add(tag);
+        TagList.Add(tag);
       }
     });
   }
@@ -179,13 +177,13 @@ public class InventoryViewModel : ViewModel,
   {
     DispatcherHelper.CheckBeginInvokeOnUI(() =>
     {
-      this.StartInventoryAsync.NotifyCanExecuteChanged();
-      this.StopInventoryAsync.NotifyCanExecuteChanged();
+      StartInventoryAsync.NotifyCanExecuteChanged();
+      StopInventoryAsync.NotifyCanExecuteChanged();
     });
   }
 
   public void Dispose()
   {
-    this.messenger.UnregisterAll(this);
+    messenger.UnregisterAll(this);
   }
 }
