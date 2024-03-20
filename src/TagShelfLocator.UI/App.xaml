@@ -6,7 +6,7 @@
              xmlns:views="clr-namespace:TagShelfLocator.UI.MVVM.Views">
     <Application.Resources>
         <ResourceDictionary>
-            
+
             <!-- View Model View Mapper -->
             <DataTemplate DataType="{x:Type TypeName=viewModels:InventoryViewModel}">
                 <views:InventoryView/>
@@ -14,13 +14,17 @@
             <DataTemplate DataType="{x:Type TypeName=viewModels:SettingsViewModel}">
                 <views:SettingsView/>
             </DataTemplate>
-            
+
+            <viewModels:ShellViewModelLocator x:Key="shellVML"/>
+            <viewModels:InventoryViewModelLocator x:Key="inventoryVML"/>
+            <viewModels:SettingsViewModelLocator x:Key="settingsVML"/>
+
             <!-- Themes -->
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./Themes/Colours.xaml"/>
-                <ResourceDictionary Source="./Themes/GeneralStyles.xaml"/>
+                <ResourceDictionary Source="./Themes/Buttons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

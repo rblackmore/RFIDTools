@@ -7,12 +7,8 @@
              mc:Ignorable="d"
              d:Background="White"
              d:DesignHeight="600" d:DesignWidth="1080">
-    <UserControl.Resources>
-        <viewModels:InventoryViewModelLocator x:Key="viewModelLocator"/>
-
-    </UserControl.Resources>
     <UserControl.DataContext>
-        <Binding Source="{StaticResource viewModelLocator}" Path="ViewModel"/>
+        <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
     </UserControl.DataContext>
     <DockPanel Margin="8">
         <StackPanel DockPanel.Dock="Left" Width="128" Orientation="Vertical">

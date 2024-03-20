@@ -3,7 +3,7 @@
 
     <Color x:Key="BlackColor">#333333</Color>
     <Color x:Key="PrimaryColor">#387ec0</Color>
-    <Color x:Key="NeutralColor">#f8f9f9</Color>
+    <Color x:Key="NeutralColor">#f3f3f3</Color>
     <Color x:Key="ErrorColor">#FF0000</Color>
 
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource BlackColor}"/>

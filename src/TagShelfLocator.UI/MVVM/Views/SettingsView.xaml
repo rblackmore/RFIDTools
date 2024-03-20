@@ -7,11 +7,8 @@
              xmlns:viewModels="clr-namespace:TagShelfLocator.UI.MVVM.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <viewModels:SettingsViewModelLocator x:Key="viewModelLocator"/>
-    </UserControl.Resources>
     <UserControl.DataContext>
-        <Binding Source="{StaticResource viewModelLocator}" Path="ViewModel"/>
+        <Binding Source="{StaticResource settingsVML}" Path="ViewModel"/>
     </UserControl.DataContext>
     <Grid>
         <TextBlock Text="{Binding Title}" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center">Settings View</TextBlock>

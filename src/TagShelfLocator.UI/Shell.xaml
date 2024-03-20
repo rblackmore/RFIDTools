@@ -8,26 +8,17 @@
         xmlns:viewModels="clr-namespace:TagShelfLocator.UI.MVVM.ViewModels"
         mc:Ignorable="d"
         Height="750" Width="1200"
-        Background="{StaticResource NeutralBrush}"
+        Background="White"
         WindowStyle="None"
         AllowsTransparency="True"
         ResizeMode="CanResizeWithGrip">
-
-    <Window.Resources>
-        <viewModels:ShellViewModelLocator x:Key="vml"/>
-        <Style TargetType="{x:Type Window}">
-            <Setter Property="FontFamily" Value="Open Sans"/>
-            <Setter Property="FontWeight" Value="Medium"/>
-        </Style>
-    </Window.Resources>
-
     <Window.DataContext>
-        <Binding Source="{StaticResource vml}" Path="ViewModel"/>
+        <Binding Source="{StaticResource shellVML}" Path="ViewModel"/>
     </Window.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="32"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -36,6 +27,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
+        <!-- Window Title Bar -->
         <Border 
             BorderThickness="0,0,0,2" 
                 BorderBrush="{StaticResource BlackBrush}" 
@@ -53,26 +45,48 @@
                     HorizontalAlignment="Center"
                     Foreground="{StaticResource BlackBrush}"/>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Padding="0,0,0,5" Content="_" Style="{StaticResource WindowButton}"/>
-                    <Button Content="☐" Style="{StaticResource WindowButton}"/>
-                    <Button Content="✕" Style="{StaticResource WindowButton}"/>
+                <StackPanel Orientation="Horizontal" Margin="0"
+                            VerticalAlignment="Stretch" 
+                            HorizontalAlignment="Right" >
+                    <Button Margin="0" Click="WindowMinimize_Click" Padding="0,0,0,5" Content="_" Style="{StaticResource WindowButton}"/>
+                    <Button Margin="0" Click="WindowMaximize_Click" Content="☐" Style="{StaticResource WindowButton}"/>
+                    <Button Margin="0" Click="WindowClose_Click" Content="✕" Style="{StaticResource WindowButton}"/>
                 </StackPanel>
 
             </Grid>
         </Border>
 
-    </Grid>
+        <!-- Side Bar -->
+        <Grid Grid.Row="1" Background="{StaticResource NeutralBrush}">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24"/>
+                <RowDefinition/>
+                <RowDefinition Height="56"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="1" 
+                        Orientation="Vertical"
+                        Background="Transparent">
+
+                <Button 
+                    Content="Settings"  
+                    Style="{StaticResource NavigationButton}"
+                    Command="{Binding NavigateToSettings}"/>
+                <Button 
+                    Content="Inventory" 
+                    Style="{StaticResource NavigationButton}"
+                    Command="{Binding NavigateToInventory}"/>
+            </StackPanel>
 
 
-    <!--<DockPanel>
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Button Margin="8" Height="75" Width="75" Content="Inventory" Command="{Binding NavigateToInventory}"/>
-            <Button Margin="8" Height="75" Width="75" Content="Settings" Command="{Binding NavigateToSettings}"/>
-        </StackPanel>
-        <Grid>
+        </Grid>
+
+        <!-- Main Content -->
+        <Grid Grid.Column="1" Grid.Row="1">
             <ContentControl Content="{Binding Path=NavigationService.CurrentViewModel}"/>
         </Grid>
-    </DockPanel>-->
+    </Grid>
+
 </Window>
         
