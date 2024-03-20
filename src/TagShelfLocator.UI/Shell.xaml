@@ -78,7 +78,7 @@
                     Style="{StaticResource NavigationButton}"
                     Command="{Binding NavigateToInventory}"/>
             </StackPanel>
-
+            <views:ReaderConnectionStatusView Grid.Row="2"/>
 
         </Grid>
 

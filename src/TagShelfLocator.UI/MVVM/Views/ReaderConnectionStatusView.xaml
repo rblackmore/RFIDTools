@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="TagShelfLocator.UI.MVVM.Views.ReaderConnectionStatusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TagShelfLocator.UI.MVVM.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="56" d:DesignWidth="200"
+             d:Background="{StaticResource NeutralBrush}"
+             Background="Transparent">
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource readerStatusVML}" Path="ViewModel"/>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="56"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Ellipse Stroke="{StaticResource BlackBrush}" 
+                 StrokeThickness="2" 
+                 Width="48" Height="48">
+            <Ellipse.Style>
+                <Style TargetType="Ellipse">
+                    
+                    <Setter Property="Fill" Value="Red"/>
+                    
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsConnected}" Value="True">
+                            <Setter Property="Fill" Value="Green"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Ellipse.Style>
+        </Ellipse>
+
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" >
+            <TextBlock Text="{Binding ReaderName}" FontSize="10"
+                       Foreground="{StaticResource BlackBrush}"/>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Device ID: " FontSize="10" 
+                           Foreground="Gray"/>
+                <TextBlock Text="{Binding DeviceID}" FontSize="10"
+                           Foreground="Gray" />
+
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -18,6 +18,7 @@
             <viewModels:ShellViewModelLocator x:Key="shellVML"/>
             <viewModels:InventoryViewModelLocator x:Key="inventoryVML"/>
             <viewModels:SettingsViewModelLocator x:Key="settingsVML"/>
+            <viewModels:ReaderConnectionStatusViewModelLocator x:Key="readerStatusVML"/>
 
             <!-- Themes -->
             <ResourceDictionary.MergedDictionaries>
