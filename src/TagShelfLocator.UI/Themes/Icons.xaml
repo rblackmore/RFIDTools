@@ -8,6 +8,7 @@
 
     <!-- Play Icon -->
     <Style x:Key="PlayIcon" TargetType="Path">
+        <Setter Property="Stretch" Value="Uniform"/>
         <Setter Property="Data" Value="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
     </Style>
 
@@ -20,7 +21,7 @@
     </Style>
 
     <Style x:Key="DashIcon" TargetType="Path">
-            <Setter Property="Data" Value="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"/>
+        <Setter Property="Data" Value="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8"/>
     </Style>
-    
+
 </ResourceDictionary>

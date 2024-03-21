@@ -11,6 +11,7 @@
             <DataTemplate DataType="{x:Type TypeName=viewModels:InventoryViewModel}">
                 <views:InventoryView/>
             </DataTemplate>
+            
             <DataTemplate DataType="{x:Type TypeName=viewModels:SettingsViewModel}">
                 <views:SettingsView/>
             </DataTemplate>

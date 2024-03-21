@@ -96,8 +96,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SettingsIcon}"
                                       Fill="{StaticResource WhiteBrush}"
-                                      Height="20" Width="20"
-                                      Stretch="Uniform"/>
+                                      Height="20" Width="20"/>
                                 <TextBlock VerticalAlignment="Center"  Text="Settings" Margin="8,0,0,0"/>
                             </StackPanel>
                         </Button>
@@ -107,8 +106,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource PlayIcon}"
                                       Fill="{StaticResource WhiteBrush}"
-                                      Height="20" Width="20"
-                                      Stretch="Uniform" />
+                                      Height="20" Width="20"/>
                                 <TextBlock VerticalAlignment="Center" Text="Inventory" Margin="8,0,0,0"/>
                             </StackPanel>
                         </Button>

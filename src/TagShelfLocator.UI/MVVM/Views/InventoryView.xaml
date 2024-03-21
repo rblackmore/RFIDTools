@@ -5,12 +5,44 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:TagShelfLocator.UI.MVVM.ViewModels"
              mc:Ignorable="d"
-             d:Background="White"
+             Background="Transparent"
+             d:Background="{StaticResource BlackDarkBrush}"
              d:DesignHeight="600" d:DesignWidth="1080">
     <UserControl.DataContext>
         <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
     </UserControl.DataContext>
-    <DockPanel Margin="8">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border>
+            <Grid HorizontalAlignment="Stretch">
+                <!-- Control Buttons -->
+                <StackPanel Margin="12,0,0,0" 
+                            HorizontalAlignment="Left" 
+                            Orientation="Horizontal">
+                    <Button Style="{StaticResource ControlButton}" Command="{Binding StartInventoryAsync}">
+                        <Path Height="12" 
+                                  HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                  Style="{StaticResource PlayIcon}" 
+                                  Fill="{StaticResource WhiteDimmedBrush}"/>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1">
+            <ListView Background="{StaticResource WhiteBrush}" ItemsSource="{Binding TagList}"/>
+
+
+        </Border>
+    </Grid>
+
+    <!--<DockPanel Margin="8">
         <StackPanel DockPanel.Dock="Left" Width="128" Orientation="Vertical">
             <WrapPanel Margin="0, 8">
                 <TextBlock Text="Connection Status: "/>
@@ -48,5 +80,5 @@
                 </ListView.View>
             </ListView>
         </Grid>
-    </DockPanel>
+    </DockPanel>-->
 </UserControl>
