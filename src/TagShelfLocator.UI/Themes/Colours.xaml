@@ -3,12 +3,20 @@
 
     <Color x:Key="BlackColor">#333333</Color>
     <Color x:Key="PrimaryColor">#387ec0</Color>
-    <Color x:Key="NeutralColor">#f3f3f3</Color>
+    <Color x:Key="WhiteColor">#ece7e7</Color>
     <Color x:Key="ErrorColor">#FF0000</Color>
+
+    <Color x:Key="BlackDark">#1e1e1e</Color>
+    <Color x:Key="BlackLight">#1f1f1f</Color>
+    <Color x:Key="DarkGray">#3d3d3d</Color>
+    
 
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource BlackColor}"/>
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
-    <SolidColorBrush x:Key="NeutralBrush" Color="{StaticResource NeutralColor}"/>
+    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource WhiteColor}"/>
     <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}"/>
+    <SolidColorBrush x:Key="BlackDarkBrush" Color="{StaticResource BlackDark}"/>
+    <SolidColorBrush x:Key="BlackLightBrush" Color="{StaticResource BlackLight}"/>
+    <SolidColorBrush x:Key="DarkGrayBrush" Color="{StaticResource DarkGray}"/>
 
 </ResourceDictionary>

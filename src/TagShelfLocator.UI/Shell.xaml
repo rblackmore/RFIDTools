@@ -8,85 +8,100 @@
         xmlns:viewModels="clr-namespace:TagShelfLocator.UI.MVVM.ViewModels"
         mc:Ignorable="d"
         Height="750" Width="1200"
-        Background="White"
+        Background="{StaticResource BlackDarkBrush}"
         WindowStyle="None"
         AllowsTransparency="True"
         ResizeMode="CanResizeWithGrip">
     <Window.DataContext>
         <Binding Source="{StaticResource shellVML}" Path="ViewModel"/>
     </Window.DataContext>
+    <Border BorderBrush="{StaticResource DarkGrayBrush}" BorderThickness="2">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="32"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <!-- Window Title Bar -->
-        <Border 
-            BorderThickness="0,0,0,2" 
-                BorderBrush="{StaticResource BlackBrush}" 
-                MouseDown="Border_MouseDown" 
-                Grid.ColumnSpan="2" 
-                Background="{StaticResource PrimaryBrush}">
-
-            <Grid HorizontalAlignment="Stretch">
-                <Label
-                    Content="Tag Shelf Locator"
-                    FontSize="15"
-                    FontFamily="Work Sans"
-                    FontWeight="SemiBold"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Foreground="{StaticResource BlackBrush}"/>
-
-                <StackPanel Orientation="Horizontal" Margin="0"
-                            VerticalAlignment="Stretch" 
-                            HorizontalAlignment="Right" >
-                    <Button Margin="0" Click="WindowMinimize_Click" Padding="0,0,0,5" Content="_" Style="{StaticResource WindowButton}"/>
-                    <Button Margin="0" Click="WindowMaximize_Click" Content="☐" Style="{StaticResource WindowButton}"/>
-                    <Button Margin="0" Click="WindowClose_Click" Content="✕" Style="{StaticResource WindowButton}"/>
-                </StackPanel>
-
-            </Grid>
-        </Border>
-
-        <!-- Side Bar -->
-        <Grid Grid.Row="1" Background="{StaticResource NeutralBrush}">
-
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="24"/>
+                <RowDefinition Height="32"/>
                 <RowDefinition/>
-                <RowDefinition Height="56"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="1" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Window Title Bar -->
+            <Border 
+            BorderThickness="0,0,0,2" 
+                Background="{StaticResource BlackDarkBrush}"
+                MouseDown="Border_MouseDown" 
+                Grid.ColumnSpan="2" 
+                BorderBrush="{StaticResource DarkGrayBrush}">
+
+                <Grid HorizontalAlignment="Stretch">
+                    <Label Margin="8,0,0,0"
+                           Content="Tag Shelf Locator"
+                           FontSize="15"
+                           FontFamily="Work Sans"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Foreground="{StaticResource WhiteBrush}"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="0"
+                            VerticalAlignment="Stretch" 
+                            HorizontalAlignment="Right">
+                        <Button Margin="0" Click="WindowMinimize_Click" Padding="0,0,0,5" Content="_" Style="{StaticResource WindowButton}"/>
+                        <Button Margin="0" Click="WindowMaximize_Click" Content="☐" Style="{StaticResource WindowButton}"/>
+                        <Button Margin="0" Click="WindowClose_Click" Content="✕" Style="{StaticResource WindowButton}"/>
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+
+            <!-- Side Bar -->
+            <Border Grid.Row="1"
+                    Background="{StaticResource BlackLightBrush}"
+                    BorderThickness="0,0,2,0"
+                    BorderBrush="{StaticResource DarkGrayBrush}">
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="56"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" 
                         Orientation="Vertical"
-                        Background="Transparent">
+                        Background="Transparent"
+                        Margin="0,4,0,0">
 
-                <Button 
-                    Content="Settings"  
-                    Style="{StaticResource NavigationButton}"
-                    Command="{Binding NavigateToSettings}"/>
-                <Button 
-                    Content="Inventory" 
-                    Style="{StaticResource NavigationButton}"
-                    Command="{Binding NavigateToInventory}"/>
-            </StackPanel>
-            <views:ReaderConnectionStatusView Grid.Row="2"/>
+                        <Button Style="{StaticResource NavigationButton}"
+                                Command="{Binding NavigateToSettings}">
+                            <Grid HorizontalAlignment="Stretch">
+                                <TextBlock Text="Settings"/>
+                            </Grid>
+                        </Button>
 
+                        <Button Content="Inventory" 
+                        Style="{StaticResource NavigationButton}"
+                        Command="{Binding NavigateToInventory}"/>
+
+                    </StackPanel>
+                    <Border Grid.Row="1"
+                            BorderThickness="0,2,0,0"
+                            BorderBrush="{StaticResource DarkGrayBrush}">
+
+                        <views:ReaderConnectionStatusView/>
+                    </Border>
+
+                </Grid>
+            </Border>
+
+            <!-- Main Content -->
+            <Grid Grid.Column="1" Grid.Row="1">
+                <!--<ContentControl Content="{Binding Path=NavigationService.CurrentViewModel}"/>-->
+            </Grid>
         </Grid>
 
-        <!-- Main Content -->
-        <Grid Grid.Column="1" Grid.Row="1">
-            <ContentControl Content="{Binding Path=NavigationService.CurrentViewModel}"/>
-        </Grid>
-    </Grid>
-
+    </Border>
 </Window>
         

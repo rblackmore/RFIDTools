@@ -3,29 +3,36 @@
 
     <!-- Navigation Button -->
     <Style TargetType="Button" x:Key="NavigationButton">
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Background" Value="{StaticResource NeutralBrush}"/>
-        <Setter Property="Margin" Value="4"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
+        <Setter Property="FontFamily" Value="Open Sans"/>
+        <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate>
-                    <Border Margin="1" Padding="8" CornerRadius="4" Background="White">
-
-                        <ContentPresenter 
-                            HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" 
-                            Content="{Binding Content, 
-                                RelativeSource={RelativeSource TemplatedParent}, 
-                                Mode=TwoWay}"/>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{StaticResource BlackBrush}"
+                            BorderThickness="0"
+                            Height="48"
+                            Margin="8,2"
+                            Padding="8"
+                            CornerRadius="4">
+                        <ContentPresenter VerticalAlignment="Center" 
+                                          Content="{TemplateBinding Content}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#ececec"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
-    
+
     <!-- Window Buttons -->
     <Style TargetType="Button" x:Key="WindowButton">
-        <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Width" Value="32"/>
@@ -45,7 +52,7 @@
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource NeutralBrush}"/>
+                <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
