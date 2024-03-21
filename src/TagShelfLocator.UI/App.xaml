@@ -22,7 +22,8 @@
 
             <!-- Themes -->
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="./Themes/Colours.xaml"/>
+                <ResourceDictionary Source="./Themes/TestColours.xaml"/>
+                <ResourceDictionary Source="./Themes/ColourBrushes.xaml"/>
                 <ResourceDictionary Source="./Themes/Buttons.xaml"/>
                 <ResourceDictionary Source="./Themes/Icons.xaml"/>
             </ResourceDictionary.MergedDictionaries>

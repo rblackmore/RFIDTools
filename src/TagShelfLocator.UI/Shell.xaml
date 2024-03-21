@@ -54,9 +54,18 @@
                     <StackPanel Orientation="Horizontal" Margin="0"
                             VerticalAlignment="Stretch" 
                             HorizontalAlignment="Right">
-                        <Button Margin="0" Click="WindowMinimize_Click" Padding="0,0,0,5" Content="_" Style="{StaticResource WindowButton}"/>
-                        <Button Margin="0" Click="WindowMaximize_Click" Content="☐" Style="{StaticResource WindowButton}"/>
-                        <Button Margin="0" Click="WindowClose_Click" Content="✕" Style="{StaticResource CloseWindowButton}"/>
+                        <Button Margin="0" Click="WindowMinimize_Click" Padding="0,0,0,5" Style="{StaticResource WindowButton}">
+                            <Path Style="{StaticResource DashIcon}" Fill="{StaticResource WhiteBrush}"/>
+                        </Button>
+
+                        <Button Margin="0" Click="WindowMaximize_Click" Style="{StaticResource WindowButton}">
+                            <Path Style="{StaticResource SquareIcon}" Fill="{StaticResource WhiteBrush}"/>
+                        </Button>
+
+                        <Button Margin="0" Click="WindowClose_Click" Style="{StaticResource CloseWindowButton}">
+                            <Path Style="{StaticResource CrossIcon}" Fill="{StaticResource WhiteBrush}"/>
+                        </Button>
+
                     </StackPanel>
 
                 </Grid>
