@@ -8,18 +8,18 @@
         xmlns:viewModels="clr-namespace:TagShelfLocator.UI.MVVM.ViewModels"
         mc:Ignorable="d"
         Height="750" Width="1200"
-        Background="{StaticResource BlackDarkBrush}"
+        Background="Transparent"
         WindowStyle="None"
         AllowsTransparency="True"
         ResizeMode="CanResizeWithGrip">
     <Window.DataContext>
         <Binding Source="{StaticResource shellVML}" Path="ViewModel"/>
     </Window.DataContext>
-    <Border BorderBrush="{StaticResource DarkGrayBrush}" BorderThickness="2">
-
+    <Border CornerRadius="{StaticResource WindowCornerRadius}" BorderBrush="{StaticResource DarkGrayBrush}" BorderThickness="2"
+            Background="{StaticResource BlackDarkBrush}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="32"/>
+                <RowDefinition Height="44"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -32,9 +32,14 @@
             <Border 
             BorderThickness="0,0,0,2" 
                 Background="{StaticResource BlackDarkBrush}"
+                BorderBrush="{StaticResource DarkGrayBrush}"
                 MouseDown="Border_MouseDown" 
-                Grid.ColumnSpan="2" 
-                BorderBrush="{StaticResource DarkGrayBrush}">
+                Grid.ColumnSpan="2">
+
+                <Border.CornerRadius>
+                    <CornerRadius TopLeft="{StaticResource WinCornerRadiusValue}" 
+                                  TopRight="{StaticResource WinCornerRadiusValue}"/>
+                </Border.CornerRadius>
 
                 <Grid HorizontalAlignment="Stretch">
                     <Label Margin="8,0,0,0"
@@ -51,7 +56,7 @@
                             HorizontalAlignment="Right">
                         <Button Margin="0" Click="WindowMinimize_Click" Padding="0,0,0,5" Content="_" Style="{StaticResource WindowButton}"/>
                         <Button Margin="0" Click="WindowMaximize_Click" Content="☐" Style="{StaticResource WindowButton}"/>
-                        <Button Margin="0" Click="WindowClose_Click" Content="✕" Style="{StaticResource WindowButton}"/>
+                        <Button Margin="0" Click="WindowClose_Click" Content="✕" Style="{StaticResource CloseWindowButton}"/>
                     </StackPanel>
 
                 </Grid>
@@ -62,6 +67,9 @@
                     Background="{StaticResource BlackLightBrush}"
                     BorderThickness="0,0,2,0"
                     BorderBrush="{StaticResource DarkGrayBrush}">
+                <Border.CornerRadius>
+                    <CornerRadius BottomLeft="{StaticResource WinCornerRadiusValue}"/>
+                </Border.CornerRadius>
                 <Grid>
 
                     <Grid.RowDefinitions>
@@ -72,18 +80,29 @@
                     <StackPanel Grid.Row="0" 
                         Orientation="Vertical"
                         Background="Transparent"
-                        Margin="0,4,0,0">
+                        Margin="0">
 
                         <Button Style="{StaticResource NavigationButton}"
                                 Command="{Binding NavigateToSettings}">
-                            <Grid HorizontalAlignment="Stretch">
-                                <TextBlock Text="Settings"/>
-                            </Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <Path Style="{StaticResource SettingsIcon}"
+                                      Fill="{StaticResource WhiteBrush}"
+                                      Height="20" Width="20"
+                                      Stretch="Uniform"/>
+                                <TextBlock VerticalAlignment="Center"  Text="Settings" Margin="8,0,0,0"/>
+                            </StackPanel>
                         </Button>
 
-                        <Button Content="Inventory" 
-                        Style="{StaticResource NavigationButton}"
-                        Command="{Binding NavigateToInventory}"/>
+                        <Button Style="{StaticResource NavigationButton}"
+                                Command="{Binding NavigateToInventory}">
+                            <StackPanel Orientation="Horizontal">
+                                <Path Style="{StaticResource PlayIcon}"
+                                      Fill="{StaticResource WhiteBrush}"
+                                      Height="20" Width="20"
+                                      Stretch="Uniform" />
+                                <TextBlock VerticalAlignment="Center" Text="Inventory" Margin="8,0,0,0"/>
+                            </StackPanel>
+                        </Button>
 
                     </StackPanel>
                     <Border Grid.Row="1"
@@ -97,9 +116,12 @@
             </Border>
 
             <!-- Main Content -->
-            <Grid Grid.Column="1" Grid.Row="1">
-                <!--<ContentControl Content="{Binding Path=NavigationService.CurrentViewModel}"/>-->
-            </Grid>
+            <Border Grid.Column="1" Grid.Row="1">
+                <Border.CornerRadius>
+                    <CornerRadius BottomRight="{StaticResource WinCornerRadiusValue}"/>
+                </Border.CornerRadius>
+                <ContentControl Content="{Binding Path=NavigationService.CurrentViewModel}"/>
+            </Border>
         </Grid>
 
     </Border>

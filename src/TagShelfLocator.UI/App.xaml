@@ -24,6 +24,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./Themes/Colours.xaml"/>
                 <ResourceDictionary Source="./Themes/Buttons.xaml"/>
+                <ResourceDictionary Source="./Themes/Icons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

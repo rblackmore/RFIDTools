@@ -12,7 +12,7 @@
     </UserControl.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="56"/>
+            <ColumnDefinition Width="48"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -21,9 +21,9 @@
                  Width="40" Height="40">
             <Ellipse.Style>
                 <Style TargetType="Ellipse">
-                    
+
                     <Setter Property="Fill" Value="#Ef2323"/>
-                    
+
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=IsConnected}" Value="True">
                             <Setter Property="Fill" Value="#23EF23"/>
@@ -33,16 +33,32 @@
             </Ellipse.Style>
         </Ellipse>
 
-        <StackPanel Grid.Column="1" VerticalAlignment="Center" >
-            <TextBlock Text="{Binding ReaderName}" FontSize="10"
-                       Foreground="{StaticResource BlackBrush}"/>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock" x:Key="UIFont">
+                    <Setter Property="FontFamily" Value="Open Sans"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
+            </StackPanel.Resources>
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsConnected}" Value="False">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <TextBlock Text="{Binding ReaderName}"
+                       Style="{StaticResource UIFont}"
+                       Foreground="{StaticResource WhiteBrush}"/>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Device ID: " FontSize="10" 
-                           Foreground="Gray"/>
-                <TextBlock Text="{Binding DeviceID}" FontSize="10"
-                           Foreground="Gray" />
-
+                <TextBlock Text="{Binding DeviceID}" FontSize="12" FontWeight="Regular"
+                            Style="{StaticResource UIFont}"
+                           Foreground="{StaticResource WhiteDimmedBrush}" />
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -4,6 +4,7 @@
     <Color x:Key="BlackColor">#333333</Color>
     <Color x:Key="PrimaryColor">#387ec0</Color>
     <Color x:Key="WhiteColor">#ece7e7</Color>
+    <Color x:Key="WhiteDimmed">#aca7a7</Color>
     <Color x:Key="ErrorColor">#FF0000</Color>
 
     <Color x:Key="BlackDark">#1e1e1e</Color>
@@ -14,6 +15,7 @@
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource BlackColor}"/>
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource WhiteColor}"/>
+    <SolidColorBrush x:Key="WhiteDimmedBrush" Color="{StaticResource WhiteDimmed}"/>
     <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}"/>
     <SolidColorBrush x:Key="BlackDarkBrush" Color="{StaticResource BlackDark}"/>
     <SolidColorBrush x:Key="BlackLightBrush" Color="{StaticResource BlackLight}"/>
