@@ -6,7 +6,7 @@
         <Setter Property="FontFamily" Value="Open Sans"/>
     </Style>
 
-    <sys:Double x:Key="WinCornerRadiusValue">4</sys:Double>
+    <sys:Double x:Key="WinCornerRadiusValue">0</sys:Double>
 
     <CornerRadius x:Key="WindowCornerRadius" TopLeft="{StaticResource WinCornerRadiusValue}"
                   TopRight="{StaticResource WinCornerRadiusValue}"
@@ -29,7 +29,7 @@
                             Background="{TemplateBinding Background}" 
                             BorderThickness="1" 
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            CornerRadius="{StaticResource WindowCornerRadius}">
+                            CornerRadius="4">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" 
                                           Content="{TemplateBinding Content}"/>
                     </Border>

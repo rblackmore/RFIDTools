@@ -18,13 +18,17 @@ public partial class Shell : Window
 
   private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
   {
-    if (e.LeftButton == MouseButtonState.Pressed)
-    {
-      DragMove();
-    }
   }
 
-  private void WindowClose_Click(object sender, RoutedEventArgs e)
+  private void WindowMaximize_Click(object sender, RoutedEventArgs e)
+  {
+  }
+
+  private void WindowMinimize_Click(object sender, RoutedEventArgs e)
+  {
+  }
+
+  private void WindowTitleBar_CloseButton(object sender, System.EventArgs e)
   {
     var appLifetime = App.Current.Services.GetRequiredService<IHostApplicationLifetime>();
 
@@ -33,17 +37,27 @@ public partial class Shell : Window
     App.Current.Shutdown();
   }
 
-  private void WindowMaximize_Click(object sender, RoutedEventArgs e)
+  private void WindowTitleBar_MaximizeButton(object sender, System.EventArgs e)
   {
     if (this.WindowState is not WindowState.Maximized)
       this.WindowState = WindowState.Maximized;
     else
       this.WindowState = WindowState.Normal;
+
   }
 
-  private void WindowMinimize_Click(object sender, RoutedEventArgs e)
+  private void WindowTitleBar_MinimizeButton(object sender, System.EventArgs e)
   {
     this.WindowState = WindowState.Minimized;
+
   }
 
+  private void WindowTitleBar_WindowMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+  {
+
+    if (e.LeftButton == MouseButtonState.Pressed)
+    {
+      DragMove();
+    }
+  }
 }

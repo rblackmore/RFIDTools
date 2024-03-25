@@ -6,26 +6,25 @@
         xmlns:local="clr-namespace:TagShelfLocator.UI"
         xmlns:views="clr-namespace:TagShelfLocator.UI.MVVM.Views" 
         xmlns:viewModels="clr-namespace:TagShelfLocator.UI.MVVM.ViewModels"
+        xmlns:controls="clr-namespace:TagShelfLocator.UI.Controls"
         mc:Ignorable="d"
         Height="750" Width="1200"
         Background="Transparent"
-        WindowStyle="None"
-        AllowsTransparency="True"
-        ResizeMode="CanResizeWithGrip"
+        ResizeMode="CanResize"
         MinWidth="1000"
         MinHeight="700">
     <Window.DataContext>
         <Binding Source="{StaticResource shellVML}" Path="ViewModel"/>
     </Window.DataContext>
-    <Border CornerRadius="6" 
-            BorderThickness="2"
+    <Border CornerRadius="0" 
+            BorderThickness="0"
             BorderBrush="{StaticResource BorderBrush}" 
             Background="{StaticResource BackgroundBrush}">
         <Grid>
-            <Grid.RowDefinitions>
+            <!--<Grid.RowDefinitions>
                 <RowDefinition Height="48"/>
                 <RowDefinition/>
-            </Grid.RowDefinitions>
+            </Grid.RowDefinitions>-->
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
@@ -33,51 +32,16 @@
             </Grid.ColumnDefinitions>
 
             <!-- Window Title Bar -->
-            <Border BorderThickness="0,0,0,2" 
-                    BorderBrush="{StaticResource BorderBrush}"
-                    Background="{StaticResource BackgroundTitlebarBrush}"
-                    MouseDown="Border_MouseDown" 
-                    Grid.ColumnSpan="2">
-
-                <Border.CornerRadius>
-                    <CornerRadius TopLeft="{StaticResource WinCornerRadiusValue}" 
-                                  TopRight="{StaticResource WinCornerRadiusValue}"/>
-                </Border.CornerRadius>
-
-                <Grid HorizontalAlignment="Stretch">
-                    <Label Margin="8,0,0,0"
-                           Content="Tag Shelf Locator"
-                           FontSize="15"
-                           FontFamily="Work Sans"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Left"
-                           Foreground="{StaticResource ForegroundBrush}"/>
-
-                    <StackPanel Orientation="Horizontal" Margin="0"
-                            VerticalAlignment="Stretch" 
-                            HorizontalAlignment="Right">
-                        <Button Margin="0" Click="WindowMinimize_Click" Padding="0,0,0,5" Style="{StaticResource WindowButton}">
-                            <Path Style="{StaticResource DashIcon}" Fill="{StaticResource ForegroundBrush}"/>
-                        </Button>
-
-                        <Button Margin="0" Click="WindowMaximize_Click" Style="{StaticResource WindowButton}">
-                            <Path Style="{StaticResource SquareIcon}" Fill="{StaticResource ForegroundBrush}"/>
-                        </Button>
-
-                        <Button Margin="0" Click="WindowClose_Click" Style="{StaticResource CloseWindowButton}">
-                            <Path Style="{StaticResource CrossIcon}" Fill="{StaticResource ForegroundBrush}"/>
-                        </Button>
-
-                    </StackPanel>
-
-                </Grid>
-            </Border>
+            <!--<controls:WindowTitleBar Grid.ColumnSpan="2" 
+                                     CloseButton="WindowTitleBar_CloseButton"
+                                     MaximizeButton="WindowTitleBar_MaximizeButton"
+                                     MinimizeButton="WindowTitleBar_MinimizeButton"
+                                     WindowMouseDown="WindowTitleBar_WindowMouseDown"/>-->
 
             <!-- Side Bar -->
-            <Border Grid.Row="1"
+            <Border Grid.Row="0"
                     Background="{StaticResource BackgroundSidebarBrush}"
-                    BorderThickness="0,0,2,0"
+                    BorderThickness="0,0,1,0"
                     BorderBrush="{StaticResource BorderBrush}">
                 <Border.CornerRadius>
                     <CornerRadius BottomLeft="{StaticResource WinCornerRadiusValue}"/>
@@ -120,7 +84,7 @@
 
                     </StackPanel>
                     <Border Grid.Row="1"
-                            BorderThickness="0,2,0,0"
+                            BorderThickness="0,1,0,0"
                             BorderBrush="{StaticResource BorderBrush}">
 
                         <views:ReaderConnectionStatusView/>
@@ -130,7 +94,7 @@
             </Border>
 
             <!-- Main Content -->
-            <Border Grid.Column="1" Grid.Row="1">
+            <Border Grid.Column="1" Grid.Row="0">
                 <Border.CornerRadius>
                     <CornerRadius BottomRight="{StaticResource WinCornerRadiusValue}"/>
                 </Border.CornerRadius>

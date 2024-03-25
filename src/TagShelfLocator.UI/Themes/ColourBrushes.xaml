@@ -9,7 +9,7 @@
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary-900}"/>
     <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource Success-500}"/>
     <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource Error-400}"/>
-    <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource Gray-200}"/>
+    <SolidColorBrush x:Key="ButtonBackground" Color="Transparent"/>
     <SolidColorBrush x:Key="ButtonBackgroundHover" Color="{StaticResource Gray-300}"/>
     <SolidColorBrush x:Key="ButtonDisabledForeground" Color="{StaticResource Gray-100}"/>
     <SolidColorBrush x:Key="ButtonDisabledBackground" Color="{StaticResource Gray-200}"/>
