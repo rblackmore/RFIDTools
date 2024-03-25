@@ -6,7 +6,7 @@
              xmlns:viewModels="clr-namespace:TagShelfLocator.UI.MVVM.ViewModels"
              mc:Ignorable="d"
              Background="Transparent"
-             d:Background="{StaticResource BlackDarkBrush}"
+             d:Background="{StaticResource BackgroundBrush}"
              d:DesignHeight="600" d:DesignWidth="1080">
     <UserControl.DataContext>
         <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
@@ -16,46 +16,63 @@
             <RowDefinition Height="64"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border>
+        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
             <Grid HorizontalAlignment="Stretch">
                 <StackPanel Margin="12,0,0,0" Orientation="Horizontal" 
-                            HorizontalAlignment="Left">
-                    <Button Style="{StaticResource ControlButton}">
-                        <Path Height="16" 
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                  Style="{StaticResource GridIcon}" 
-                                  Fill="{StaticResource WhiteDimmedBrush}"/>
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                    <Button Style="{StaticResource BasicButton}"
+                            Margin="0,0,8,0">
+                        <Path Stretch="Uniform"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" 
+                              Style="{StaticResource GridIcon}" 
+                              Fill="{StaticResource ForegroundBrush}"/>
                     </Button>
-                    <Button Style="{StaticResource ControlButton}">
-                        <Path Height="16" 
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                  Style="{StaticResource ListIcon}" 
-                                  Fill="{StaticResource WhiteDimmedBrush}"/>
+
+                    <Button Style="{StaticResource BasicButton}" Width="32">
+                        <Path Stretch="Uniform"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" 
+                              Style="{StaticResource ListIcon}" 
+                              Fill="{StaticResource ForegroundBrush}"/>
                     </Button>
-                    <Button Height="40" Style="{StaticResource BasicButton}" Command="{Binding ClearTagList}">
-                        <TextBlock Text="Clear" Foreground="{StaticResource WhiteDimmedBrush}"/>
+
+                    <Button Style="{StaticResource BasicButton}" 
+                            Command="{Binding ClearTagList}"
+                            Margin="16,0,0,0">
+                        <TextBlock Text="Clear" Foreground="{StaticResource ForegroundBrush}"/>
                     </Button>
 
                 </StackPanel>
                 <!-- Control Buttons -->
                 <StackPanel Margin="0,0,12,0" 
-                            HorizontalAlignment="Right" 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
                             Orientation="Horizontal">
-                    <Button Style="{StaticResource ControlButton}" Command="{Binding StartInventoryAsync}">
-                        <Path Height="16" 
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                  Style="{StaticResource PlayIcon}" 
-                                  Fill="{StaticResource WhiteDimmedBrush}"/>
+                    <Button Style="{StaticResource BasicButton}" 
+                            Command="{Binding StartInventoryAsync}"
+                            Width="32"
+                            Height="32">
+
+                        <Path Stretch="Uniform"
+                              Height="16"
+                              Width="16"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" 
+                              Style="{StaticResource PlayIcon}" 
+                              Fill="{StaticResource ForegroundBrush}"/>
                     </Button>
-                    <Button d:IsEnabled="False" Style="{StaticResource ControlButton}" Command="{Binding StopInventoryAsync}">
-                        <Path Height="16" 
-                                  Stretch="Uniform"
-                                  HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                  Style="{StaticResource StopIcon}" 
-                                  Fill="{StaticResource WhiteDimmedBrush}"/>
+
+                    <Button Style="{StaticResource BasicButton}" 
+                            Command="{Binding StopInventoryAsync}"
+                            Width="32"
+                            Height="32"
+                            Margin="8,0,0,0">
+
+                        <Path Stretch="Uniform"
+                              Height="16"
+                              Width="16"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" 
+                              Style="{StaticResource StopIcon}" 
+                              Fill="{StaticResource ForegroundBrush}"/>
                     </Button>
                 </StackPanel>
 
@@ -64,50 +81,11 @@
             </Grid>
         </Border>
 
-        <Border Grid.Row="1">
-            <ListView Background="{StaticResource WhiteBrush}" ItemsSource="{Binding TagList}"/>
-
-
+        <Border Grid.Row="1" Padding="0" Margin="0">
+            <ListView Margin="0" Padding="0" ItemContainerStyle="{StaticResource TagItemCard}" 
+                      BorderThickness="0"
+                      Background="Transparent" 
+                      ItemsSource="{Binding TagList}"/>
         </Border>
     </Grid>
-
-    <!--<DockPanel Margin="8">
-        <StackPanel DockPanel.Dock="Left" Width="128" Orientation="Vertical">
-            <WrapPanel Margin="0, 8">
-                <TextBlock Text="Connection Status: "/>
-                <TextBlock Text="{Binding IsReaderConnected, Mode=OneWay}"/>
-            </WrapPanel>
-            <CheckBox HorizontalAlignment="Center" Margin="8" IsChecked="{Binding ClearOnStart, Mode=TwoWay}" Content="Clear On Start"/>
-            <Button Margin="8" Padding="4" Content="Start" Command="{Binding StartInventoryAsync}"/>
-            <Button Margin="8" Padding="4" Content="Stop" Command="{Binding StopInventoryAsync}"/>
-            <Button Margin="8" Padding="4" Content="Clear" Command="{Binding ClearTagList}"/>
-        </StackPanel>
-        <Grid Margin="8,0">
-            <ListView ItemsSource="{Binding TagList}">
-                <ListView.Resources>
-                    <DataTemplate x:Key="cellSerialNumberTemplate">
-                        <DockPanel>
-                            <TextBlock FontWeight="Bold" HorizontalAlignment="Center">
-                                <TextBlock.Text>
-                                    <Binding Path="SerialNumber"/>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DockPanel>
-                    </DataTemplate>
-                </ListView.Resources>
-                <ListView.View>
-                    <GridView AllowsColumnReorder="True" ColumnHeaderToolTip="Tag Information">
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Number}" Header="No." Width="Auto"/>
-                        <GridViewColumn 
-                            Header="Serial"
-                            Width="Auto"
-                            CellTemplate="{StaticResource cellSerialNumberTemplate}">
-                        </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding TagType}" Header="TrType" Width="Auto"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding ManufacturerName}" Header="Manufacturer" Width="Auto"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </Grid>
-    </DockPanel>-->
 </UserControl>

@@ -6,60 +6,76 @@
              xmlns:local="clr-namespace:TagShelfLocator.UI.MVVM.Views"
              mc:Ignorable="d" 
              d:DesignHeight="56" d:DesignWidth="200"
-             Background="Transparent">
+             Background="Transparent"
+             d:Background="{StaticResource BackgroundBrush}"
+             >
     <UserControl.DataContext>
         <Binding Source="{StaticResource readerStatusVML}" Path="ViewModel"/>
     </UserControl.DataContext>
+
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+                <Setter Property="FontFamily" Value="Open Sans"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="48"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Ellipse Stroke="{StaticResource DarkGrayBrush}" 
+        <Ellipse Stroke="{StaticResource BorderBrush}" 
                  StrokeThickness="1" 
                  Width="40" Height="40">
             <Ellipse.Style>
                 <Style TargetType="Ellipse">
 
-                    <Setter Property="Fill" Value="#Ef2323"/>
+                    <Setter Property="Fill" Value="{StaticResource ErrorBrush}"/>
 
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=IsConnected}" Value="True">
-                            <Setter Property="Fill" Value="#23EF23"/>
+                            <Setter Property="Fill" Value="{StaticResource SuccessBrush}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Ellipse.Style>
         </Ellipse>
-
+        
+        <!-- Reader Details if Connected -->
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-            <StackPanel.Resources>
-                <Style TargetType="TextBlock" x:Key="UIFont">
-                    <Setter Property="FontFamily" Value="Open Sans"/>
-                    <Setter Property="FontWeight" Value="SemiBold"/>
-                    <Setter Property="FontSize" Value="14"/>
-                </Style>
-            </StackPanel.Resources>
             <StackPanel.Style>
                 <Style TargetType="StackPanel">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Path=IsConnected}" Value="False">
-                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </StackPanel.Style>
 
-            <TextBlock Text="{Binding ReaderName}"
-                       Style="{StaticResource UIFont}"
-                       Foreground="{StaticResource WhiteBrush}"/>
+            <TextBlock Text="{Binding ReaderName}" d:Text="CPR74"/>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding DeviceID}" FontSize="12" FontWeight="Regular"
-                            Style="{StaticResource UIFont}"
-                           Foreground="{StaticResource WhiteDimmedBrush}" />
+                <TextBlock Text="{Binding DeviceID}" d:Text="123456789" FontSize="12" FontWeight="Regular"/>
             </StackPanel>
+        </StackPanel>
+        
+        <!-- No Reader Connected -->
+        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsConnected}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            <TextBlock Text="No Reader"/>
+            <TextBlock Text="Connected"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -23,10 +23,11 @@
 
             <!-- Themes -->
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="./Themes/TestColours.xaml"/>
+                <ResourceDictionary Source="./Themes/LightTheme.xaml"/>
                 <ResourceDictionary Source="./Themes/ColourBrushes.xaml"/>
                 <ResourceDictionary Source="./Themes/Buttons.xaml"/>
                 <ResourceDictionary Source="./Themes/Icons.xaml"/>
+                <ResourceDictionary Source="./Themes/TagItemCard.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

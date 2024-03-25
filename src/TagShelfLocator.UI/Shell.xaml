@@ -11,15 +11,19 @@
         Background="Transparent"
         WindowStyle="None"
         AllowsTransparency="True"
-        ResizeMode="CanResizeWithGrip">
+        ResizeMode="CanResizeWithGrip"
+        MinWidth="1000"
+        MinHeight="700">
     <Window.DataContext>
         <Binding Source="{StaticResource shellVML}" Path="ViewModel"/>
     </Window.DataContext>
-    <Border CornerRadius="{StaticResource WindowCornerRadius}" BorderBrush="{StaticResource DarkGrayBrush}" BorderThickness="2"
-            Background="{StaticResource BlackDarkBrush}">
+    <Border CornerRadius="6" 
+            BorderThickness="2"
+            BorderBrush="{StaticResource BorderBrush}" 
+            Background="{StaticResource BackgroundBrush}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="44"/>
+                <RowDefinition Height="48"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -29,12 +33,11 @@
             </Grid.ColumnDefinitions>
 
             <!-- Window Title Bar -->
-            <Border 
-            BorderThickness="0,0,0,2" 
-                Background="{StaticResource BlackDarkBrush}"
-                BorderBrush="{StaticResource DarkGrayBrush}"
-                MouseDown="Border_MouseDown" 
-                Grid.ColumnSpan="2">
+            <Border BorderThickness="0,0,0,2" 
+                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{StaticResource BackgroundTitlebarBrush}"
+                    MouseDown="Border_MouseDown" 
+                    Grid.ColumnSpan="2">
 
                 <Border.CornerRadius>
                     <CornerRadius TopLeft="{StaticResource WinCornerRadiusValue}" 
@@ -49,21 +52,21 @@
                            FontWeight="SemiBold"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Left"
-                           Foreground="{StaticResource WhiteBrush}"/>
+                           Foreground="{StaticResource ForegroundBrush}"/>
 
                     <StackPanel Orientation="Horizontal" Margin="0"
                             VerticalAlignment="Stretch" 
                             HorizontalAlignment="Right">
                         <Button Margin="0" Click="WindowMinimize_Click" Padding="0,0,0,5" Style="{StaticResource WindowButton}">
-                            <Path Style="{StaticResource DashIcon}" Fill="{StaticResource WhiteBrush}"/>
+                            <Path Style="{StaticResource DashIcon}" Fill="{StaticResource ForegroundBrush}"/>
                         </Button>
 
                         <Button Margin="0" Click="WindowMaximize_Click" Style="{StaticResource WindowButton}">
-                            <Path Style="{StaticResource SquareIcon}" Fill="{StaticResource WhiteBrush}"/>
+                            <Path Style="{StaticResource SquareIcon}" Fill="{StaticResource ForegroundBrush}"/>
                         </Button>
 
                         <Button Margin="0" Click="WindowClose_Click" Style="{StaticResource CloseWindowButton}">
-                            <Path Style="{StaticResource CrossIcon}" Fill="{StaticResource WhiteBrush}"/>
+                            <Path Style="{StaticResource CrossIcon}" Fill="{StaticResource ForegroundBrush}"/>
                         </Button>
 
                     </StackPanel>
@@ -73,9 +76,9 @@
 
             <!-- Side Bar -->
             <Border Grid.Row="1"
-                    Background="{StaticResource BlackLightBrush}"
+                    Background="{StaticResource BackgroundSidebarBrush}"
                     BorderThickness="0,0,2,0"
-                    BorderBrush="{StaticResource DarkGrayBrush}">
+                    BorderBrush="{StaticResource BorderBrush}">
                 <Border.CornerRadius>
                     <CornerRadius BottomLeft="{StaticResource WinCornerRadiusValue}"/>
                 </Border.CornerRadius>
@@ -95,8 +98,10 @@
                                 Command="{Binding NavigateToSettings}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource SettingsIcon}"
-                                      Fill="{StaticResource WhiteBrush}"
-                                      Height="20" Width="20"/>
+                                      Fill="{StaticResource ForegroundBrush}"
+                                      Width="20" Height="20"
+                                      Stretch="Uniform"
+                                      VerticalAlignment="Center"/>
                                 <TextBlock VerticalAlignment="Center"  Text="Settings" Margin="8,0,0,0"/>
                             </StackPanel>
                         </Button>
@@ -105,8 +110,10 @@
                                 Command="{Binding NavigateToInventory}">
                             <StackPanel Orientation="Horizontal">
                                 <Path Style="{StaticResource PlayIcon}"
-                                      Fill="{StaticResource WhiteBrush}"
-                                      Height="20" Width="20"/>
+                                      Fill="{StaticResource ForegroundBrush}"
+                                      Width="20" Height="20"
+                                      Stretch="Uniform"
+                                      VerticalAlignment="Center"/>
                                 <TextBlock VerticalAlignment="Center" Text="Inventory" Margin="8,0,0,0"/>
                             </StackPanel>
                         </Button>
@@ -114,7 +121,7 @@
                     </StackPanel>
                     <Border Grid.Row="1"
                             BorderThickness="0,2,0,0"
-                            BorderBrush="{StaticResource DarkGrayBrush}">
+                            BorderBrush="{StaticResource BorderBrush}">
 
                         <views:ReaderConnectionStatusView/>
                     </Border>
