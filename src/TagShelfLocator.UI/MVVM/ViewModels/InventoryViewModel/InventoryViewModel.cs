@@ -164,8 +164,6 @@ public class InventoryViewModel : ViewModel,
   {
     DispatcherHelper.CheckBeginInvokeOnUI(() =>
     {
-      ClearTagListExecute();
-
       foreach (var tag in message.Tags)
       {
         TagList.Add(tag);

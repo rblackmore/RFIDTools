@@ -96,14 +96,17 @@
     </Style>
 
     <Style TargetType="Button" x:Key="BasicButton">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
+        <Setter Property="Background" Value="{StaticResource BlackLightBrush}"/>
         <Setter Property="Margin" Value="4"/>
         <Setter Property="Padding" Value="16,8"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Padding="{TemplateBinding Padding}" Background="{StaticResource BlackLightBrush}" 
-                            BorderThickness="1" 
+                    <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" 
+                            BorderThickness="1.5" 
                             BorderBrush="{StaticResource WhiteDimmedBrush}"
                             CornerRadius="{StaticResource WindowCornerRadius}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" 
@@ -112,12 +115,23 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
+            </Trigger>
+
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="Button" x:Key="ControlButton" BasedOn="{StaticResource BasicButton}">
-        <Setter Property="Width" Value="24"/>
-        <Setter Property="Height" Value="24"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
         <Setter Property="Padding" Value="0"/>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>
