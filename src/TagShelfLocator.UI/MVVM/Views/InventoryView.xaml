@@ -39,7 +39,7 @@
                     <Button Style="{StaticResource BasicButton}" 
                             Command="{Binding ClearTagList}"
                             Margin="16,0,0,0">
-                        <TextBlock Text="Clear" Foreground="{StaticResource ForegroundBrush}"/>
+                        <TextBlock Text="Clear"/>
                     </Button>
 
                 </StackPanel>

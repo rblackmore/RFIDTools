@@ -66,7 +66,7 @@ public class ReaderConnectionStatusViewModel : ViewModel,
   public void Receive(ReaderDisconnected message)
   {
     this.IsConnected = false;
-    this.ReaderName = string.Empty;
+    this.ReaderName = "No Reader\nConnected";
     this.DeviceID = 0;
   }
 }
