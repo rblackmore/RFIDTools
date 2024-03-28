@@ -29,6 +29,7 @@
                 <ResourceDictionary Source="./Themes/Buttons.xaml"/>
                 <ResourceDictionary Source="./Themes/Icons.xaml"/>
                 <ResourceDictionary Source="./Themes/TagItemCard.xaml"/>
+                <ResourceDictionary Source="./Themes/InventoryListStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>
