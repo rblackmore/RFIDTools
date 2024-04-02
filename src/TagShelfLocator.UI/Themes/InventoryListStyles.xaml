@@ -10,8 +10,9 @@
         <Setter Property="Background" Value="{StaticResource TagListItemBackground}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Border.CornerRadius" Value="8"/>
-        <Setter Property="MinHeight" Value="150"/>
-        <Setter Property="MaxHeight" Value="150"/>
+        <Setter Property="Width" Value="{Binding (ListView.View).ItemWidth,
+                                                RelativeSource={RelativeSource AncestorType=ListView}}"/>
+        <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=Width}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
@@ -39,14 +40,13 @@
             <TextBlock DockPanel.Dock="Bottom"
                        Margin="2"
                        TextAlignment="Center"
-                       VerticalAlignment="Center" FontWeight="SemiBold" FontSize="14" 
+                       VerticalAlignment="Center" FontWeight="SemiBold" 
+                       FontSize="14" 
                        Text="{Binding SerialNumber}"/>
 
-            <Path Grid.Row="0" Style="{StaticResource StopIcon}" 
+            <Path Grid.Row="0" Style="{StaticResource RFIDLabel}" 
                   Fill="{StaticResource ForegroundBrush}"
-                  Width="100"
-                  Height="100"
-                  Stretch="UniformToFill"
+                  Stretch="Uniform"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"/>
 
@@ -68,30 +68,30 @@
                 <ControlTemplate TargetType="{x:Type ListView}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="40"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
-
-                        <Grid HorizontalAlignment="Stretch">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <Slider x:Name="columnSlider"
-                                        VerticalAlignment="Center"
-                                        Width="150" 
-                                        TickFrequency="1" TickPlacement="BottomRight" 
-                                        IsSnapToTickEnabled="True"
-                                        Maximum="10" Minimum="4" 
-                                        Value="{Binding (ListView.View).Columns,
-                                                RelativeSource={RelativeSource AncestorType=ListView}}"/>
-                                <TextBlock Text="{Binding ElementName=columnSlider, Path=Value}"/>
-                            </StackPanel>
-                        </Grid>
 
                         <ScrollViewer CanContentScroll="True"
                                       HorizontalScrollBarVisibility="Hidden"
                                       VerticalScrollBarVisibility="Auto"
-                                      Grid.Row="1">
+                                      Grid.Row="0">
                             <ItemsPresenter />
                         </ScrollViewer>
+                        
+                        <Grid Grid.Row="1" HorizontalAlignment="Stretch" 
+                              Background="#e3e3e3">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Slider x:Name="columnSlider"
+                                        VerticalAlignment="Center"
+                                        Width="150" 
+                                        IsSnapToTickEnabled="False"
+                                        Maximum="200" Minimum="100" 
+                                        Value="{Binding (ListView.View).ItemWidth,
+                                                RelativeSource={RelativeSource AncestorType=ListView}}"/>
+                            </StackPanel>
+                        </Grid>
+
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -102,9 +102,6 @@
                 <ItemsPanelTemplate>
                     <WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
                                        RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"/>
-                    
-                    <!--Columns="{Binding (ListView.View).Columns,
-                                       RelativeSource={RelativeSource AncestorType=ListView}}"-->
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>

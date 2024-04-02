@@ -20,6 +20,12 @@ public class TiledView : ViewBase
     set => SetValue(ColumnsProperty, value);
   }
 
+  public double ItemWidth
+  {
+    get { return (double)GetValue(ItemWidthProperty); }
+    set { SetValue(ItemWidthProperty, value); }
+  }
 
-
+  public static readonly DependencyProperty ItemWidthProperty =
+    WrapPanel.ItemWidthProperty.AddOwner(typeof(TiledView));
 }
