@@ -92,7 +92,7 @@
                       Background="{StaticResource TagListBackground}"
                       Style="{StaticResource TiledLayout}">
                 <ListView.View>
-                    <l:TiledView Columns="5" ItemWidth="100"/>
+                    <l:TiledView MinScale="30" MaxScale="250"/>
                 </ListView.View>
             </ListView>
 

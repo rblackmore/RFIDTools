@@ -41,7 +41,8 @@
                        Margin="2"
                        TextAlignment="Center"
                        VerticalAlignment="Center" FontWeight="SemiBold" 
-                       FontSize="14" 
+                       FontSize="{Binding (ListView.View).FontSize,
+                                  RelativeSource={RelativeSource AncestorType=ListView}}" 
                        Text="{Binding SerialNumber}"/>
 
             <Path Grid.Row="0" Style="{StaticResource RFIDLabel}" 
@@ -78,17 +79,32 @@
                                       Grid.Row="0">
                             <ItemsPresenter />
                         </ScrollViewer>
-                        
+
                         <Grid Grid.Row="1" HorizontalAlignment="Stretch" 
                               Background="#e3e3e3">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
+                                        Margin="8,0,0,0">
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                </StackPanel.Resources>
                                 <Slider x:Name="columnSlider"
                                         VerticalAlignment="Center"
                                         Width="150" 
                                         IsSnapToTickEnabled="False"
-                                        Maximum="200" Minimum="100" 
-                                        Value="{Binding (ListView.View).ItemWidth,
+                                        Minimum="{Binding (ListView.View).MinScale,
+                                                RelativeSource={RelativeSource AncestorType=ListView}}"
+                                        Maximum="{Binding (ListView.View).MaxScale,
+                                                RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                        Style="{StaticResource SliderStyle1}"
+                                        Value="{Binding (ListView.View).ScalePercentage,
                                                 RelativeSource={RelativeSource AncestorType=ListView}}"/>
+                                <TextBlock Text="{Binding ElementName=columnSlider, Path=Value}"/>
+                                <TextBlock Text="%"/>
+                                <TextBlock Text="{Binding (ListView.View).ItemWidth,
+                                    RelativeSource={RelativeSource AncestorType=ListView}}"/>
+                                <TextBlock Text="px"/>
                             </StackPanel>
                         </Grid>
 
