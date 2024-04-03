@@ -9,6 +9,7 @@
         xmlns:controls="clr-namespace:TagShelfLocator.UI.Controls"
         mc:Ignorable="d"
         Height="750" Width="1200"
+        Title="RFID Tools"
         Background="Transparent"
         ResizeMode="CanResize"
         MinWidth="1000"
@@ -57,7 +58,6 @@
                         Orientation="Vertical"
                         Background="Transparent"
                         Margin="0">
-
                         <Button Style="{StaticResource NavigationButton}"
                                 Command="{Binding NavigateToSettings}">
                             <StackPanel Orientation="Horizontal">

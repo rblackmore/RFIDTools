@@ -3,33 +3,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:TagShelfLocator.UI.MVVM.ViewModels"
+             xmlns:l="clr-namespace:TagShelfLocator.UI.Controls.ListViews"
+             xmlns:model="clr-namespace:TagShelfLocator.UI.MVVM.Modal"
              mc:Ignorable="d"
              Background="Transparent"
              d:Background="{StaticResource BackgroundBrush}"
              d:DesignHeight="600" d:DesignWidth="1080">
+
     <UserControl.DataContext>
         <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
     </UserControl.DataContext>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="64"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+        <Border Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
             <Grid HorizontalAlignment="Stretch">
                 <StackPanel Margin="12,0,0,0" Orientation="Horizontal" 
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center">
                     <Button Style="{StaticResource BasicButton}"
-                            Margin="0,0,8,0">
+                            Margin="0,0,8,0"
+                            Click="TiledButton_Click">
                         <Path Stretch="Uniform"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource GridIcon}" 
                               Fill="{StaticResource ForegroundBrush}"/>
                     </Button>
 
-                    <Button Style="{StaticResource BasicButton}" Width="32">
+                    <Button Style="{StaticResource BasicButton}" Width="32"
+                            Click="ListButton_Click">
                         <Path Stretch="Uniform"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource ListIcon}" 
@@ -48,6 +53,8 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
+                    <CheckBox IsChecked="{Binding ClearOnStart}" Content="Clear On Start" VerticalAlignment="Center"
+                              Margin="0,0,8,0"/>
                     <Button Style="{StaticResource BasicButton}" 
                             Command="{Binding StartInventoryAsync}"
                             Width="32"
@@ -81,11 +88,12 @@
             </Grid>
         </Border>
 
-        <Border Grid.Row="1" Padding="0" Margin="0">
-            <ListView Margin="0" Padding="0" ItemContainerStyle="{StaticResource TagItemCard}" 
+        <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
+            <ListView x:Name="lv_Inventory" ItemsSource="{Binding TagList}"
                       BorderThickness="0"
-                      Background="Transparent" 
-                      ItemsSource="{Binding TagList}"/>
+                      Background="{StaticResource TagListBackground}"
+                      Style="{StaticResource ListedLayout}"/>
         </Border>
+
     </Grid>
 </UserControl>
