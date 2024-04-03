@@ -16,8 +16,18 @@
     <SolidColorBrush x:Key="Placeholder" Color="Magenta"/>
     
     <SolidColorBrush x:Key="TagListBackground" Color="{StaticResource Primary-100}"/>
+    
     <SolidColorBrush x:Key="TagListItemBackground" Color="Transparent"/>
-    <SolidColorBrush x:Key="TagListItemBackgroundHover" Color="{StaticResource Primary-400}"/>
+    <SolidColorBrush x:Key="TagListItemBackgroundHover" Color="{StaticResource Primary-200}"/>
+    <SolidColorBrush x:Key="TagListItemBackgroundSelected" Color="{StaticResource Gray-200}"/>
+    <SolidColorBrush x:Key="TagListItemBorderSelected" Color="{StaticResource Gray-300}"/>
+    
+    <SolidColorBrush x:Key="ListedTagListBackground" Color="{StaticResource Primary-100}"/>
+    <SolidColorBrush x:Key="ListedTagListItemBackground" Color="{StaticResource Gray-100}"/>
+    <SolidColorBrush x:Key="ListedTagListItemBorder" Color="{StaticResource Gray-200}"/>
+    <SolidColorBrush x:Key="ListedTagListItemBackgroundHover" Color="{StaticResource Primary-200}"/>
+    <SolidColorBrush x:Key="ListedTagListItemBackgroundSelected" Color="{StaticResource Primary-200}"/>
+    <SolidColorBrush x:Key="ListedTagListItemBorderSelected" Color="{StaticResource Primary-300}"/>
 
     <SolidColorBrush x:Key="PrimaryBrush-100" Color="{StaticResource Primary-100}"/>
     <SolidColorBrush x:Key="PrimaryBrush-200" Color="{StaticResource Primary-200}"/>

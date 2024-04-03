@@ -9,7 +9,7 @@
              Background="Transparent"
              d:Background="{StaticResource BackgroundBrush}"
              d:DesignHeight="600" d:DesignWidth="1080">
-    
+
     <UserControl.DataContext>
         <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
     </UserControl.DataContext>
@@ -25,14 +25,16 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center">
                     <Button Style="{StaticResource BasicButton}"
-                            Margin="0,0,8,0">
+                            Margin="0,0,8,0"
+                            Click="TiledButton_Click">
                         <Path Stretch="Uniform"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource GridIcon}" 
                               Fill="{StaticResource ForegroundBrush}"/>
                     </Button>
 
-                    <Button Style="{StaticResource BasicButton}" Width="32">
+                    <Button Style="{StaticResource BasicButton}" Width="32"
+                            Click="ListButton_Click">
                         <Path Stretch="Uniform"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource ListIcon}" 
@@ -87,16 +89,11 @@
         </Border>
 
         <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
-            <ListView ItemsSource="{Binding TagList}"
+            <ListView x:Name="lv_Inventory" ItemsSource="{Binding TagList}"
                       BorderThickness="0"
                       Background="{StaticResource TagListBackground}"
-                      Style="{StaticResource TiledLayout}">
-                <ListView.View>
-                    <l:TiledView MinScale="30" MaxScale="250"/>
-                </ListView.View>
-            </ListView>
-
+                      Style="{StaticResource ListedLayout}"/>
         </Border>
-        
+
     </Grid>
 </UserControl>

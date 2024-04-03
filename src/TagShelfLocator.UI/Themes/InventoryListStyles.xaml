@@ -3,19 +3,61 @@
                     xmlns:l="clr-namespace:TagShelfLocator.UI.Controls.ListViews"
                     xmlns:model="clr-namespace:TagShelfLocator.UI.MVVM.Modal">
 
+    <ItemsPanelTemplate x:Key="ListedPanelTemplate">
+        <StackPanel Width="{Binding (FrameworkElement.ActualWidth),
+                                       RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"/>
+    </ItemsPanelTemplate>
 
-    <Style x:Key="TagTileStyle" 
-           TargetType="{x:Type ListViewItem}">
+    <ItemsPanelTemplate x:Key="TiledPanelTemplate">
+        <WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
+                                       RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"/>
+    </ItemsPanelTemplate>
+
+    <Style x:Key="ListedListViewItem" TargetType="{x:Type ListViewItem}">
+        <Setter Property="Margin" Value="4,2"/>
+        <Setter Property="Background" Value="{StaticResource ListedTagListItemBackground}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ListedTagListItemBorder}"/>
+        <Setter Property="Border.CornerRadius" Value="4"/>
+        <Setter Property="Height" Value="{Binding (ListView.View).ItemHeight,
+                                          RelativeSource={RelativeSource AncestorType=ListView}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="{TemplateBinding Border.CornerRadius}"
+                            Height="{TemplateBinding Height}"
+                            Width="{TemplateBinding Width}"
+                            Padding="4">
+                        <ContentPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource ListedTagListItemBackgroundHover}"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource ListedTagListItemBackgroundSelected}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource ListedTagListItemBorderSelected}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="TiledListViewItem" TargetType="{x:Type ListViewItem}">
         <Setter Property="Margin" Value="4"/>
         <Setter Property="Background" Value="{StaticResource TagListItemBackground}"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="Border.CornerRadius" Value="8"/>
         <Setter Property="Width" Value="{Binding (ListView.View).ItemWidth,
                                                 RelativeSource={RelativeSource AncestorType=ListView}}"/>
         <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource Self}, Path=Width}"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="ListViewItem">
+                <ControlTemplate TargetType="{x:Type ListViewItem}">
                     <Border BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{TemplateBinding Background}"
@@ -32,13 +74,42 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{StaticResource TagListItemBackgroundHover}"/>
             </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource TagListItemBackgroundSelected}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource TagListItemBorderSelected}"/>
+            </Trigger>
         </Style.Triggers>
     </Style>
 
-    <DataTemplate x:Key="TagTileData" DataType="model:TagEntry">
-        <DockPanel>
-            <TextBlock DockPanel.Dock="Bottom"
-                       Margin="2"
+    <DataTemplate x:Key="ListedTagEntry" DataType="model:TagEntry">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" TextAlignment="Left" VerticalAlignment="Center"
+                       FontWeight="SemiBold"
+                       FontSize="{Binding (ListView.View).FontSize,
+                                  RelativeSource={RelativeSource AncestorType=ListView}}"
+                       Text="{Binding SerialNumber}"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <TextBlock FontSize="11" VerticalAlignment="Bottom" Margin="2,0" Text="Type:" FontWeight="SemiBold"/>
+                <TextBlock FontSize="11" VerticalAlignment="Bottom" Margin="2,0" Text="{Binding TagType}"/>
+                <TextBlock FontSize="11" VerticalAlignment="Bottom" Margin="2,0" Text="Manufacturer:" FontWeight="SemiBold"/>
+                <TextBlock FontSize="11" VerticalAlignment="Bottom" Margin="2,0" Text="{Binding ManufacturerName}"/>
+                <TextBlock FontSize="11" VerticalAlignment="Bottom" Margin="2,0" Text="RSSI:" FontWeight="SemiBold"/>
+                <TextBlock FontSize="11" VerticalAlignment="Bottom" Margin="2,0" Text="{Binding RSSI}"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="TiledTagEntry" DataType="model:TagEntry">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="1"
                        TextAlignment="Center"
                        VerticalAlignment="Center" FontWeight="SemiBold" 
                        FontSize="{Binding (ListView.View).FontSize,
@@ -51,26 +122,40 @@
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"/>
 
-        </DockPanel>
+        </Grid>
     </DataTemplate>
 
-    <Style x:Key="TiledLayout" 
-           TargetType="{x:Type ListView}" 
+
+
+
+    <Style x:Key="TiledLayout" TargetType="{x:Type ListView}" 
            BasedOn="{StaticResource {x:Type ListBox}}">
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+
+        <Setter Property="View">
+            <Setter.Value>
+                <l:ScaleableView MinScale="30" MaxScale="250"/>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="HorizontalContentAlignment" 
+                Value="Center"/>
+
+        <Setter Property="ItemsPanel" 
+                Value="{StaticResource TiledPanelTemplate}"/>
 
         <Setter Property="ItemContainerStyle" 
-                Value="{StaticResource TagTileStyle}"/>
+                Value="{StaticResource TiledListViewItem}"/>
 
         <Setter Property="ItemTemplate"
-                Value="{StaticResource TagTileData}"/>
+                Value="{StaticResource TiledTagEntry}"/>
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListView}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="48"/>
                         </Grid.RowDefinitions>
 
                         <ScrollViewer CanContentScroll="True"
@@ -84,13 +169,7 @@
                               Background="#e3e3e3">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"
                                         Margin="8,0,0,0">
-                                <StackPanel.Resources>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="VerticalAlignment" Value="Center"/>
-                                    </Style>
-                                </StackPanel.Resources>
-                                <Slider x:Name="columnSlider"
-                                        VerticalAlignment="Center"
+                                <Slider VerticalAlignment="Center"
                                         Width="150" 
                                         IsSnapToTickEnabled="False"
                                         Minimum="{Binding (ListView.View).MinScale,
@@ -100,27 +179,28 @@
                                         Style="{StaticResource SliderStyle1}"
                                         Value="{Binding (ListView.View).ScalePercentage,
                                                 RelativeSource={RelativeSource AncestorType=ListView}}"/>
-                                <TextBlock Text="{Binding ElementName=columnSlider, Path=Value}"/>
-                                <TextBlock Text="%"/>
-                                <TextBlock Text="{Binding (ListView.View).ItemWidth,
-                                    RelativeSource={RelativeSource AncestorType=ListView}}"/>
-                                <TextBlock Text="px"/>
                             </StackPanel>
                         </Grid>
-
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
-        <Setter Property="ItemsPanel">
-            <Setter.Value>
-                <ItemsPanelTemplate>
-                    <WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
-                                       RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"/>
-                </ItemsPanelTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
+    <Style x:Key="ListedLayout" TargetType="{x:Type ListView}"
+       BasedOn="{StaticResource TiledLayout}">
+
+        <Setter Property="HorizontalContentAlignment" 
+                Value="Center"/>
+
+        <Setter Property="ItemsPanel" 
+                Value="{StaticResource ListedPanelTemplate}"/>
+
+        <Setter Property="ItemContainerStyle" 
+                Value="{StaticResource ListedListViewItem}"/>
+
+        <Setter Property="ItemTemplate"
+                Value="{StaticResource ListedTagEntry}"/>
+
+    </Style>
 </ResourceDictionary>
