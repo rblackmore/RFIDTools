@@ -14,25 +14,10 @@ public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
     {
       return new ObservableCollection<TagEntry>(
         new[] {
-          new TagEntry{
-            Number = 1,
-            TagType =  "EPC Class 1 Gen 2",
-            SerialNumber =  "1234" },
-
-          new TagEntry{
-            Number = 2,
-            TagType =  "ISO14443-A Mifare DESFire",
-            SerialNumber =  "ABCD" },
-
-          new TagEntry{
-            Number = 3,
-            TagType =  "EPC Class 1 Gen 2",
-            SerialNumber =  "4321" },
-
-          new TagEntry{
-            Number = 4,
-            TagType =  "EPC Class 1 Gen 2",
-            SerialNumber =  "DEF1" },
+          TagEntry.FromData(1, "EPC Class 1 Gen 2", "1234"),
+          TagEntry.FromData(2, "ISO14443-A Mifare DESFire", "ABCD"),
+          TagEntry.FromData(3, "EPC Class 1 Gen 2", "4321"),
+          TagEntry.FromData(4, "EPC Class 1 Gen 2", "DEF1"),
         });
     }
   }
@@ -51,5 +36,4 @@ public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
   public bool IsReaderDisconnected => false;
 
   public IRelayCommand AddTagEntry => throw new System.NotImplementedException();
-
 }

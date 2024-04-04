@@ -1,33 +1,34 @@
 ﻿namespace TagShelfLocator.UI.MVVM.Modal;
 
-using System;
+using System.Collections.ObjectModel;
 
 using FEDM;
 
 public class TagEntry
 {
   // General
-  public int Number { get; init; } = 0;
+  public int Number { get; private set; } = 0;
 
   // General Tag Details
-  public string TagType { get; init; } = string.Empty;
-  public string SerialNumber { get; init; } = string.Empty;
-  public int RSSI { get; init; } = 0;
+  public string TagType { get; private set; } = string.Empty;
+  public string SerialNumber { get; private set; } = string.Empty;
+  public int RSSI { get; private set; } = 0;
+  public ObservableCollection<Antenna>? Antennas { get; set; }
 
   // ISO14443-A and ISO15693
-  public bool IsISO14443A { get; init; } = false;
-  public bool IsISO15693 { get; init; } = false;
-  public string ManufacturerName { get; init; } = string.Empty;
-  public int Afi { get; init; } = 0;
+  public bool IsISO14443A { get; private set; } = false;
+  public bool IsISO15693 { get; private set; } = false;
+  public string ManufacturerName { get; private set; } = string.Empty;
+  public int Afi { get; private set; } = 0;
 
   // EPC Class 1 Gen 2
-  public bool IsEPCC1G2 { get; init; } = false;
-  public uint ProtocolControl { get; init; } = 0;
-  public string EPCHex { get; init; } = string.Empty;
-  public string TIDHex { get; init; } = string.Empty;
+  public bool IsEPCC1G2 { get; private set; } = false;
+  public uint ProtocolControl { get; private set; } = 0;
+  public string EPCHex { get; private set; } = string.Empty;
+  public string TIDHex { get; private set; } = string.Empty;
 
-  public int TagModelNumber { get; init; } = 0;
-  public string TagDesignerName { get; init; } = string.Empty;
+  public int TagModelNumber { get; private set; } = 0;
+  public string TagDesignerName { get; private set; } = string.Empty;
 
 
   public override string ToString()
@@ -35,67 +36,78 @@ public class TagEntry
     return $"{Number}: '{SerialNumber}' - ⭐ {ManufacturerName}";
   }
 
+  public static TagEntry FromData(int count, string serialNumber, string trType)
+  {
+    return new TagEntry
+    {
+      Number = count,
+      SerialNumber = serialNumber,
+      TagType = trType,
+      Antennas = new(),
+    };
+  }
+
   public static TagEntry FromOBIDTagItem(int count, TagItem tagItem)
   {
+    var tagEntry = new TagEntry();
+
+    var tagType = TransponderType.toString(tagItem.trType());
+    var serialNumber = tagItem.iddToHexString();
+
+    tagEntry.Number = count;
+    tagEntry.TagType = tagType;
+    tagEntry.SerialNumber = serialNumber;
+    tagEntry.Antennas = GetAntennas(tagItem);
 
     if (tagItem.isIso14443A())
-      return CreateISO1443A_TagEntry(count, tagItem);
+      return CreateISO1443A_TagEntry(tagItem, tagEntry);
 
     if (tagItem.isIso15693())
-      return CreateISO15693_TagEntry(count, tagItem);
+      return CreateISO15693_TagEntry(tagItem, tagEntry);
 
     if (tagItem.isEpcClass1Gen2())
-      return CreateEPCClass1Gen2_TagEntry(count, tagItem);
+      return CreateEPCClass1Gen2_TagEntry(tagItem, tagEntry);
 
-    // If tag type is not discovered above, we get a default entry.
-    var tagType = TransponderType.toString(tagItem.trType());
-    var serialNumber = tagItem.iddToHexString();
-
-    return new TagEntry
-    {
-      Number = count,
-      TagType = tagType,
-      SerialNumber = serialNumber,
-    };
+    return tagEntry;
   }
 
-  private static TagEntry CreateISO1443A_TagEntry(int count, TagItem tagItem)
+  private static ObservableCollection<Antenna> GetAntennas(TagItem tagItem)
   {
-    var tagType = TransponderType.toString(tagItem.trType());
-    var serialNumber = tagItem.iddToHexString();
+    var antennas = new ObservableCollection<Antenna>();
+
+    if (tagItem.rssiValues != null)
+      foreach (var rssi in tagItem.rssiValues())
+        antennas.Add(new Antenna
+        {
+          AntennaNo = rssi.antennaNumber(),
+          RSSI = rssi.rssi(),
+        });
+
+    return antennas;
+  }
+
+  private static TagEntry CreateISO1443A_TagEntry(TagItem tagItem, TagEntry tagEntry)
+  {
     var manufacturerName = tagItem.manufacturerName();
 
-    return new TagEntry
-    {
-      IsISO14443A = true,
-      Number = count,
-      TagType = tagType,
-      SerialNumber = serialNumber,
-      ManufacturerName = manufacturerName,
-    };
+    tagEntry.IsISO14443A = true;
+    tagEntry.ManufacturerName = manufacturerName;
+
+    return tagEntry;
   }
 
-  private static TagEntry CreateISO15693_TagEntry(int count, TagItem tagItem)
+  private static TagEntry CreateISO15693_TagEntry(TagItem tagItem, TagEntry tagEntry)
   {
-    var tagType = TransponderType.toString(tagItem.trType());
-    var serialNumber = tagItem.iddToHexString();
     var afi = tagItem.iso15693_Afi();
 
-    return new TagEntry
-    {
-      IsISO15693 = true,
-      Number = count,
-      TagType = tagType,
-      SerialNumber = serialNumber,
-      Afi = afi,
-    };
+    tagEntry.IsISO15693 = true;
+    tagEntry.Afi = afi;
+
+    return tagEntry;
   }
 
-  private static TagEntry CreateEPCClass1Gen2_TagEntry(int count, TagItem tagItem)
+  private static TagEntry CreateEPCClass1Gen2_TagEntry(TagItem tagItem, TagEntry tagEntry)
   {
-    var tagType = TransponderType.toString(tagItem.trType());
-    var serialNumber = tagItem.iddToHexString();
-
     var pc = tagItem.epcC1G2_Pc();
     var epchex = tagItem.epcC1G2_EpcToHexString();
 
@@ -110,17 +122,13 @@ public class TagEntry
       tagDesignerName = tagItem.epcC1G2_MaskDesignerName();
     }
 
-    return new TagEntry
-    {
-      IsEPCC1G2 = true,
-      Number = count,
-      TagType = tagType,
-      SerialNumber = serialNumber,
-      ProtocolControl = pc,
-      EPCHex = epchex,
-      TIDHex = tidhex,
-      TagModelNumber = tagModelNumber,
-      TagDesignerName = tagDesignerName,
-    };
+    tagEntry.IsEPCC1G2 = true;
+    tagEntry.ProtocolControl = pc;
+    tagEntry.EPCHex = epchex;
+    tagEntry.TIDHex = tidhex;
+    tagEntry.TagModelNumber = tagModelNumber;
+    tagEntry.TagDesignerName = tagDesignerName;
+
+    return tagEntry;
   }
 }

@@ -104,10 +104,14 @@ public class OBIDTagInventoryService :
   {
     reader.hm().setUsageMode(Hm.UsageMode.UseQueue);
 
+    var invParams = new InventoryParam();
+
+    if (this.reader.readerType() is ReaderType.MRU102)
+      invParams.setAntennas(0x04);
 
     while (!cancellationToken.IsCancellationRequested)
     {
-      var state = reader.hm().inventory();
+      var state = reader.hm().inventory(true, invParams);
 
       // TODO: I should handle a few other error codes depending on what may go wrong.
       // eg. Code 0x01 means no tags, this is fine to continue
