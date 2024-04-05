@@ -2,38 +2,48 @@
 
 using System.Collections.ObjectModel;
 
+using CommunityToolkit.Mvvm.ComponentModel;
+
 using FEDM;
 
-public class TagEntry
+public class TagEntry : ObservableObject
 {
+  private int number = 0;
+  private string tagType = string.Empty;
+  private string serialNumber = string.Empty;
+
   // General
-  public int Number { get; private set; } = 0;
+  public int Number
+  {
+    get => number;
+    private set => SetProperty(ref number, value);
+  }
 
   // General Tag Details
-  public string TagType { get; private set; } = string.Empty;
-  public string SerialNumber { get; private set; } = string.Empty;
-  public int RSSI { get; private set; } = 0;
+  public string TagType
+  {
+    get => tagType;
+    private set => SetProperty(ref tagType, value);
+  }
+
+  public string SerialNumber
+  {
+    get => serialNumber;
+    private set => SetProperty(ref serialNumber, value);
+  }
+
   public ObservableCollection<Antenna>? Antennas { get; set; }
 
   // ISO14443-A and ISO15693
   public bool IsISO14443A { get; private set; } = false;
   public bool IsISO15693 { get; private set; } = false;
-  public string ManufacturerName { get; private set; } = string.Empty;
-  public int Afi { get; private set; } = 0;
 
   // EPC Class 1 Gen 2
   public bool IsEPCC1G2 { get; private set; } = false;
-  public uint ProtocolControl { get; private set; } = 0;
-  public string EPCHex { get; private set; } = string.Empty;
-  public string TIDHex { get; private set; } = string.Empty;
-
-  public int TagModelNumber { get; private set; } = 0;
-  public string TagDesignerName { get; private set; } = string.Empty;
-
 
   public override string ToString()
   {
-    return $"{Number}: '{SerialNumber}' - ⭐ {ManufacturerName}";
+    return $"{Number}: '{SerialNumber}'";
   }
 
   public static TagEntry FromData(int count, string serialNumber, string trType)
@@ -49,7 +59,19 @@ public class TagEntry
 
   public static TagEntry FromOBIDTagItem(int count, TagItem tagItem)
   {
-    var tagEntry = new TagEntry();
+    TagEntry tagEntry = null!;
+
+    if (tagItem.isIso14443A())
+      tagEntry = ISO14443A_TagEntry.CreateFrom(tagItem);
+
+    if (tagItem.isIso15693())
+      tagEntry = ISO15693_TagEntry.CreateFrom(tagItem);
+
+    if (tagItem.isEpcClass1Gen2())
+      tagEntry = EPCClass1Gen2_TagEntry.CreateFrom(tagItem);
+
+    if (tagEntry is null)
+      tagEntry = new TagEntry();
 
     var tagType = TransponderType.toString(tagItem.trType());
     var serialNumber = tagItem.iddToHexString();
@@ -58,15 +80,6 @@ public class TagEntry
     tagEntry.TagType = tagType;
     tagEntry.SerialNumber = serialNumber;
     tagEntry.Antennas = GetAntennas(tagItem);
-
-    if (tagItem.isIso14443A())
-      return CreateISO1443A_TagEntry(tagItem, tagEntry);
-
-    if (tagItem.isIso15693())
-      return CreateISO15693_TagEntry(tagItem, tagEntry);
-
-    if (tagItem.isEpcClass1Gen2())
-      return CreateEPCClass1Gen2_TagEntry(tagItem, tagEntry);
 
     return tagEntry;
   }
@@ -84,51 +97,5 @@ public class TagEntry
         });
 
     return antennas;
-  }
-
-  private static TagEntry CreateISO1443A_TagEntry(TagItem tagItem, TagEntry tagEntry)
-  {
-    var manufacturerName = tagItem.manufacturerName();
-
-    tagEntry.IsISO14443A = true;
-    tagEntry.ManufacturerName = manufacturerName;
-
-    return tagEntry;
-  }
-
-  private static TagEntry CreateISO15693_TagEntry(TagItem tagItem, TagEntry tagEntry)
-  {
-    var afi = tagItem.iso15693_Afi();
-
-    tagEntry.IsISO15693 = true;
-    tagEntry.Afi = afi;
-
-    return tagEntry;
-  }
-
-  private static TagEntry CreateEPCClass1Gen2_TagEntry(TagItem tagItem, TagEntry tagEntry)
-  {
-    var pc = tagItem.epcC1G2_Pc();
-    var epchex = tagItem.epcC1G2_EpcToHexString();
-
-    var tidhex = string.Empty;
-    var tagModelNumber = 0;
-    var tagDesignerName = string.Empty;
-
-    if (tagItem.epcC1G2_IsEpcAndTid())
-    {
-      tidhex = tagItem.epcC1G2_TidToHexString();
-      tagModelNumber = tagItem.epcC1G2_TagModelNumber();
-      tagDesignerName = tagItem.epcC1G2_MaskDesignerName();
-    }
-
-    tagEntry.IsEPCC1G2 = true;
-    tagEntry.ProtocolControl = pc;
-    tagEntry.EPCHex = epchex;
-    tagEntry.TIDHex = tidhex;
-    tagEntry.TagModelNumber = tagModelNumber;
-    tagEntry.TagDesignerName = tagDesignerName;
-
-    return tagEntry;
   }
 }

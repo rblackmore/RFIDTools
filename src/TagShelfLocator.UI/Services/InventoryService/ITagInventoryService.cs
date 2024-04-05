@@ -1,10 +1,7 @@
 ﻿namespace TagShelfLocator.UI.Services.InventoryService;
 
 using System.Threading;
-using System.Threading.Channels;
 using System.Threading.Tasks;
-
-using TagShelfLocator.UI.Core.Model;
 
 public interface ITagInventoryService
 {

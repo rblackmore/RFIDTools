@@ -9,7 +9,7 @@ public class ScaleableView : ViewBase
   private const int defaultScale = 100;
   private const double defaultWidth = 150d;
   private const double defaultHeight = 48d;
-  private const double defaultFontSize = 14d;
+  private const double defaultFontSize = 12d;
 
   #region Dependency_Properties
   public static readonly DependencyProperty ItemWidthProperty =

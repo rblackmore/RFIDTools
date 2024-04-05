@@ -97,6 +97,9 @@ public class OBIDTagInventoryService :
 
     cancellationTokenSource?.Cancel();
     await RunningTask;
+
+    this.reader.rf().off();
+
     this.messenger.Send(new InventoryStoppedMessage(message));
   }
 
@@ -107,7 +110,7 @@ public class OBIDTagInventoryService :
     var invParams = new InventoryParam();
 
     if (this.reader.readerType() is ReaderType.MRU102)
-      invParams.setAntennas(0x04);
+      invParams.setAntennas(0x08);
 
     while (!cancellationToken.IsCancellationRequested)
     {
