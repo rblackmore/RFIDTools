@@ -15,25 +15,21 @@ public class EPCClass1Gen2_TagEntry : TagEntry
     get => protocolControl;
     private set => SetProperty(ref protocolControl, value);
   }
-
   public string EPCHex
   {
     get => ePCHex;
     private set => SetProperty(ref ePCHex, value);
   }
-
   public string TIDHex
   {
     get => tIDHex;
     private set => SetProperty(ref tIDHex, value);
   }
-
   public int TagModelNumber
   {
     get => tagModelNumber;
     private set => SetProperty(ref tagModelNumber, value);
   }
-
   public string TagDesignerName
   {
     get => tagDesignerName;

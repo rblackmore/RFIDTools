@@ -30,7 +30,7 @@
                 <ResourceDictionary Source="./Themes/Icons.xaml"/>
                 <ResourceDictionary Source="./Themes/TagItemCard.xaml"/>
                 <ResourceDictionary Source="./Themes/Generic.xaml"/>
-                <ResourceDictionary Source="./Themes/InventoryListStyles.xaml"/>
+                <ResourceDictionary Source="./Themes/InventoryListThemes/InventoryListStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

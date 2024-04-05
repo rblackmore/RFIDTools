@@ -1,6 +1,20 @@
 ﻿namespace TagShelfLocator.UI.MVVM.Modal;
-public class Antenna
+
+using CommunityToolkit.Mvvm.ComponentModel;
+
+public class Antenna : ObservableObject
 {
-  public int AntennaNo { get; set; }
-  public int RSSI { get; set; }
+  private int antennaNo;
+  private int rssi;
+
+  public int AntennaNo
+  {
+    get => antennaNo;
+    set => SetProperty(ref antennaNo, value);
+  }
+  public int RSSI
+  {
+    get => rssi;
+    set => SetProperty(ref rssi, value);
+  }
 }

@@ -18,14 +18,12 @@ public class TagEntry : ObservableObject
     get => number;
     private set => SetProperty(ref number, value);
   }
-
   // General Tag Details
   public string TagType
   {
     get => tagType;
     private set => SetProperty(ref tagType, value);
   }
-
   public string SerialNumber
   {
     get => serialNumber;
@@ -34,16 +32,9 @@ public class TagEntry : ObservableObject
 
   public ObservableCollection<Antenna>? Antennas { get; set; }
 
-  // ISO14443-A and ISO15693
-  public bool IsISO14443A { get; private set; } = false;
-  public bool IsISO15693 { get; private set; } = false;
-
-  // EPC Class 1 Gen 2
-  public bool IsEPCC1G2 { get; private set; } = false;
-
   public override string ToString()
   {
-    return $"{Number}: '{SerialNumber}'";
+    return $"{Number}: '{SerialNumber}' - {TagType}";
   }
 
   public static TagEntry FromData(int count, string serialNumber, string trType)
