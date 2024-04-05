@@ -50,6 +50,7 @@ public class InventoryViewModel : ViewModel,
     this.tagInventoryService = tagInventoryService;
     this.navigationService = navigationService;
     TagList = new();
+    TagListData = new(this.messenger);
 
     this.messenger.RegisterAll(this);
 
@@ -85,6 +86,9 @@ public class InventoryViewModel : ViewModel,
   public bool IsReaderDisconnected => !IsReaderConnected;
 
   public ObservableCollection<TagEntry> TagList { get; }
+
+  public TagListViewModel TagListData { get; }
+
   public bool ClearOnStart
   {
     get => clearOnStart;

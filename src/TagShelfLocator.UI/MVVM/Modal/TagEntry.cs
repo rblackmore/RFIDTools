@@ -1,6 +1,8 @@
 ﻿namespace TagShelfLocator.UI.MVVM.Modal;
 
+using System;
 using System.Collections.ObjectModel;
+using System.Timers;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -9,8 +11,26 @@ using FEDM;
 public class TagEntry : ObservableObject
 {
   private int number = 0;
+  private int readCount = 0;
+  private TimeOnly lastRead = TimeOnly.FromDateTime(System.DateTime.Now);
+  private int secondsSinceLastRead = 0;
   private string tagType = string.Empty;
   private string serialNumber = string.Empty;
+
+  public TagEntry()
+  {
+    var timer = new Timer(1000);
+    timer.Elapsed += UpdateTimerElapsed;
+    timer.Start();
+  }
+
+  private void UpdateTimerElapsed(object? sender, ElapsedEventArgs e)
+  {
+    var now = System.DateTime.Now;
+    var last = new System.DateTime(this.LastRead.Ticks);
+
+    this.SecondsSinceLastRead = (now - last).Seconds;
+  }
 
   // General
   public int Number
@@ -18,6 +38,24 @@ public class TagEntry : ObservableObject
     get => number;
     private set => SetProperty(ref number, value);
   }
+  public int ReadCount
+  {
+    get => this.readCount;
+    private set => SetProperty(ref readCount, value);
+  }
+
+  public TimeOnly LastRead
+  {
+    get => this.lastRead;
+    private set => SetProperty(ref lastRead, value);
+  }
+
+  public int SecondsSinceLastRead
+  {
+    get => this.secondsSinceLastRead;
+    set => SetProperty(ref secondsSinceLastRead, value);
+  }
+
   // General Tag Details
   public string TagType
   {
@@ -31,6 +69,12 @@ public class TagEntry : ObservableObject
   }
 
   public ObservableCollection<Antenna>? Antennas { get; set; }
+
+  public void AddRead()
+  {
+    this.ReadCount++;
+    this.LastRead = TimeOnly.FromDateTime(System.DateTime.Now);
+  }
 
   public override string ToString()
   {

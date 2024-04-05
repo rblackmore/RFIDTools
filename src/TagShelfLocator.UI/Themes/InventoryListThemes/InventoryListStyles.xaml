@@ -16,6 +16,8 @@
         <Setter Property="Border.CornerRadius" Value="4"/>
         <Setter Property="Height" Value="{Binding (ListView.View).ItemHeight,
                                           RelativeSource={RelativeSource AncestorType=ListView}}"/>
+        <Setter Property="MaxWidth" Value="{Binding (FrameworkElement.ActualWidth),
+                                         RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"/>
         <Setter Property="Template" Value="{StaticResource ListedViewItem}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">

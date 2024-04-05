@@ -23,25 +23,37 @@
 
     <!-- Listed EPC Class 1 Gen 2 -->
     <DataTemplate x:Key="ListedTagEntry_EPCC1G2" DataType="model:EPCClass1Gen2_TagEntry">
-        <StackPanel>
-            <controls:LabelValueUserControl Label="EPC: " Value="{Binding EPCHex}" 
-                                            FontSize="{Binding (ListView.View).FontSize,
-                                                       RelativeSource={RelativeSource AncestorType=ListView}}"/>
-            <controls:LabelValueUserControl Label="TID: " Value="{Binding TIDHex}" 
-                                            FontSize="{Binding (ListView.View).FontSize,
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <WrapPanel VerticalAlignment="Center">
+                <controls:LabelValueUserControl Margin="0,0,4,0" Label="EPC: " Value="{Binding EPCHex}" 
+                                                FontSize="{Binding (ListView.View).FontSize,
+                                                           RelativeSource={RelativeSource AncestorType=ListView}}"/>
+                <controls:LabelValueUserControl Label="| TID: " Value="{Binding TIDHex}" 
+                                                FontSize="{Binding (ListView.View).FontSize,
                                                        RelativeSource={RelativeSource AncestorType=ListView}}">
-                <controls:LabelValueUserControl.Style>
-                    <Style TargetType="controls:LabelValueUserControl">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding TIDHex}" Value="{x:Static sys:String.Empty}">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </controls:LabelValueUserControl.Style>
+                    <controls:LabelValueUserControl.Style>
+                        <Style TargetType="controls:LabelValueUserControl">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TIDHex}" Value="{x:Static sys:String.Empty}">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:LabelValueUserControl.Style>
 
-            </controls:LabelValueUserControl>
-        </StackPanel>
+                </controls:LabelValueUserControl>
+            </WrapPanel>
+            <StackPanel VerticalAlignment="Bottom" Grid.Row="1" Orientation="Horizontal">
+                <controls:LabelValueUserControl FontSize="14" Margin="0,0,4,0" Label="Type: " Value="{Binding TagType}"/>
+                <controls:LabelValueUserControl FontSize="14" Margin="0,0,4,0" Label="| LastRead: " Value="{Binding LastRead, StringFormat=hh:mm:ss}"/>
+                <controls:LabelValueUserControl FontSize="14" Margin="0,0,4,0" Label="| Seconds: " Value="{Binding SecondsSinceLastRead}"/>
+                <controls:LabelValueUserControl FontSize="14" Label="| ReadCount: " Value="{Binding ReadCount}"/>
+            </StackPanel>
+        </Grid>
     </DataTemplate>
 
     <!-- Listed ISO14443A -->
@@ -59,6 +71,8 @@
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <controls:LabelValueUserControl Margin="0,0,4,0" Label="Type: " Value="{Binding TagType}"/>
                 <controls:LabelValueUserControl Label="Manufacturer: " Value="{Binding ManufacturerName}"/>
+                <controls:LabelValueUserControl Label="LastRead: " Value="{Binding LastRead}"/>
+                <controls:LabelValueUserControl Label="ReadCount: " Value="{Binding ReadCount}"/>
             </StackPanel>
         </Grid>
     </DataTemplate>
