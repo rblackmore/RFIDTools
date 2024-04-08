@@ -89,7 +89,7 @@
         </Border>
 
         <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
-            <ListView x:Name="lv_Inventory" ItemsSource="{Binding TagListData.TagList}"
+            <ListView x:Name="lv_Inventory" ItemsSource="{Binding TagList}"
                       BorderThickness="0"
                       Background="{StaticResource TagListBackground}"
                       Style="{StaticResource ListedLayout}"/>

@@ -8,11 +8,11 @@ using TagShelfLocator.UI.MVVM.Modal;
 
 public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
 {
-  public ObservableCollection<TagEntry> TagList
+  public ObservableTagList TagList
   {
     get
     {
-      return new ObservableCollection<TagEntry>(
+      return new ObservableTagList(
         new[] {
           TagEntry.FromData(1, "EPC Class 1 Gen 2", "1234"),
           TagEntry.FromData(2, "ISO14443-A Mifare DESFire", "ABCD"),
@@ -21,8 +21,8 @@ public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
         });
     }
   }
-  
-  public TagListViewModel TagListData => throw new System.NotImplementedException();
+
+  public ObservableTagList TagListData => throw new System.NotImplementedException();
 
   public bool ClearOnStart { get; set; } = true;
 

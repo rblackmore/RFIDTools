@@ -70,9 +70,9 @@
                Text="{Binding SerialNumber}"/>
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <controls:LabelValueUserControl Margin="0,0,4,0" Label="Type: " Value="{Binding TagType}"/>
-                <controls:LabelValueUserControl Label="Manufacturer: " Value="{Binding ManufacturerName}"/>
-                <controls:LabelValueUserControl Label="LastRead: " Value="{Binding LastRead}"/>
-                <controls:LabelValueUserControl Label="ReadCount: " Value="{Binding ReadCount}"/>
+                <controls:LabelValueUserControl Label=" | Manufacturer: " Value="{Binding ManufacturerName}"/>
+                <controls:LabelValueUserControl Label=" | Seconds Since Last Read: " Value="{Binding SecondsSinceLastRead}"/>
+                <controls:LabelValueUserControl Label=" | ReadCount: " Value="{Binding ReadCount}"/>
             </StackPanel>
         </Grid>
     </DataTemplate>

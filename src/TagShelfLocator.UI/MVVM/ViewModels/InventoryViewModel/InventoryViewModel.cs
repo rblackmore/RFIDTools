@@ -1,7 +1,6 @@
 ﻿namespace TagShelfLocator.UI.MVVM.ViewModels;
 
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +10,6 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 
 using TagShelfLocator.UI.Helpers;
-using TagShelfLocator.UI.MVVM.Modal;
 using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.Services.InventoryService.Events;
@@ -50,7 +48,6 @@ public class InventoryViewModel : ViewModel,
     this.tagInventoryService = tagInventoryService;
     this.navigationService = navigationService;
     TagList = new();
-    TagListData = new(this.messenger);
 
     this.messenger.RegisterAll(this);
 
@@ -85,9 +82,7 @@ public class InventoryViewModel : ViewModel,
 
   public bool IsReaderDisconnected => !IsReaderConnected;
 
-  public ObservableCollection<TagEntry> TagList { get; }
-
-  public TagListViewModel TagListData { get; }
+  public ObservableTagList TagList { get; }
 
   public bool ClearOnStart
   {

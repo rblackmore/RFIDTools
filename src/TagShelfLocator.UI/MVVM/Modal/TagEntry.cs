@@ -70,7 +70,7 @@ public class TagEntry : ObservableObject
 
   public ObservableCollection<Antenna>? Antennas { get; set; }
 
-  public void AddRead()
+  public void IncrementRead()
   {
     this.ReadCount++;
     this.LastRead = TimeOnly.FromDateTime(System.DateTime.Now);
@@ -79,6 +79,39 @@ public class TagEntry : ObservableObject
   public override string ToString()
   {
     return $"{Number}: '{SerialNumber}' - {TagType}";
+  }
+
+  public override bool Equals(object? obj)
+  {
+    if (obj is not TagEntry other)
+      return false;
+
+    if (ReferenceEquals(this, other))
+      return true;
+
+    if (other is null)
+      return false;
+
+    return this.SerialNumber == other.SerialNumber;
+  }
+
+  public static bool operator ==(TagEntry left, TagEntry right)
+  {
+    if (left is null && right is null)
+      return true;
+
+    if (left is null || right is null)
+      return false;
+
+    if (left.SerialNumber is null || right.SerialNumber is null)
+      return false;
+
+    return left.Equals(right);
+  }
+
+  public static bool operator !=(TagEntry left, TagEntry right)
+  {
+    return !(left == right);
   }
 
   public static TagEntry FromData(int count, string serialNumber, string trType)
