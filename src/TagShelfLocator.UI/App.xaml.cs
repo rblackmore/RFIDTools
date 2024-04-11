@@ -18,6 +18,7 @@ using TagShelfLocator.UI.MVVM.ViewModels;
 using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.Services.ReaderConnectionListenerService;
+using TagShelfLocator.UI.Services.ReaderManagement;
 
 using DateTime = System.DateTime;
 
@@ -62,20 +63,7 @@ public partial class App : Application
 
   private void ConfigureServices(HostApplicationBuilder builder)
   {
-    var timestamp = DateTime.Now.ToString("dd-HHmmss");
-
-    string logFile = $"protocollog{timestamp}.log";
-    var appLoggingParams = AppLoggingParam.createFileLogger(logFile);
-
-    var reader = new ReaderModule(RequestMode.UniDirectional);
-
-    if (builder.Environment.IsDevelopment())
-    {
-      Serilog.Log.Logger.Information("Protocol Log File: {logfile}", logFile);
-      reader.log().startLogging(appLoggingParams);
-    }
-
-    builder.Services.AddSingleton(reader);
+    builder.Services.AddSingleton<IReaderManager, ReaderManager>();
     builder.Services.AddSingleton<Shell>();
     builder.Services.AddHostedService<ReaderConnectionListener>();
     builder.Services.AddSingleton<IMessenger>(new StrongReferenceMessenger());

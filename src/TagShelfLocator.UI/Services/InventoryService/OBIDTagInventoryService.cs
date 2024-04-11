@@ -15,6 +15,7 @@ using TagShelfLocator.UI.MVVM.Modal;
 using TagShelfLocator.UI.Services.InventoryService.Events;
 using TagShelfLocator.UI.Services.InventoryService.Messages;
 using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
+using TagShelfLocator.UI.Services.ReaderManagement;
 
 // TODO: Eventually intend to extract an Interface from this,
 // so i can create different versions for different readers.
@@ -25,20 +26,23 @@ public class OBIDTagInventoryService :
 {
   private readonly ILogger<OBIDTagInventoryService> logger;
   private readonly IMessenger messenger;
-  private readonly ReaderModule reader;
-
+  private readonly IReaderManager readerManager;
   private Task RunningTask = Task.CompletedTask;
 
   private CancellationTokenSource cancellationTokenSource = new();
 
-  public OBIDTagInventoryService(ILogger<OBIDTagInventoryService> logger, IMessenger messenger, ReaderModule reader)
+  public OBIDTagInventoryService(
+    ILogger<OBIDTagInventoryService> logger,
+    IMessenger messenger,
+    IReaderManager readerManager)
   {
     this.logger = logger;
     this.messenger = messenger;
-    this.reader = reader;
-
+    this.readerManager = readerManager;
     this.messenger.RegisterAll(this);
   }
+
+  private ReaderModule Reader => this.readerManager.SelectedReader;
 
   public bool IsRunning => !IsNotRunning;
 
@@ -98,23 +102,23 @@ public class OBIDTagInventoryService :
     cancellationTokenSource?.Cancel();
     await RunningTask;
 
-    this.reader.rf().off();
+    this.Reader.rf().off();
 
     this.messenger.Send(new InventoryStoppedMessage(message));
   }
 
   private async Task RunAsync(CancellationToken cancellationToken = default)
   {
-    reader.hm().setUsageMode(Hm.UsageMode.UseQueue);
+    Reader.hm().setUsageMode(Hm.UsageMode.UseQueue);
 
     var invParams = new InventoryParam();
 
-    if (this.reader.readerType() is ReaderType.MRU102)
+    if (this.Reader.readerType() is ReaderType.MRU102)
       invParams.setAntennas(0x08);
 
     while (!cancellationToken.IsCancellationRequested)
     {
-      var state = reader.hm().inventory(true, invParams);
+      var state = Reader.hm().inventory(true, invParams);
 
       // TODO: I should handle a few other error codes depending on what may go wrong.
       // eg. Code 0x01 means no tags, this is fine to continue
@@ -127,11 +131,11 @@ public class OBIDTagInventoryService :
 
       var tagList = new List<TagEntry>();
 
-      while (reader.hm().queueItemCount() > 0)
+      while (Reader.hm().queueItemCount() > 0)
       {
         count++;
 
-        var tagItem = reader.hm().popItem();
+        var tagItem = Reader.hm().popItem();
 
         if (tagItem is null)
           continue;

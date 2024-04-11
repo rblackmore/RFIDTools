@@ -1,6 +1,5 @@
 ﻿namespace TagShelfLocator.UI.Services.ReaderConnectionListenerService;
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,46 +11,45 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
-
-using static FEDM.ReaderInfo;
+using TagShelfLocator.UI.Services.ReaderManagement;
 
 public class ReaderConnectionListener : IHostedService, IUsbListener
 {
   private readonly ILogger<ReaderConnectionListener> logger;
   private readonly IMessenger messenger;
   private readonly IHostApplicationLifetime lifetime;
-
-  private readonly ReaderModule reader;
+  private readonly IReaderManager readerManager;
 
   public ReaderConnectionListener(
     ILogger<ReaderConnectionListener> logger,
     IMessenger messenger,
     IHostApplicationLifetime lifetime,
-    ReaderModule reader)
+    IReaderManager readerManager)
   {
     this.logger = logger;
-    this.reader = reader;
     this.messenger = messenger;
     this.lifetime = lifetime;
-
+    this.readerManager = readerManager;
     this.lifetime.ApplicationStopping.Register(HandleGracefulShutdown);
   }
 
   private async void HandleGracefulShutdown()
   {
-    if (!this.reader.isConnected())
+    if (!this.Reader.isConnected())
       return;
 
-    var deviceId = this.reader.info().deviceId();
+    var deviceId = this.Reader.info().deviceId();
 
     await SendDisconnectingNotification(deviceId);
 
-    this.reader.disconnect();
+    this.Reader.disconnect();
 
     this.SendDisconnectedNotification(deviceId);
 
-    this.reader.Dispose();
+    this.Reader.Dispose();
   }
+
+  private ReaderModule Reader => this.readerManager.SelectedReader;
 
   public async void onUsbEvent()
   {
@@ -87,16 +85,16 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
   }
   private void HandleNewReader(UsbScanInfo scanInfo)
   {
-    if (reader.isConnected())
+    if (Reader.isConnected())
       return;
 
     var usbConnector = scanInfo.connector();
 
-    reader.connect(usbConnector);
-    reader.readReaderInfo();
+    Reader.connect(usbConnector);
+    Reader.readReaderInfo();
 
     var connectionMessage =
-      new ReaderConnected(scanInfo.deviceId(), reader.info().readerTypeToString());
+      new ReaderConnected(scanInfo.deviceId(), Reader.info().readerTypeToString());
 
     messenger.Send(connectionMessage);
 
@@ -107,7 +105,7 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
   {
     await SendDisconnectingNotification(scanInfo.deviceId());
 
-    reader.disconnect();
+    Reader.disconnect();
 
     logger.LogInformation("Reader Disconnected: {deviceId}", scanInfo.deviceId());
 
@@ -133,6 +131,6 @@ public class ReaderConnectionListener : IHostedService, IUsbListener
   {
     return
       scanInfo.isReaderGone() &&
-      reader.info().deviceId() == scanInfo.deviceId();
+      Reader.info().deviceId() == scanInfo.deviceId();
   }
 }
