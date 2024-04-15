@@ -1,11 +1,11 @@
-﻿namespace TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
+﻿namespace TagShelfLocator.UI.Services.ReaderManagement.Messages;
 
 public class ReaderConnected
 {
   public ReaderConnected(uint deviceID, string deviceName)
   {
-    this.DeviceID = deviceID;
-    this.DeviceName = deviceName;
+    DeviceID = deviceID;
+    DeviceName = deviceName;
   }
 
   public uint DeviceID { get; }

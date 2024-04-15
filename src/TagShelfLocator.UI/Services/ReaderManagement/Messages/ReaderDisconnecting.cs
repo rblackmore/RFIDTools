@@ -1,4 +1,4 @@
-﻿namespace TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
+﻿namespace TagShelfLocator.UI.Services.ReaderManagement.Messages;
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,6 +23,6 @@ public class ReaderDisconnecting
 
   public void AddTask(Task busyTask)
   {
-    this.busyTasks.Add(busyTask);
+    busyTasks.Add(busyTask);
   }
 }

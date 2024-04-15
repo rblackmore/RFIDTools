@@ -14,7 +14,7 @@ using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.Services.InventoryService.Events;
 using TagShelfLocator.UI.Services.InventoryService.Messages;
-using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
+using TagShelfLocator.UI.Services.ReaderManagement.Messages;
 
 public class InventoryViewModel : ViewModel,
   IInventoryViewModel,

@@ -14,8 +14,8 @@ using Microsoft.Extensions.Logging;
 using TagShelfLocator.UI.MVVM.Modal;
 using TagShelfLocator.UI.Services.InventoryService.Events;
 using TagShelfLocator.UI.Services.InventoryService.Messages;
-using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
 using TagShelfLocator.UI.Services.ReaderManagement;
+using TagShelfLocator.UI.Services.ReaderManagement.Messages;
 
 // TODO: Eventually intend to extract an Interface from this,
 // so i can create different versions for different readers.

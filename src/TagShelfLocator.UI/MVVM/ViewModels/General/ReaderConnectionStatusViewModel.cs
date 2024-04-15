@@ -2,7 +2,7 @@
 
 using CommunityToolkit.Mvvm.Messaging;
 
-using TagShelfLocator.UI.Services.ReaderConnectionListenerService.Messages;
+using TagShelfLocator.UI.Services.ReaderManagement.Messages;
 
 public class ReaderConnectionStatusViewModel : ViewModel,
   IReaderConnectionStatusViewModel,
