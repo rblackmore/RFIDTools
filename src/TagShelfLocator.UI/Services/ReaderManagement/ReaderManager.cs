@@ -6,46 +6,49 @@ using System.Linq;
 
 using CommunityToolkit.Mvvm.Messaging;
 
-using FEDM;
-
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-using TagShelfLocator.UI.Services.ReaderManagement.Messages;
+using TagShelfLocator.UI.Services.ReaderManagement.Model;
 
-public class ReaderManager : IReaderManager, IDisposable
+public class ReaderManager :
+  IReaderManager,
+  IRecipient<USBReaderDiscovered>,
+  IRecipient<USBReaderGone>,
+  IDisposable
 {
-  private Dictionary<uint, ReaderModule> readerModules = new();
+  private Dictionary<uint, ReaderDescription> readers = new();
 
   private readonly ILogger<ReaderManager> logger;
   private readonly IMessenger messenger;
   private readonly IHostApplicationLifetime appLifetime;
-  private readonly UsbListener usbListener;
 
   private uint selectedReaderId;
 
   public ReaderManager(
     ILogger<ReaderManager> logger,
     IMessenger messenger,
-    IHostApplicationLifetime appLifetime,
-    UsbListener usbListener)
+    IHostApplicationLifetime appLifetime)
   {
     this.logger = logger;
     this.messenger = messenger;
     this.appLifetime = appLifetime;
-    this.usbListener = usbListener;
 
-    this.usbListener.ReaderDiscovered += UsbListener_ReaderDiscovered;
-    this.usbListener.ReaderGone += UsbListener_ReaderGone;
+    this.messenger.RegisterAll(this);
   }
 
-  public ReaderModule this[uint deviceID] => this.readerModules[deviceID];
+  public ReaderDescription this[uint deviceID] => this.readers[deviceID];
 
-  public ReaderModule SelectedReader => this.readerModules[selectedReaderId];
+  public IReadOnlyList<ReaderDescription> GetReaderDescriptions()
+  {
+    return this.readers.Values.ToList().AsReadOnly();
+  }
+
+  public ReaderDescription SelectedReader => (this.readers.TryGetValue(this.selectedReaderId, out ReaderDescription? r)) ? r : null!;
 
   public bool SetSelectedReader(uint readerId)
   {
-    if (!this.readerModules.ContainsKey(readerId))
+    if (!this.readers.ContainsKey(readerId))
       return false;
 
     this.selectedReaderId = readerId;
@@ -55,34 +58,38 @@ public class ReaderManager : IReaderManager, IDisposable
 
   public uint[] GetReaderIDs()
   {
-    return this.readerModules.Keys.ToArray();
+    return this.readers.Keys.ToArray();
   }
 
-  public bool TryGetReaderByDeviceID(uint deviceID, out ReaderModule reader)
+  public bool TryGetReaderByDeviceID(uint deviceID, out ReaderDescription reader)
   {
-    return this.readerModules.TryGetValue(deviceID, out reader!);
+    return this.readers.TryGetValue(deviceID, out reader!);
   }
 
-  private void UsbListener_ReaderDiscovered(object sender, ReaderDiscoveredEventArgs e)
+  public void Receive(USBReaderDiscovered message)
   {
-    this.readerModules[e.DeviceID] = e.Reader;
+    var rd = ReaderDescription.CreateUSB(message.Reader);
 
-    var connectedMessage =
-      new ReaderConnected(e.DeviceID, e.Reader.info().readerTypeToString());
+    this.readers[message.DeviceID] = rd;
 
-    this.messenger.Send(connectedMessage);
+    this.logger.LogInformation("New USB Reader Discovered ({deviceId})", message.DeviceID);
   }
 
-  private void UsbListener_ReaderGone(object sender, ReaderGoneEventArgs e)
+  public void Receive(USBReaderGone message)
   {
-    if (this.readerModules.ContainsKey(e.DeviceID))
-      this.readerModules.Remove(e.DeviceID);
+    if (!this.readers.ContainsKey(message.DeviceID))
+      return;
+
+    this.readers.Remove(message.DeviceID);
+
+    this.logger.LogInformation("USB Reader Gone ({deviceId})", message.DeviceID);
   }
 
   public void Dispose()
   {
-    this.usbListener.ReaderDiscovered -= UsbListener_ReaderDiscovered;
-    this.usbListener.ReaderGone -= UsbListener_ReaderGone;
+    //this.usbListener.ReaderDiscovered -= UsbListener_ReaderDiscovered;
+    //this.usbListener.ReaderGone -= UsbListener_ReaderGone;
+    this.messenger.UnregisterAll(this);
   }
 }
 

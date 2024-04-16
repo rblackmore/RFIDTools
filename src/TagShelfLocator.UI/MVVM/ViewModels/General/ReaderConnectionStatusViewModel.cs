@@ -2,12 +2,8 @@
 
 using CommunityToolkit.Mvvm.Messaging;
 
-using TagShelfLocator.UI.Services.ReaderManagement.Messages;
-
 public class ReaderConnectionStatusViewModel : ViewModel,
-  IReaderConnectionStatusViewModel,
-  IRecipient<ReaderConnected>,
-  IRecipient<ReaderDisconnected>
+  IReaderConnectionStatusViewModel
 {
   private readonly IMessenger messenger;
 
@@ -56,17 +52,17 @@ public class ReaderConnectionStatusViewModel : ViewModel,
   }
 
 
-  public void Receive(ReaderConnected message)
-  {
-    this.IsConnected = true;
-    this.ReaderName = message.DeviceName;
-    this.DeviceID = message.DeviceID;
-  }
+  //public void Receive(ReaderConnected message)
+  //{
+  //  this.IsConnected = true;
+  //  this.ReaderName = message.DeviceName;
+  //  this.DeviceID = message.DeviceID;
+  //}
 
-  public void Receive(ReaderDisconnected message)
-  {
-    this.IsConnected = false;
-    this.ReaderName = "No Reader\nConnected";
-    this.DeviceID = 0;
-  }
+  //public void Receive(ReaderDisconnected message)
+  //{
+  //  this.IsConnected = false;
+  //  this.ReaderName = "No Reader\nConnected";
+  //  this.DeviceID = 0;
+  //}
 }

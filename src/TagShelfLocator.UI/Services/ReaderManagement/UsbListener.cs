@@ -1,27 +1,34 @@
 ﻿namespace TagShelfLocator.UI.Services.ReaderManagement;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
+
+using CommunityToolkit.Mvvm.Messaging;
 
 using FEDM;
 
 using Microsoft.Extensions.Hosting;
-
-public delegate void ReaderDiscoveredEventHandler(object sender, ReaderDiscoveredEventArgs e);
-public delegate void ReaderGoneEventHandler(object sender, ReaderGoneEventArgs e);
+using Microsoft.Extensions.Logging;
 
 public class UsbListener : IHostedService, IUsbListener
 {
-  public event ReaderDiscoveredEventHandler? ReaderDiscovered;
-  public event ReaderGoneEventHandler? ReaderGone;
+  private readonly ILogger<UsbListener> logger;
+  private readonly IMessenger messenger;
+
+  public UsbListener(ILogger<UsbListener> logger, IMessenger messenger)
+  {
+    this.logger = logger;
+    this.messenger = messenger;
+  }
 
   public async void onUsbEvent()
   {
+    this.logger.LogInformation("USB Events: {readerCount}", UsbManager.readerCount());
     var scanInfo = UsbManager.popDiscover();
 
     while (scanInfo.isValid())
     {
       await ProcessUsbEventAsync(scanInfo);
+      scanInfo = UsbManager.popDiscover();
     }
   }
 
@@ -52,38 +59,11 @@ public class UsbListener : IHostedService, IUsbListener
   {
     var newReader = new ReaderModule(RequestMode.UniDirectional);
 
-    var connector = scanInfo.connector();
-
-    newReader.connect(connector);
-
-    if (this.ReaderDiscovered is not null)
-      this.ReaderDiscovered(this, new ReaderDiscoveredEventArgs(newReader, scanInfo.deviceId()));
+    this.messenger.Send(new USBReaderDiscovered(newReader, scanInfo.deviceId()));
   }
 
   private void OnReaderGone(UsbScanInfo scanInfo)
   {
-    if (this.ReaderGone is not null)
-      this.ReaderGone(this, new ReaderGoneEventArgs(scanInfo.deviceId()));
+    this.messenger.Send(new USBReaderGone(scanInfo.deviceId()));
   }
-}
-
-public class ReaderDiscoveredEventArgs : EventArgs
-{
-  public ReaderDiscoveredEventArgs(ReaderModule reader, uint deviceID)
-  {
-    Reader = reader;
-    DeviceID = deviceID;
-  }
-  public ReaderModule Reader { get; init; }
-  public uint DeviceID { get; set; }
-}
-
-public class ReaderGoneEventArgs : EventArgs
-{
-  public ReaderGoneEventArgs(uint deviceID)
-  {
-    DeviceID = deviceID;
-  }
-
-  public uint DeviceID { get; set; }
 }

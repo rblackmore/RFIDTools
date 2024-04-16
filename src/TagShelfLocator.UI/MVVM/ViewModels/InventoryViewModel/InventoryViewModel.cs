@@ -14,15 +14,12 @@ using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.Services.InventoryService.Events;
 using TagShelfLocator.UI.Services.InventoryService.Messages;
-using TagShelfLocator.UI.Services.ReaderManagement.Messages;
 
 public class InventoryViewModel : ViewModel,
   IInventoryViewModel,
   IDisposable,
   IRecipient<InventoryStartedMessage>,
   IRecipient<InventoryStoppedMessage>,
-  IRecipient<ReaderConnected>,
-  IRecipient<ReaderDisconnected>,
   IRecipient<InventoryTagItemsDetectedMessage>
 {
   private readonly ILogger<InventoryViewModel> logger;
@@ -136,17 +133,17 @@ public class InventoryViewModel : ViewModel,
     return tagInventoryService.IsRunning;
   }
 
-  public async void Receive(ReaderConnected message)
-  {
-    IsReaderConnected = true;
-  }
+  //public async void Receive(ReaderConnected message)
+  //{
+  //  IsReaderConnected = true;
+  //}
 
-  public async void Receive(ReaderDisconnected message)
-  {
-    IsReaderConnected = false;
-    await CancelInventoryChannelReaderAsync();
-    OnInventoryTaskCanExecuteChanged();
-  }
+  //public async void Receive(ReaderDisconnected message)
+  //{
+  //  IsReaderConnected = false;
+  //  await CancelInventoryChannelReaderAsync();
+  //  OnInventoryTaskCanExecuteChanged();
+  //}
 
   public void Receive(InventoryStartedMessage message)
   {

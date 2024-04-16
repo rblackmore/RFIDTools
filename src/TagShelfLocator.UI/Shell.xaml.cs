@@ -16,18 +16,6 @@ public partial class Shell : Window
     InitializeComponent();
   }
 
-  private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-  {
-  }
-
-  private void WindowMaximize_Click(object sender, RoutedEventArgs e)
-  {
-  }
-
-  private void WindowMinimize_Click(object sender, RoutedEventArgs e)
-  {
-  }
-
   private void WindowTitleBar_CloseButton(object sender, System.EventArgs e)
   {
     var appLifetime = App.Current.Services.GetRequiredService<IHostApplicationLifetime>();

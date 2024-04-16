@@ -62,6 +62,7 @@ public partial class App : Application
 
   private void ConfigureServices(HostApplicationBuilder builder)
   {
+
     builder.Services.AddHostedService<UsbListener>();
     builder.Services.AddSingleton<IReaderManager, ReaderManager>();
     builder.Services.AddSingleton<Shell>();

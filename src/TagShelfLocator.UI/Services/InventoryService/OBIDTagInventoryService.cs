@@ -15,18 +15,16 @@ using TagShelfLocator.UI.MVVM.Modal;
 using TagShelfLocator.UI.Services.InventoryService.Events;
 using TagShelfLocator.UI.Services.InventoryService.Messages;
 using TagShelfLocator.UI.Services.ReaderManagement;
-using TagShelfLocator.UI.Services.ReaderManagement.Messages;
+using TagShelfLocator.UI.Services.ReaderManagement.Model;
 
-// TODO: Eventually intend to extract an Interface from this,
-// so i can create different versions for different readers.
 public class OBIDTagInventoryService :
   IDisposable,
-  ITagInventoryService,
-  IRecipient<ReaderDisconnecting>
+  ITagInventoryService
 {
   private readonly ILogger<OBIDTagInventoryService> logger;
   private readonly IMessenger messenger;
   private readonly IReaderManager readerManager;
+  private ReaderDescription readerDescription;
   private Task RunningTask = Task.CompletedTask;
 
   private CancellationTokenSource cancellationTokenSource = new();
@@ -39,25 +37,19 @@ public class OBIDTagInventoryService :
     this.logger = logger;
     this.messenger = messenger;
     this.readerManager = readerManager;
-    this.messenger.RegisterAll(this);
+    this.readerDescription = readerManager.SelectedReader;
   }
 
-  private ReaderModule Reader => this.readerManager.SelectedReader;
+  private ReaderModule Reader => this.readerDescription.ReaderModule;
 
   public bool IsRunning => !IsNotRunning;
 
   public bool IsNotRunning => RunningTask is null || RunningTask.IsCompleted;
 
-  public async void Receive(ReaderDisconnecting message)
-  {
-    message.AddTask(this.RunningTask);
-    await StopAsync("Reader Disconnecting");
-  }
-
-  public async Task StartAsync(string message = "", CancellationToken cancellationToken = default)
+  public Task StartAsync(string message = "", CancellationToken cancellationToken = default)
   {
     if (IsRunning)
-      return;
+      return Task.CompletedTask;
 
     cancellationTokenSource = new CancellationTokenSource();
 
@@ -68,13 +60,15 @@ public class OBIDTagInventoryService :
     .ContinueWith(HandleRunningTaskCompletion);
 
     this.messenger.Send(new InventoryStartedMessage(message));
+
+    return Task.CompletedTask;
   }
 
   /// <summary>
   /// Handles the completion of the Running Task, and any exceptions that may have occurred.
   /// This is required as Running Task is infinite, and never awaited until StopAsync is called.
   /// If an exception happens, it won't be caught until it's awaited.
-  /// This Method will handle the exception, and also gracefully stop the RUnning Task.
+  /// This Method will handle the exception, and also gracefully stop the Running Task.
   /// </summary>
   /// <param name="tsk">The Completed Task.</param>
   /// <returns>An Awaitable Task.</returns>

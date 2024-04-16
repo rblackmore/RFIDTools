@@ -1,10 +1,12 @@
-﻿namespace TagShelfLocator.UI.Services.ReaderManagement.Messages;
+﻿namespace TagShelfLocator.UI.Services.ReaderManagement;
 
-using System.Threading.Tasks;
+using System;
 
-public class ReaderDisconnected
+public delegate void ReaderDisconnectedEventHandler(object sender, ReaderDisconnectedEventArgs e);
+
+public class ReaderDisconnectedEventArgs : EventArgs
 {
-  public ReaderDisconnected(uint deviceID)
+  public ReaderDisconnectedEventArgs(uint deviceID)
   {
     DeviceID = deviceID;
   }
