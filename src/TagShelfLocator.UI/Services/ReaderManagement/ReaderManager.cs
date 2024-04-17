@@ -1,8 +1,9 @@
 ﻿namespace TagShelfLocator.UI.Services.ReaderManagement;
 
+using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using MediatR;
 
@@ -64,9 +65,9 @@ public class ReaderManager : IReaderManager
     return this.readers.TryGetValue(deviceID, out reader!);
   }
 
-  public void AddReaderDescription(uint deviceID, ReaderDescription description)
+  public void AddReaderDescription(uint deviceID, ReaderDescription rd)
   {
-    this.readers[deviceID] = description;
+    this.readers[deviceID] = rd;
 
     var notification = new ReaderAdded(deviceID);
 
@@ -91,6 +92,36 @@ public class ReaderManager : IReaderManager
 
     if (this.readers.Count == 1)
       SetSelectedReader(this.readers.First().Key);
+  }
+  public async Task<bool> ConnectReader(uint deviceID)
+  {
+    if (!this.readers.TryGetValue(deviceID, out ReaderDescription? rd))
+      return false;
+
+    if (!rd.Connect())
+      return false;
+
+    var notification = new ReaderConnected(deviceID, rd.ReaderName);
+    await this.mediator.Publish(notification);
+
+    return true;
+  }
+
+  public async Task<bool> DisconnectReader(uint deviceID)
+  {
+    if (!this.readers.TryGetValue(deviceID, out ReaderDescription? rd))
+      return false;
+
+    var disconnectingNotification = new ReaderDisconnecting(deviceID);
+    await this.mediator.Publish(disconnectingNotification);
+
+    if (!rd.Disconnect())
+      return false;
+
+    var disconnectedNotificaiton = new ReaderDisconnected(deviceID);
+    await this.mediator.Publish(disconnectedNotificaiton);
+
+    return true;
   }
 
   private void HandleGracefulShutdown()

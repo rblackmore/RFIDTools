@@ -2,11 +2,11 @@
 
 using System;
 
-public delegate void ReaderConnectedEventHandler(object sender, ReaderConnectedEventArgs e);
+using MediatR;
 
-public class ReaderConnectedEventArgs : EventArgs
+public class ReaderConnected : INotification
 {
-  public ReaderConnectedEventArgs(uint deviceID, string deviceName)
+  public ReaderConnected(uint deviceID, string deviceName)
   {
     DeviceID = deviceID;
     DeviceName = deviceName;

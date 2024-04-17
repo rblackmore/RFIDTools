@@ -1,6 +1,7 @@
 ﻿namespace TagShelfLocator.UI.Services.ReaderManagement;
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public interface IReaderManager
 {
@@ -12,4 +13,6 @@ public interface IReaderManager
   bool TryGetReaderByDeviceID(uint deviceID, out ReaderDescription reader);
   void AddReaderDescription(uint deviceID, ReaderDescription description);
   void RemoveReaderDescription(uint deviceID);
+  Task<bool> ConnectReader(uint deviceID);
+  Task<bool> DisconnectReader(uint deviceID);
 }

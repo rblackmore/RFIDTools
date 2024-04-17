@@ -35,10 +35,6 @@ public class ReaderDescription
     this.appLoggingParams = AppLoggingParam.createFileLogger($"{DeviceID}.log");
   }
 
-  public event ReaderConnectedEventHandler? ReaderConnected;
-  public event ReaderDisconnectingEventHandler? ReaderDisconnecting;
-  public event ReaderDisconnectedEventHandler? ReaderDisconnected;
-
   public ReaderModule ReaderModule => this.readerModule;
   public uint DeviceID => this.deviceId;
   public uint ReaderType => this.readerType;
@@ -67,40 +63,17 @@ public class ReaderDescription
         return false;
     }
 
-    if (isConnected)
-      OnReaderConnected();
-
     return isConnected;
   }
 
   public bool Disconnect()
   {
-    OnDisconnecting();
-    if (this.ReaderModule.isConnected())
-      this.ReaderModule.disconnect();
+    if (!this.ReaderModule.isConnected())
+      return true;
 
-    if (!this.IsConnected)
-      OnDisconnected();
+    this.ReaderModule.disconnect();
 
     return !this.IsConnected;
-  }
-
-  private void OnDisconnected()
-  {
-    this.ReaderDisconnected?.Invoke(this, new ReaderDisconnectedEventArgs(this.DeviceID));
-  }
-
-  private void OnDisconnecting()
-  {
-    this.ReaderDisconnecting?.Invoke(this, new ReaderDisconnectingEventArgs(this.DeviceID));
-  }
-
-  private void OnReaderConnected()
-  {
-    var deviceId = this.ReaderModule.info().deviceId();
-    var deviceName = this.ReaderModule.info().readerTypeToString();
-
-    this.ReaderConnected?.Invoke(this, new ReaderConnectedEventArgs(deviceId, deviceName));
   }
 
   private bool ConnectUSB()
