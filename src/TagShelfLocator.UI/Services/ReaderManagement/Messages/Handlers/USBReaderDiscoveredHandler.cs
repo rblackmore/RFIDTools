@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 using MediatR;
 
-using TagShelfLocator.UI.Services.ReaderManagement.Model;
-
 public class USBReaderDiscoveredHandler : INotificationHandler<USBReaderDiscovered>
 {
   private readonly IReaderManager readerManager;

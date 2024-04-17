@@ -76,7 +76,7 @@ public partial class App : Application
     builder.Services.AddSingleton<IShellViewModel, ShellViewModel>();
 
     builder.Services
-      .AddSingleton<IReaderConnectionStatusViewModel, ReaderConnectionStatusViewModel>();
+      .AddSingleton<IReaderManagementVM, ReaderManagementVM>();
 
     // Register IViewModel Factory.
     // This factory takes in a Type, Gets this service from the standard provider.

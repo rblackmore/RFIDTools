@@ -1,6 +1,6 @@
 ﻿namespace TagShelfLocator.UI.MVVM.ViewModels;
 
-public interface IReaderConnectionStatusViewModel : IViewModel
+public interface IReaderManagementVM : IViewModel
 {
   bool IsConnected { get; }
   string? ReaderName { get; }

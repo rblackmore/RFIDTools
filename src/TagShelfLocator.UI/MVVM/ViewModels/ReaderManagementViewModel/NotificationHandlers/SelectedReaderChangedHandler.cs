@@ -7,12 +7,11 @@ using MediatR;
 
 using TagShelfLocator.UI.Services.ReaderManagement;
 
-public class ConnectionStatusSelectedReaderChangedHandler : INotificationHandler<SelectedReaderChanged>
+public class SelectedReaderChangedHandler : INotificationHandler<SelectedReaderChanged>
 {
-  private readonly IReaderConnectionStatusViewModel vm;
+  private readonly IReaderManagementVM vm;
 
-  public ConnectionStatusSelectedReaderChangedHandler(
-    IReaderConnectionStatusViewModel viewModel)
+  public SelectedReaderChangedHandler(IReaderManagementVM viewModel)
   {
     this.vm = viewModel;
   }
@@ -20,6 +19,7 @@ public class ConnectionStatusSelectedReaderChangedHandler : INotificationHandler
   public Task Handle(SelectedReaderChanged notification, CancellationToken cancellationToken)
   {
     this.vm.SelectedReaderChanged(notification.DeviceID);
+
     return Task.CompletedTask;
   }
 }

@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using CommunityToolkit.Mvvm.Messaging;
-
 using FEDM;
 
 using MediatR;
@@ -17,7 +15,6 @@ using TagShelfLocator.UI.MVVM.Modal;
 using TagShelfLocator.UI.Services.InventoryService.Events;
 using TagShelfLocator.UI.Services.InventoryService.Messages;
 using TagShelfLocator.UI.Services.ReaderManagement;
-using TagShelfLocator.UI.Services.ReaderManagement.Model;
 
 public class OBIDTagInventoryService :
   IDisposable,

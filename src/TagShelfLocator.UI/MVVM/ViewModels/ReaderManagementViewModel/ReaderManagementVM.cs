@@ -5,14 +5,14 @@ using TagShelfLocator.UI.Services.ReaderManagement;
 // TODO: Okay, I should update this to be a full Reader Selection ViewModel.
 // Update the view to match as well.
 // Display the currently selected Reader Details, included conneciton Status.
-public class ReaderConnectionStatusViewModel : ViewModel,
-  IReaderConnectionStatusViewModel
+public class ReaderManagementVM : ViewModel,
+  IReaderManagementVM
 {
 
   private readonly IReaderManager readerManager;
   private ReaderDescription? readerDescription;
 
-  public ReaderConnectionStatusViewModel(IReaderManager readerManager)
+  public ReaderManagementVM(IReaderManager readerManager)
   {
     this.IsConnected = false;
     this.ReaderName = string.Empty;
