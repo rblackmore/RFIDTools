@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OBID.Scratch", ".scratch\OB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroCom.RFIDTools.UI", "src\ElectroCom.RFIDTools.UI\ElectroCom.RFIDTools.UI.csproj", "{E55F02AA-F482-48A3-A943-C00C4B3F5895}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectroCom.RFIDTools.UI.Logic", "src\ElectroCom.RFIDTools.UI.Logic\ElectroCom.RFIDTools.UI.Logic.csproj", "{93740CCE-A074-41E8-835C-492CE8AC41F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{E55F02AA-F482-48A3-A943-C00C4B3F5895}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E55F02AA-F482-48A3-A943-C00C4B3F5895}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E55F02AA-F482-48A3-A943-C00C4B3F5895}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93740CCE-A074-41E8-835C-492CE8AC41F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93740CCE-A074-41E8-835C-492CE8AC41F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93740CCE-A074-41E8-835C-492CE8AC41F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93740CCE-A074-41E8-835C-492CE8AC41F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B6C94590-4008-4C67-8F2A-38B89940DF43} = {449B3104-C017-42C9-A5FF-2DD434284CB7}
 		{E55F02AA-F482-48A3-A943-C00C4B3F5895} = {39F4209C-7E1F-472A-97E5-26624043422F}
+		{93740CCE-A074-41E8-835C-492CE8AC41F6} = {39F4209C-7E1F-472A-97E5-26624043422F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5794C1-ED4A-4449-8BD8-BCE56E318818}
