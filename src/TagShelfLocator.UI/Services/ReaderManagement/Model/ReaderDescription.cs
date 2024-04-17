@@ -1,4 +1,4 @@
-﻿namespace TagShelfLocator.UI.Services.ReaderManagement.Model;
+﻿namespace TagShelfLocator.UI.Services.ReaderManagement;
 
 using System;
 

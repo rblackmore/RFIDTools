@@ -2,15 +2,13 @@
 
 using System.Collections.Generic;
 
-using TagShelfLocator.UI.Services.ReaderManagement.Model;
-
 public interface IReaderManager
 {
   ReaderDescription SelectedReader { get; }
   ReaderDescription this[uint deviceID] { get; }
-  uint[] GetReaderIDs();
+  uint[] GetDeviceIDs();
   IReadOnlyList<ReaderDescription> GetReaderDescriptions();
-  bool SetSelectedReader(uint readerId);
+  void SetSelectedReader(uint readerId);
   bool TryGetReaderByDeviceID(uint deviceID, out ReaderDescription reader);
   void AddReaderDescription(uint deviceID, ReaderDescription description);
   void RemoveReaderDescription(uint deviceID);

@@ -34,8 +34,11 @@ public class UsbListener : IHostedService, IUsbListener
       infos.Add(scanInfo);
       scanInfo = UsbManager.popDiscover();
     }
-    // This shoudl not be necessary, but for some reason, disconnection events are triggered twice.
-    var uniqueScans = infos.GroupBy(scan => scan.deviceId()).Select(y => y.First());
+
+    // Remove Duplicate Events for same DeviceId.
+    var uniqueScans = infos
+      .GroupBy(scan => scan.deviceId())
+      .Select(y => y.First());
 
     foreach (var scan in uniqueScans)
       await ProcessUsbEventAsync(scan);
@@ -53,7 +56,9 @@ public class UsbListener : IHostedService, IUsbListener
     return Task.CompletedTask;
   }
 
-  private async Task ProcessUsbEventAsync(UsbScanInfo scanInfo, CancellationToken cancellationToken = default)
+  private async Task ProcessUsbEventAsync(
+    UsbScanInfo scanInfo,
+    CancellationToken cancellationToken = default)
   {
     if (scanInfo.isNewReader())
       await OnReaderDiscovered(scanInfo);
@@ -64,8 +69,10 @@ public class UsbListener : IHostedService, IUsbListener
 
   private async Task OnReaderDiscovered(UsbScanInfo scanInfo)
   {
-    var usbConnector = scanInfo.connector();
-    await this.mediator.Publish(new USBReaderDiscovered(scanInfo.deviceId(), scanInfo.readerType()));
+    var notification =
+      new USBReaderDiscovered(scanInfo.deviceId(), scanInfo.readerType());
+
+    await this.mediator.Publish(notification);
   }
 
   private async Task OnReaderGone(UsbScanInfo scanInfo)
