@@ -23,7 +23,6 @@ public class InventoryViewModel : ViewModel,
   IRecipient<InventoryTagItemsDetectedMessage>
 {
   private readonly ILogger<InventoryViewModel> logger;
-  private readonly IMessenger messenger;
 
   private readonly ITagInventoryService tagInventoryService;
   private readonly INavigationService navigationService;
@@ -35,18 +34,15 @@ public class InventoryViewModel : ViewModel,
 
   public InventoryViewModel(
     ILogger<InventoryViewModel> logger,
-    IMessenger messenger,
     ITagInventoryService tagInventoryService,
     INavigationService navigationService)
   {
     ClearOnStart = true;
     this.logger = logger;
-    this.messenger = messenger;
     this.tagInventoryService = tagInventoryService;
     this.navigationService = navigationService;
     TagList = new();
 
-    this.messenger.RegisterAll(this);
 
     ClearTagList =
       new RelayCommand(ClearTagListExecute);
@@ -178,6 +174,6 @@ public class InventoryViewModel : ViewModel,
 
   public void Dispose()
   {
-    messenger.UnregisterAll(this);
+    //messenger.UnregisterAll(this);
   }
 }

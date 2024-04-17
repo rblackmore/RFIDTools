@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 
-using FEDM;
-
 using TagShelfLocator.UI.Services.ReaderManagement.Model;
 
 public interface IReaderManager
@@ -14,4 +12,6 @@ public interface IReaderManager
   IReadOnlyList<ReaderDescription> GetReaderDescriptions();
   bool SetSelectedReader(uint readerId);
   bool TryGetReaderByDeviceID(uint deviceID, out ReaderDescription reader);
+  void AddReaderDescription(uint deviceID, ReaderDescription description);
+  void RemoveReaderDescription(uint deviceID);
 }

@@ -9,6 +9,8 @@ using CommunityToolkit.Mvvm.Messaging;
 
 using FEDM;
 
+using MediatR;
+
 using Microsoft.Extensions.Logging;
 
 using TagShelfLocator.UI.MVVM.Modal;
@@ -22,8 +24,8 @@ public class OBIDTagInventoryService :
   ITagInventoryService
 {
   private readonly ILogger<OBIDTagInventoryService> logger;
-  private readonly IMessenger messenger;
   private readonly IReaderManager readerManager;
+  private readonly IMediator mediator;
   private ReaderDescription readerDescription;
   private Task RunningTask = Task.CompletedTask;
 
@@ -31,13 +33,13 @@ public class OBIDTagInventoryService :
 
   public OBIDTagInventoryService(
     ILogger<OBIDTagInventoryService> logger,
-    IMessenger messenger,
+    IMediator mediator,
     IReaderManager readerManager)
   {
     this.logger = logger;
-    this.messenger = messenger;
     this.readerManager = readerManager;
     this.readerDescription = readerManager.SelectedReader;
+    this.mediator = mediator;
   }
 
   private ReaderModule Reader => this.readerDescription.ReaderModule;
@@ -59,7 +61,7 @@ public class OBIDTagInventoryService :
     })
     .ContinueWith(HandleRunningTaskCompletion);
 
-    this.messenger.Send(new InventoryStartedMessage(message));
+    this.mediator.Publish(new InventoryStartedMessage(message));
 
     return Task.CompletedTask;
   }
@@ -98,7 +100,7 @@ public class OBIDTagInventoryService :
 
     this.Reader.rf().off();
 
-    this.messenger.Send(new InventoryStoppedMessage(message));
+    await this.mediator.Publish(new InventoryStoppedMessage(message));
   }
 
   private async Task RunAsync(CancellationToken cancellationToken = default)
@@ -141,12 +143,12 @@ public class OBIDTagInventoryService :
         tagItem.clear();
       }
 
-      this.messenger.Send(new InventoryTagItemsDetectedMessage(tagList));
+      await this.mediator.Publish(new InventoryTagItemsDetectedMessage(tagList));
     }
   }
 
   public void Dispose()
   {
-    this.messenger.UnregisterAll(this);
+    //this.messenger.UnregisterAll(this);
   }
 }

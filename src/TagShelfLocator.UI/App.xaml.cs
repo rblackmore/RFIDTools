@@ -3,10 +3,6 @@
 using System;
 using System.Windows;
 
-using CommunityToolkit.Mvvm.Messaging;
-
-using FEDM;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -18,8 +14,6 @@ using TagShelfLocator.UI.MVVM.ViewModels;
 using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.Services.ReaderManagement;
-
-using DateTime = System.DateTime;
 
 /// <summary>
 /// Interaction logic for App.xaml
@@ -66,7 +60,13 @@ public partial class App : Application
     builder.Services.AddHostedService<UsbListener>();
     builder.Services.AddSingleton<IReaderManager, ReaderManager>();
     builder.Services.AddSingleton<Shell>();
-    builder.Services.AddSingleton<IMessenger>(new StrongReferenceMessenger());
+    //builder.Services.AddSingleton<IMessenger>(new StrongReferenceMessenger());
+    
+    builder.Services.AddMediatR(cfg =>
+    {
+      cfg.RegisterServicesFromAssembly(typeof(App).Assembly);
+    });
+
     builder.Services.AddSingleton<ITagInventoryService, OBIDTagInventoryService>();
     builder.Services.AddSingleton<INavigationService, NavigationService>();
 

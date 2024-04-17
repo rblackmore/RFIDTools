@@ -3,6 +3,7 @@
 public interface IReaderConnectionStatusViewModel : IViewModel
 {
   bool IsConnected { get; }
-  string ReaderName { get; }
+  string? ReaderName { get; }
   uint DeviceID { get; }
+  void SelectedReaderChanged(uint deviceId);
 }

@@ -1,9 +1,12 @@
 ﻿namespace TagShelfLocator.UI.Services.ReaderManagement;
-public class USBReaderGone
+
+using MediatR;
+
+public class USBReaderGone : INotification
 {
   public USBReaderGone(uint deviceID)
   {
-    DeviceID = deviceID;
+    this.DeviceID = deviceID;
   }
 
   public uint DeviceID { get; set; }

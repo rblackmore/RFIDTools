@@ -2,9 +2,11 @@
 
 using System.Collections.Generic;
 
+using MediatR;
+
 using TagShelfLocator.UI.MVVM.Modal;
 
-public class InventoryTagItemsDetectedMessage
+public class InventoryTagItemsDetectedMessage : INotification
 {
   public List<TagEntry> Tags { get; }
 

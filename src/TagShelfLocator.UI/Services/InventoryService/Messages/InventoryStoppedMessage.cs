@@ -1,5 +1,8 @@
 ﻿namespace TagShelfLocator.UI.Services.InventoryService.Events;
-public class InventoryStoppedMessage
+
+using MediatR;
+
+public class InventoryStoppedMessage : INotification
 {
   // TODO: Might be worth adding a <see="Type"> property
   // to detail what object stopped the Loop.

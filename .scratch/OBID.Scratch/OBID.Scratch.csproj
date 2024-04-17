@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -12,8 +12,9 @@
       <HintPath>$(LOCAL_LIBS)\OBID NET x64\net5.0\6.6.0\fedm-cs-net5.0.dll</HintPath>
     </Reference>
   </ItemGroup>
-  
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy &quot;$(LOCAL_LIBS)\OBID NET x64\net5.0\6.6.0\*&quot; $(TargetDir)" />
   </Target>
+
 </Project>

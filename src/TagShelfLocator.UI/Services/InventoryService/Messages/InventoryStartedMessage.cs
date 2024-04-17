@@ -1,9 +1,12 @@
 ﻿namespace TagShelfLocator.UI.Services.InventoryService.Events;
-public class InventoryStartedMessage
+
+using MediatR;
+
+public class InventoryStartedMessage : INotification
 {
   // TODO: Might be worth adding a <see="Type"> property
   // to detail what object started the Loop.
-  
+
   public InventoryStartedMessage(string information)
   {
     Information = information;

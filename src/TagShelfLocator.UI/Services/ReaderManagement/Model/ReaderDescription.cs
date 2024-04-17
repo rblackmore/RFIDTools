@@ -1,10 +1,11 @@
 ﻿namespace TagShelfLocator.UI.Services.ReaderManagement.Model;
 
+using System;
+
 using FEDM;
 
 public enum CommunicationInterface
 {
-  None,
   USB,
   TCP,
   COM
@@ -12,29 +13,38 @@ public enum CommunicationInterface
 
 public class ReaderDescription
 {
-  public ReaderDescription(ReaderModule readerModule)
-    : this(readerModule, CommunicationInterface.None) { }
+  private AppLoggingParam appLoggingParams;
+  private CommunicationInterface communicationInterface;
+  private ReaderModule readerModule;
+  private uint deviceId;
+  private uint readerType;
 
   public ReaderDescription(
-    ReaderModule readerModule,
+    uint deviceId,
+    uint readerType,
     CommunicationInterface communicationInterface)
   {
-    this.CommunicationInterface = communicationInterface;
-    this.ReaderModule = readerModule;
+    if (deviceId == 0)
+      throw new Exception($"Invalid deviceId({deviceId})");
 
-    this.DeviceID = this.ReaderModule.info().deviceId();
-    this.DeviceName = this.ReaderModule.info().readerTypeToString();
+    this.readerModule = new ReaderModule(RequestMode.UniDirectional);
+    this.communicationInterface = communicationInterface;
+    this.readerType = readerType;
+    this.deviceId = deviceId;
+
+    this.appLoggingParams = AppLoggingParam.createFileLogger($"{DeviceID}.log");
   }
 
   public event ReaderConnectedEventHandler? ReaderConnected;
   public event ReaderDisconnectingEventHandler? ReaderDisconnecting;
   public event ReaderDisconnectedEventHandler? ReaderDisconnected;
 
-  public ReaderModule ReaderModule { get; private init; }
-  public uint DeviceID { get; private init; }
-  public string DeviceName { get; private init; }
+  public ReaderModule ReaderModule => this.readerModule;
+  public uint DeviceID => this.deviceId;
+  public uint ReaderType => this.readerType;
+  public string ReaderName => FEDM.ReaderType.toString(this.readerType);
 
-  public CommunicationInterface CommunicationInterface { get; private set; }
+  public CommunicationInterface CommunicationInterface => this.communicationInterface;
 
   public bool IsConnected => this.ReaderModule.isConnected();
 
@@ -82,9 +92,6 @@ public class ReaderDescription
 
   private void OnDisconnecting()
   {
-    // TODO: Consider MediatR,
-    // it might have a better messenger implementation for notifying,
-    // and waitin for all recipients to complete.
     this.ReaderDisconnecting?.Invoke(this, new ReaderDisconnectingEventArgs(this.DeviceID));
   }
 
@@ -109,14 +116,25 @@ public class ReaderDescription
 
   private bool ConnectCOM()
   {
-    return false;
+    throw new NotImplementedException();
   }
 
   private bool ConnectTCP()
   {
-    return false;
+    throw new NotImplementedException();
   }
 
-  public static ReaderDescription CreateUSB(ReaderModule reader)
-    => new ReaderDescription(reader, CommunicationInterface.USB);
+  public string StartLogging()
+  {
+    this.ReaderModule.log().startLogging(appLoggingParams);
+    return this.appLoggingParams.logFile();
+  }
+
+  public void StopLogging()
+  {
+    this.ReaderModule.log().stopLogging();
+  }
+
+  public static ReaderDescription CreateUSB(uint deviceId, uint readerType)
+    => new ReaderDescription(deviceId, readerType, CommunicationInterface.USB);
 }
