@@ -9,18 +9,9 @@ using CommunityToolkit.Mvvm.Messaging;
 
 using Microsoft.Extensions.Logging;
 
-using TagShelfLocator.UI.Helpers;
-using TagShelfLocator.UI.Services;
-using TagShelfLocator.UI.Services.InventoryService;
-using TagShelfLocator.UI.Services.InventoryService.Events;
-using TagShelfLocator.UI.Services.InventoryService.Messages;
-
 public class InventoryViewModel : ViewModel,
   IInventoryViewModel,
-  IDisposable,
-  IRecipient<InventoryStartedMessage>,
-  IRecipient<InventoryStoppedMessage>,
-  IRecipient<InventoryTagItemsDetectedMessage>
+  IDisposable
 {
   private readonly ILogger<InventoryViewModel> logger;
 

@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ElectroCom.RFIDTools.UI.Logic\ElectroCom.RFIDTools.UI.Logic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appsettings.development.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

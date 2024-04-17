@@ -1,30 +1,18 @@
 ﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
-using System.ComponentModel;
-using System.Windows;
-
 using CommunityToolkit.Mvvm.ComponentModel;
-
-using Microsoft.Extensions.DependencyInjection;
 
 public abstract class ViewModelLocatorBase<TViewModel>
   : ObservableObject where TViewModel : IViewModel
 {
-  private static DependencyObject dummy = new();
-
-  private static bool? isInDesignMode;
   private TViewModel? runtimeViewModel;
   private TViewModel? designTimeViewModel;
 
-  public static bool IsInDesignMode
-  {
-    get
-    {
-      if (!isInDesignMode.HasValue)
-        isInDesignMode = DesignerProperties.GetIsInDesignMode(dummy);
+  private Func<Type, IViewModel> viewModelFactory;
 
-      return isInDesignMode.Value;
-    }
+  protected ViewModelLocatorBase(Func<Type, IViewModel> viewModelFactory)
+  {
+    this.viewModelFactory = viewModelFactory;
   }
 
   protected TViewModel RuntimeViewModel
@@ -32,19 +20,19 @@ public abstract class ViewModelLocatorBase<TViewModel>
     get
     {
       if (runtimeViewModel is null)
-        RuntimeViewModel = App.Current.Services.GetRequiredService<TViewModel>();
+        this.runtimeViewModel = (TViewModel)viewModelFactory(typeof(TViewModel));
 
       return runtimeViewModel!;
     }
-    set => SetProperty(ref runtimeViewModel, value);
+    //set => SetProperty(ref runtimeViewModel, value);
   }
 
   public TViewModel DesignTimeViewModel
   {
     get => designTimeViewModel!;
-    set => SetProperty(ref designTimeViewModel, value);
+    protected set => SetProperty(ref designTimeViewModel, value);
   }
 
   public TViewModel ViewModel =>
-    IsInDesignMode ? DesignTimeViewModel : RuntimeViewModel;
+    this.viewModelFactory is null ? DesignTimeViewModel : RuntimeViewModel;
 }

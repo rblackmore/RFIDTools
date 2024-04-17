@@ -3,6 +3,9 @@
 using System;
 using System.Windows;
 
+using ElectroCom.RFIDTools.UI.Logic.Services;
+using ElectroCom.RFIDTools.UI.Logic.ViewModels;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -10,8 +13,6 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 
 using TagShelfLocator.UI.Helpers;
-using TagShelfLocator.UI.MVVM.ViewModels;
-using TagShelfLocator.UI.Services;
 using TagShelfLocator.UI.Services.InventoryService;
 using TagShelfLocator.UI.Services.ReaderManagement;
 
@@ -48,7 +49,7 @@ public partial class App : Application
       .WriteTo.Console()
       .CreateLogger();
 
-    Serilog.Log.Logger = logger;
+    Log.Logger = logger;
 
     builder.Logging.ClearProviders();
     builder.Logging.AddSerilog(logger);
@@ -56,35 +57,18 @@ public partial class App : Application
 
   private void ConfigureServices(HostApplicationBuilder builder)
   {
+    builder.Services.AddRFIDToolsUILogic();
 
     builder.Services.AddHostedService<UsbListener>();
     builder.Services.AddSingleton<IReaderManager, ReaderManager>();
+    builder.Services.AddSingleton<ITagInventoryService, OBIDTagInventoryService>();
+
     builder.Services.AddSingleton<Shell>();
-    //builder.Services.AddSingleton<IMessenger>(new StrongReferenceMessenger());
-    
+
     builder.Services.AddMediatR(cfg =>
     {
       cfg.RegisterServicesFromAssembly(typeof(App).Assembly);
     });
-
-    builder.Services.AddSingleton<ITagInventoryService, OBIDTagInventoryService>();
-    builder.Services.AddSingleton<INavigationService, NavigationService>();
-
-    builder.Services.AddSingleton<IInventoryViewModel, InventoryViewModel>();
-    builder.Services.AddSingleton<ISettingsViewModel, SettingsViewModel>();
-
-    builder.Services.AddSingleton<IShellViewModel, ShellViewModel>();
-
-    builder.Services
-      .AddSingleton<IReaderManagementVM, ReaderManagementVM>();
-
-    // Register IViewModel Factory.
-    // This factory takes in a Type, Gets this service from the standard provider.
-    // Type must be of type 'IViewModel'
-    builder.Services
-      .AddSingleton<Func<Type, IViewModel>>(provider =>
-        viewModelType =>
-          (ViewModel)provider.GetRequiredService(viewModelType));
   }
 
   protected override async void OnStartup(StartupEventArgs e)
