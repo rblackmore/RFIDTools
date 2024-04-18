@@ -14,6 +14,8 @@ public static class ServiceCollectionExtensions
     services.AddSingleton<IShellViewModel, ShellViewModel>();
     services.AddSingleton<IReaderManagementVM, ReaderManagementVM>();
 
+    services.AddReaderServices();
+
     services
       .AddSingleton<Func<Type, IViewModel>>(provider =>
         viewModelType =>

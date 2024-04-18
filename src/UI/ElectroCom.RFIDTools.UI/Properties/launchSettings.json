@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "TagShelfLocator.UI": {
+    "ElectroCom.RFIDTools.UI": {
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"

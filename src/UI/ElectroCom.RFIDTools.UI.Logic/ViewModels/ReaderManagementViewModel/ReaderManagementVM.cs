@@ -1,6 +1,6 @@
 ﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
-using TagShelfLocator.UI.Services.ReaderManagement;
+using ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
 
 // TODO: Okay, I should update this to be a full Reader Selection ViewModel.
 // Update the view to match as well.

@@ -2,7 +2,7 @@
 
 using CommunityToolkit.Mvvm.Input;
 
-using TagShelfLocator.UI.Services;
+using ElectroCom.RFIDTools.UI.Logic.Services;
 
 public interface IShellViewModel : IViewModel
 {

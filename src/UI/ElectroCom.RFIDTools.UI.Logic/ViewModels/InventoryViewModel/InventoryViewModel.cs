@@ -5,7 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+
+using ElectroCom.RFIDTools.ReaderServices.InventoryService;
+using ElectroCom.RFIDTools.UI.Logic.Helpers;
+using ElectroCom.RFIDTools.UI.Logic.Services;
 
 using Microsoft.Extensions.Logging;
 
@@ -15,7 +18,7 @@ public class InventoryViewModel : ViewModel,
 {
   private readonly ILogger<InventoryViewModel> logger;
 
-  private readonly ITagInventoryService tagInventoryService;
+  private readonly ITagReadingService tagInventoryService;
   private readonly INavigationService navigationService;
 
   private bool isReaderConnected;
@@ -25,7 +28,7 @@ public class InventoryViewModel : ViewModel,
 
   public InventoryViewModel(
     ILogger<InventoryViewModel> logger,
-    ITagInventoryService tagInventoryService,
+    ITagReadingService tagInventoryService,
     INavigationService navigationService)
   {
     ClearOnStart = true;
@@ -66,7 +69,7 @@ public class InventoryViewModel : ViewModel,
 
   public bool IsReaderDisconnected => !IsReaderConnected;
 
-  public ObservableTagList TagList { get; }
+  public ObservableTagEntryCollection TagList { get; }
 
   public bool ClearOnStart
   {
@@ -99,7 +102,7 @@ public class InventoryViewModel : ViewModel,
 
   private async Task StopInventoryExecuteAsync()
   {
-    await tagInventoryService.StopAsync("Stop Requested by User");
+    await tagInventoryService.StopAsync();
   }
 
   private async Task CancelInventoryChannelReaderAsync()
@@ -132,27 +135,27 @@ public class InventoryViewModel : ViewModel,
   //  OnInventoryTaskCanExecuteChanged();
   //}
 
-  public void Receive(InventoryStartedMessage message)
-  {
-    OnInventoryTaskCanExecuteChanged();
-  }
+  //public void Receive(InventoryStartedMessage message)
+  //{
+  //  OnInventoryTaskCanExecuteChanged();
+  //}
 
-  public async void Receive(InventoryStoppedMessage message)
-  {
-    await CancelInventoryChannelReaderAsync();
-    OnInventoryTaskCanExecuteChanged();
-  }
+  //public async void Receive(InventoryStoppedMessage message)
+  //{
+  //  await CancelInventoryChannelReaderAsync();
+  //  OnInventoryTaskCanExecuteChanged();
+  //}
 
-  public void Receive(InventoryTagItemsDetectedMessage message)
-  {
-    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-    {
-      foreach (var tag in message.Tags)
-      {
-        TagList.Add(tag);
-      }
-    });
-  }
+  //public void Receive(InventoryTagItemsDetectedMessage message)
+  //{
+  //  DispatcherHelper.CheckBeginInvokeOnUI(() =>
+  //  {
+  //    foreach (var tag in message.Tags)
+  //    {
+  //      TagList.Add(tag);
+  //    }
+  //  });
+  //}
 
   private void OnInventoryTaskCanExecuteChanged()
   {

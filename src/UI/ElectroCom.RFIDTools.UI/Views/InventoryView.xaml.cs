@@ -1,9 +1,7 @@
-﻿namespace TagShelfLocator.UI.MVVM.Views;
+﻿namespace ElectroCom.RFIDTools.UI.Views;
 
 using System.Windows;
 using System.Windows.Controls;
-
-using TagShelfLocator.UI.Controls.ListViews;
 
 /// <summary>
 /// Interaction logic for InventoryView.xaml

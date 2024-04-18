@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:l="clr-namespace:TagShelfLocator.UI.Controls.ListViews"
-                    xmlns:model="clr-namespace:TagShelfLocator.UI.MVVM.Modal" xmlns:selectors="clr-namespace:TagShelfLocator.UI.Controls.Selectors">
+                    xmlns:l="clr-namespace:ElectroCom.RFIDTools.UI.Controls.ListViews"
+                    xmlns:model="clr-namespace:ElectroCom.RFIDTools.UI.MVVM.Modal" xmlns:selectors="clr-namespace:ElectroCom.RFIDTools.UI.Controls.Selectors">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="./InventoryListDataTemplates.xaml"/>

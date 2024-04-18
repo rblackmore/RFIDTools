@@ -1,9 +1,9 @@
-﻿<Application x:Class="TagShelfLocator.UI.App"
+﻿<Application x:Class="ElectroCom.RFIDTools.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:TagShelfLocator.UI"
-             xmlns:viewModels="clr-namespace:TagShelfLocator.UI.MVVM.ViewModels"
-             xmlns:views="clr-namespace:TagShelfLocator.UI.MVVM.Views">
+             xmlns:local="clr-namespace:ElectroCom.RFIDTools.UI"
+             xmlns:viewModels="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic"
+             xmlns:views="clr-namespace:ElectroCom.RFIDTools.UI.Views">
     <Application.Resources>
         <ResourceDictionary>
 
@@ -11,7 +11,7 @@
             <DataTemplate DataType="{x:Type TypeName=viewModels:InventoryViewModel}">
                 <views:InventoryView/>
             </DataTemplate>
-            
+
             <DataTemplate DataType="{x:Type TypeName=viewModels:SettingsViewModel}">
                 <views:SettingsView/>
             </DataTemplate>

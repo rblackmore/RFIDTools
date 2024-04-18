@@ -6,7 +6,7 @@ public interface IInventoryViewModel : IViewModel
 {
   public bool IsReaderConnected { get; }
   public bool IsReaderDisconnected { get; }
-  public ObservableTagList TagList { get; }
+  public ObservableTagEntryCollection TagList { get; }
   public bool ClearOnStart { get; set; }
   public IRelayCommand ClearTagList { get; }
   public IAsyncRelayCommand StartInventoryAsync { get; }

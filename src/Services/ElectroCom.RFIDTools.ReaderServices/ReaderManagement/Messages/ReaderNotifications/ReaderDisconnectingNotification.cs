@@ -1,7 +1,5 @@
 ﻿namespace ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
 
-using System;
-
 using MediatR;
 
 public class ReaderDisconnecting : INotification

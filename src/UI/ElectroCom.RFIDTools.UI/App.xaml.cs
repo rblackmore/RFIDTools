@@ -1,8 +1,10 @@
-﻿namespace TagShelfLocator.UI;
+﻿namespace ElectroCom.RFIDTools.UI;
 
 using System;
 using System.Windows;
+using System.Windows.Threading;
 
+using ElectroCom.RFIDTools.UI.Logic.Helpers;
 using ElectroCom.RFIDTools.UI.Logic.Services;
 using ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
@@ -11,10 +13,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using Serilog;
-
-using TagShelfLocator.UI.Helpers;
-using TagShelfLocator.UI.Services.InventoryService;
-using TagShelfLocator.UI.Services.ReaderManagement;
 
 /// <summary>
 /// Interaction logic for App.xaml
@@ -59,10 +57,6 @@ public partial class App : Application
   {
     builder.Services.AddRFIDToolsUILogic();
 
-    builder.Services.AddHostedService<UsbListener>();
-    builder.Services.AddSingleton<IReaderManager, ReaderManager>();
-    builder.Services.AddSingleton<ITagInventoryService, OBIDTagInventoryService>();
-
     builder.Services.AddSingleton<Shell>();
 
     builder.Services.AddMediatR(cfg =>
@@ -73,7 +67,21 @@ public partial class App : Application
 
   protected override async void OnStartup(StartupEventArgs e)
   {
-    DispatcherHelper.Initialize();
+    var uiDispatcher = Dispatcher.CurrentDispatcher;
+
+    DispatcherHelper.Initialize(action =>
+    {
+      if (uiDispatcher.CheckAccess())
+        action();
+      else
+        uiDispatcher.BeginInvoke(action);
+    });
+
+    ServiceLocator.Locator = () =>
+    {
+      return App.Current.Services;
+    };
+
     var navigation = this.host.Services.GetRequiredService<INavigationService>();
 
     navigation.NavigateTo<IInventoryViewModel>();

@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:modal="clr-namespace:TagShelfLocator.UI.MVVM.Modal">
+                    xmlns:modal="clr-namespace:ElectroCom.RFIDTools.UI.MVVM.Modal">
     <Style TargetType="ListViewItem" x:Key="TagItemCard">
         <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
         <Setter Property="Template">

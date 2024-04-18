@@ -1,4 +1,4 @@
-﻿namespace TagShelfLocator.UI.Controls.ListViews;
+﻿namespace ElectroCom.RFIDTools.UI.Controls.ListViews;
 
 using System;
 using System.Windows;

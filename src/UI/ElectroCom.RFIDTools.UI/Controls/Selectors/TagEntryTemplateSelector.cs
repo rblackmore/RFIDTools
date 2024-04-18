@@ -1,9 +1,9 @@
-﻿namespace TagShelfLocator.UI.Controls.Selectors;
+﻿namespace ElectroCom.RFIDTools.UI.Controls.Selectors;
 
 using System.Windows;
 using System.Windows.Controls;
 
-using TagShelfLocator.UI.MVVM.Modal;
+using ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
 public class TagEntryTemplateSelector : DataTemplateSelector
 {
@@ -16,16 +16,16 @@ public class TagEntryTemplateSelector : DataTemplateSelector
   {
     FrameworkElement? element = container as FrameworkElement;
 
-    if (element is null || item is null || item is not TagEntry tagEntry) return Default;
+    if (element is null || item is null || item is not ObservableTagEntry tagEntry) return Default;
 
-    if (tagEntry is EPCClass1Gen2_TagEntry)
-      return EPCC1G2_Template;
+    //if (tagEntry is EPCClass1Gen2_TagEntry)
+    //  return EPCC1G2_Template;
 
-    if (tagEntry is ISO14443A_TagEntry)
-      return ISO14443A_Template;
+    //if (tagEntry is ISO14443A_TagEntry)
+    //  return ISO14443A_Template;
 
-    if (tagEntry is ISO15693_TagEntry)
-      return ISO15693_Template;
+    //if (tagEntry is ISO15693_TagEntry)
+    //  return ISO15693_Template;
 
     return Default;
   }

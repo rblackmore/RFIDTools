@@ -1,8 +1,7 @@
-﻿namespace TagShelfLocator.UI.Helpers;
+﻿namespace ElectroCom.RFIDTools.UI.Logic.Helpers;
 
 using System;
 using System.Text;
-using System.Windows.Threading;
 
 /// <summary>
 /// Allows marshalling an Action to the UI thread, if not already on the UI Thread.
@@ -11,8 +10,6 @@ using System.Windows.Threading;
 /// </summary>
 public static class DispatcherHelper
 {
-  public static Dispatcher? UIDispatcher { get; private set; }
-
   public static void CheckBeginInvokeOnUI(Action action)
   {
     if (action is null)
@@ -20,31 +17,27 @@ public static class DispatcherHelper
 
     CheckDispatcher();
 
-    if (UIDispatcher!.CheckAccess())
-      action();
-    else
-      UIDispatcher.BeginInvoke(action);
+    InvokeToUIThread!(action);
   }
 
   private static void CheckDispatcher()
   {
-    if (UIDispatcher is not null)
+    if (InvokeToUIThread is not null)
       return;
 
     var error = new StringBuilder("The Dispatcher is not initialized.");
-    
+
     error.Append("Call DispatcherHelper.Initialize() during App Startup");
 
     throw new InvalidOperationException(error.ToString());
   }
 
-  public static void Initialize()
-  {
-    if (UIDispatcher is not null)
-      return;
+  private static Action<Action>? InvokeToUIThread;
 
-    UIDispatcher = Dispatcher.CurrentDispatcher;
+  public static void Initialize(Action<Action> invoke)
+  {
+    InvokeToUIThread = invoke;
   }
 
-  public static void Reset() => UIDispatcher = null!;
+  public static void Reset() => InvokeToUIThread = null!;
 }

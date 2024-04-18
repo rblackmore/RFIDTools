@@ -3,9 +3,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using MediatR;
+using ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
 
-using TagShelfLocator.UI.Services.ReaderManagement;
+using MediatR;
 
 public class SelectedReaderChangedHandler : INotificationHandler<SelectedReaderChanged>
 {

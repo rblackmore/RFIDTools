@@ -2,6 +2,10 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
+using ElectroCom.RFIDTools.UI.Logic.Helpers;
+
+using Microsoft.Extensions.DependencyInjection;
+
 public abstract class ViewModelLocatorBase<TViewModel>
   : ObservableObject where TViewModel : IViewModel
 {
@@ -10,9 +14,9 @@ public abstract class ViewModelLocatorBase<TViewModel>
 
   private Func<Type, IViewModel> viewModelFactory;
 
-  protected ViewModelLocatorBase(Func<Type, IViewModel> viewModelFactory)
+  protected ViewModelLocatorBase()
   {
-    this.viewModelFactory = viewModelFactory;
+    this.viewModelFactory = ServiceLocator.ServiceProvider.GetRequiredService<Func<Type, IViewModel>>();
   }
 
   protected TViewModel RuntimeViewModel

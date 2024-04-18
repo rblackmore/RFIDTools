@@ -5,20 +5,19 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using ElectroCom.RFIDTools.ReaderServices.InventoryService.Events;
+using ElectroCom.RFIDTools.ReaderServices.Model;
+using ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
+
 using FEDM;
 
 using MediatR;
 
 using Microsoft.Extensions.Logging;
 
-using ElectroCom.RFIDTools.ReaderServices.InventoryService.Events;
-using ElectroCom.RFIDTools.ReaderServices.InventoryService.Messages;
-using ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
-using ElectroCom.RFIDTools.ReaderServices.Model;
-
 public class OBIDTagInventoryService :
   IDisposable,
-  ITagInventoryService
+  ITagReadingService
 {
   private readonly ILogger<OBIDTagInventoryService> logger;
   private readonly IReaderManager readerManager;
@@ -45,7 +44,7 @@ public class OBIDTagInventoryService :
 
   public bool IsNotRunning => RunningTask is null || RunningTask.IsCompleted;
 
-  public Task StartAsync(string message = "", CancellationToken cancellationToken = default)
+  public Task StartAsync(CancellationToken cancellationToken = default)
   {
     if (IsRunning)
       return Task.CompletedTask;
@@ -58,7 +57,7 @@ public class OBIDTagInventoryService :
     })
     .ContinueWith(HandleRunningTaskCompletion);
 
-    this.mediator.Publish(new InventoryStartedMessage(message));
+    this.mediator.Publish(new InventoryStartedNotifications());
 
     return Task.CompletedTask;
   }
@@ -76,7 +75,7 @@ public class OBIDTagInventoryService :
     if (!tsk.IsFaulted)
       return;
 
-    await StopAsync("Exception in Running Task");
+    await StopAsync();
 
     if (tsk.Exception is null)
       return;
@@ -87,7 +86,7 @@ public class OBIDTagInventoryService :
     }
   }
 
-  public async Task StopAsync(string message = "", CancellationToken cancellationToken = default)
+  public async Task StopAsync(CancellationToken cancellationToken = default)
   {
     if (IsNotRunning)
       return;
@@ -97,7 +96,7 @@ public class OBIDTagInventoryService :
 
     this.Reader.rf().off();
 
-    await this.mediator.Publish(new InventoryStoppedMessage(message));
+    await this.mediator.Publish(new InventoryStoppedNotification());
   }
 
   private async Task RunAsync(CancellationToken cancellationToken = default)
@@ -135,7 +134,7 @@ public class OBIDTagInventoryService :
         tagList.Add(entry);
       }
 
-      await this.mediator.Publish(new InventoryTagItemsDetectedMessage(tagList));
+      await this.mediator.Publish(new InventoryTagItemsDetectedNotification(tagList));
     }
   }
 

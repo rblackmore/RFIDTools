@@ -1,4 +1,4 @@
-﻿namespace TagShelfLocator.UI.MVVM.Views;
+﻿namespace ElectroCom.RFIDTools.UI.Views;
 using System.Windows.Controls;
 
 /// <summary>
