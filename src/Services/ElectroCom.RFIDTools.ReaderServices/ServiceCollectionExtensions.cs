@@ -1,7 +1,7 @@
 ﻿namespace Microsoft.Extensions.DependencyInjection;
 
 using ElectroCom.RFIDTools.ReaderServices.InventoryService;
-using ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
+using ElectroCom.RFIDTools.ReaderServices;
 
 public static class ServiceCollectionExtensions
 {

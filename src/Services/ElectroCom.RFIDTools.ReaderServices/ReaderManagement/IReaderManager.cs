@@ -1,18 +1,14 @@
-﻿namespace ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
-
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
 public interface IReaderManager
 {
-  ReaderDescription SelectedReader { get; }
-  ReaderDescription this[uint deviceID] { get; }
-  uint[] GetDeviceIDs();
-  IReadOnlyList<ReaderDescription> GetReaderDescriptions();
-  void SetSelectedReader(uint readerId);
-  bool TryGetReaderByDeviceID(uint deviceID, out ReaderDescription reader);
-  void AddReaderDescription(uint deviceID, ReaderDescription description);
-  void RemoveReaderDescription(uint deviceID);
-  Task<bool> ConnectReader(uint deviceID);
-  Task<bool> DisconnectReader(uint deviceID);
+  public ReaderDefinition SelectedReader { get; }
+  IReadOnlyCollection<ReaderDefinition> GetReaderDefinitions();
+  public void RegisterReader(ReaderDefinition readerDefinition);
+  bool UnregisterReader(ReaderDefinition rdToRemove);
+  bool UnregisterReader(uint deviceId);
+  bool UnregisterSelectedReader();
+  bool SelectReader(int idx);
+  bool SelectReader(uint deviceId);
+  bool SelectReader(ReaderDefinition? rd);
 }

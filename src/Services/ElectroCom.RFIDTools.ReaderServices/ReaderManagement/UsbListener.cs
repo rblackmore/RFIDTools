@@ -1,4 +1,4 @@
-﻿namespace ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
+﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -7,23 +7,18 @@ using System.Threading.Tasks;
 
 using FEDM;
 
-using MediatR;
-
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 public class UsbListener : IHostedService, IUsbListener
 {
-  private readonly ILogger<UsbListener> logger;
-  private readonly IMediator mediator;
+  private readonly IReaderManager readerManager;
 
-  public UsbListener(ILogger<UsbListener> logger, IMediator mediator)
+  public UsbListener(IReaderManager readerManager)
   {
-    this.logger = logger;
-    this.mediator = mediator;
+    this.readerManager = readerManager;
   }
 
-  public async void onUsbEvent()
+  public void onUsbEvent()
   {
     var infos = new List<UsbScanInfo>();
 
@@ -41,7 +36,7 @@ public class UsbListener : IHostedService, IUsbListener
       .Select(y => y.First());
 
     foreach (var scan in uniqueScans)
-      await ProcessUsbEventAsync(scan);
+      ProcessUsbEventAsync(scan);
   }
 
   public Task StartAsync(CancellationToken cancellationToken = default)
@@ -56,27 +51,27 @@ public class UsbListener : IHostedService, IUsbListener
     return Task.CompletedTask;
   }
 
-  private async Task ProcessUsbEventAsync(
+  private void ProcessUsbEventAsync(
     UsbScanInfo scanInfo,
     CancellationToken cancellationToken = default)
   {
     if (scanInfo.isNewReader())
-      await OnReaderDiscovered(scanInfo);
+      OnReaderDiscovered(scanInfo);
 
     if (scanInfo.isReaderGone())
-      await OnReaderGone(scanInfo);
+      OnReaderGone(scanInfo);
   }
 
-  private async Task OnReaderDiscovered(UsbScanInfo scanInfo)
+  private void OnReaderDiscovered(UsbScanInfo scanInfo)
   {
-    var notification =
-      new USBReaderDiscovered(scanInfo.deviceId(), scanInfo.readerType());
+    var readerDefinition =
+      ReaderFactory.CreateReader(CommsInterface.USB, deviceId: scanInfo.deviceId());
 
-    await this.mediator.Publish(notification);
+    this.readerManager.RegisterReader(readerDefinition);
   }
 
-  private async Task OnReaderGone(UsbScanInfo scanInfo)
+  private void OnReaderGone(UsbScanInfo scanInfo)
   {
-    await this.mediator.Publish(new USBReaderGone(scanInfo.deviceId()));
+    this.readerManager.UnregisterReader(scanInfo.deviceId());
   }
 }
