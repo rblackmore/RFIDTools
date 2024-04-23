@@ -94,7 +94,7 @@ public class OBIDTagInventoryService :
     cancellationTokenSource?.Cancel();
     await RunningTask;
 
-    this.Reader.rf().off();
+    this.Reader.rf().off();2
 
     await this.mediator.Publish(new InventoryStoppedNotification());
   }

@@ -20,8 +20,4 @@
     <ProjectReference Include="..\..\Services\ElectroCom.RFIDTools.ReaderServices\ElectroCom.RFIDTools.ReaderServices.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
-
 </Project>
