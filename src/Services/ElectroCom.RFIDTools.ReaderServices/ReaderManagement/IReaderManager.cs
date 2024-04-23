@@ -2,7 +2,7 @@
 
 public interface IReaderManager
 {
-  public ReaderDefinition SelectedReader { get; }
+  public ReaderDefinition? SelectedReader { get; }
   IReadOnlyCollection<ReaderDefinition> GetReaderDefinitions();
   public void RegisterReader(ReaderDefinition readerDefinition);
   bool UnregisterReader(ReaderDefinition rdToRemove);

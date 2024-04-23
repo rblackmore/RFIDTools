@@ -1,4 +1,4 @@
-﻿namespace ElectroCom.RFIDTools.UI.Logic.Helpers;
+﻿namespace ElectroCom.RFIDTools.UI.Logic;
 
 using System;
 using System.Text;

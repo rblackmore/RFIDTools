@@ -1,11 +1,13 @@
 ﻿namespace ElectroCom.RFIDTools.UI;
 
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Threading;
 
-using ElectroCom.RFIDTools.UI.Logic.Helpers;
-using ElectroCom.RFIDTools.UI.Logic.Services;
+using ElectroCom.RFIDTools.UI.Logic;
 using ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -58,11 +60,6 @@ public partial class App : Application
     builder.Services.AddRFIDToolsUILogic();
 
     builder.Services.AddSingleton<Shell>();
-
-    builder.Services.AddMediatR(cfg =>
-    {
-      cfg.RegisterServicesFromAssembly(typeof(App).Assembly);
-    });
   }
 
   protected override async void OnStartup(StartupEventArgs e)

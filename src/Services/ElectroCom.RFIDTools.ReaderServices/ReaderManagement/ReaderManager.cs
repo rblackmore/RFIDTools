@@ -21,8 +21,29 @@ public class ReaderManager : IReaderManager
     this.mediator = mediator;
   }
 
-  public ReaderDefinition SelectedReader =>
-    this.readerDefinitions[selectedIdx];
+  public int SelectedIdx
+  {
+    get
+    {
+      this.selectedIdx = EnsureSelectedIndexIsWithinBounds(this.selectedIdx);
+      return selectedIdx;
+    }
+    set
+    {
+      this.selectedIdx = EnsureSelectedIndexIsWithinBounds(value);
+    }
+  }
+
+  public ReaderDefinition? SelectedReader
+  {
+    get
+    {
+      if (this.readerDefinitions.Any())
+        return this.readerDefinitions[SelectedIdx];
+
+      return null;
+    }
+  }
 
   public IReadOnlyCollection<ReaderDefinition> GetReaderDefinitions()
   {
@@ -31,13 +52,15 @@ public class ReaderManager : IReaderManager
 
   public void RegisterReader(ReaderDefinition readerDefinition)
   {
+    ArgumentNullException.ThrowIfNull(readerDefinition, nameof(readerDefinition));
+
     if (!readerDefinition.IsValid())
       return;
 
     this.readerDefinitions.Add(readerDefinition);
-
-    this.selectedIdx =
-      EnsureSelectedIndexIsWithinBounds(this.selectedIdx);
+    
+    if (this.readerDefinitions.Count == 1)
+      SelectReader(readerDefinition);
 
     this.mediator.Publish(new ReaderRegistered(readerDefinition));
   }

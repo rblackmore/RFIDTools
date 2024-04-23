@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 using ElectroCom.RFIDTools.ReaderServices.InventoryService.Events;
 using ElectroCom.RFIDTools.ReaderServices.Model;
-using ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
 
 using FEDM;
 
@@ -22,7 +21,7 @@ public class OBIDTagInventoryService :
   private readonly ILogger<OBIDTagInventoryService> logger;
   private readonly IReaderManager readerManager;
   private readonly IMediator mediator;
-  private ReaderDescription readerDescription;
+  private ReaderDefinition readerDefinition;
   private Task RunningTask = Task.CompletedTask;
 
   private CancellationTokenSource cancellationTokenSource = new();
@@ -34,11 +33,11 @@ public class OBIDTagInventoryService :
   {
     this.logger = logger;
     this.readerManager = readerManager;
-    this.readerDescription = readerManager.SelectedReader;
+    this.readerDefinition = readerManager.SelectedReader;
     this.mediator = mediator;
   }
 
-  private ReaderModule Reader => this.readerDescription.ReaderModule;
+  private ReaderModule Reader => this.readerDefinition.ReaderModule;
 
   public bool IsRunning => !IsNotRunning;
 
@@ -94,7 +93,7 @@ public class OBIDTagInventoryService :
     cancellationTokenSource?.Cancel();
     await RunningTask;
 
-    this.Reader.rf().off();2
+    this.Reader.rf().off();
 
     await this.mediator.Publish(new InventoryStoppedNotification());
   }

@@ -7,7 +7,7 @@ public abstract class ReaderDefinition
   private ReaderModule? readerModule;
   protected uint? deviceId = null!;
 
-  public ReaderModule ReaderModule
+  internal ReaderModule ReaderModule
   {
     get
     {

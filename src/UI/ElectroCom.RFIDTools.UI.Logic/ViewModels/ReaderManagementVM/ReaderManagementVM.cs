@@ -1,16 +1,18 @@
 ﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
-using ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
+using CommunityToolkit.Mvvm.Messaging;
+
+using ElectroCom.RFIDTools.ReaderServices;
 
 // TODO: Okay, I should update this to be a full Reader Selection ViewModel.
 // Update the view to match as well.
 // Display the currently selected Reader Details, included conneciton Status.
 public class ReaderManagementVM : ViewModel,
-  IReaderManagementVM
+  IReaderManagementVM,
+  IRecipient<SelectedReaderChanged>
 {
 
   private readonly IReaderManager readerManager;
-  private ReaderDescription? readerDescription;
 
   public ReaderManagementVM(IReaderManager readerManager)
   {
@@ -42,16 +44,22 @@ public class ReaderManagementVM : ViewModel,
     set => SetProperty(ref this.deviceID, value);
   }
 
-  public void SelectedReaderChanged(uint deviceId)
+  public void Receive(SelectedReaderChanged message)
   {
-    this.readerDescription = this.readerManager.SelectedReader;
-
-    if (!this.readerDescription.IsConnected)
-      this.readerDescription.Connect();
-
-    this.IsConnected = this.readerDescription.IsConnected;
-
-    this.DeviceID = this.readerDescription.DeviceID;
-    this.ReaderName = this.readerDescription.ReaderName;
+    this.DeviceID = message.DeviceID;
+    this.ReaderName = message.ReaderType;
   }
+
+  //public void SelectedReaderChanged(uint deviceId)
+  //{
+  //  this.readerDescription = this.readerManager.SelectedReader;
+
+  //  if (!this.readerDescription.IsConnected)
+  //    this.readerDescription.Connect();
+
+  //  this.IsConnected = this.readerDescription.IsConnected;
+
+  //  this.DeviceID = this.readerDescription.DeviceID;
+  //  this.ReaderName = this.readerDescription.ReaderName;
+  //}
 }

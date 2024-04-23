@@ -4,10 +4,12 @@ using MediatR;
 
 public class SelectedReaderChanged : INotification
 {
+  private readonly ReaderDefinition readerDefinition;
   public SelectedReaderChanged(ReaderDefinition readerDefinition)
   {
-    ReaderDefinition = readerDefinition;
+    this.readerDefinition = readerDefinition;
   }
 
-  public ReaderDefinition ReaderDefinition { get; }
+  public string ReaderType => this.readerDefinition.ReaderModule.info().readerTypeToString();
+  public uint DeviceID => this.readerDefinition.DeviceID;
 }

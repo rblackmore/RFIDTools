@@ -2,8 +2,6 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-using ElectroCom.RFIDTools.UI.Logic.Helpers;
-
 using Microsoft.Extensions.DependencyInjection;
 
 public abstract class ViewModelLocatorBase<TViewModel>

@@ -2,8 +2,6 @@
 
 using CommunityToolkit.Mvvm.Input;
 
-using ElectroCom.RFIDTools.UI.Logic.Services;
-
 public class ShellViewModel : ViewModel, IShellViewModel
 {
   private INavigationService? navigationService;
