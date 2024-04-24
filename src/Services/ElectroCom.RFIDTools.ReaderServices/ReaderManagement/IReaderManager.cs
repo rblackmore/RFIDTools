@@ -6,6 +6,6 @@ public interface IReaderManager
   IReadOnlyCollection<ReaderDefinition> GetReaderDefinitions();
   void RegisterReader(ReaderDefinition readerDefinition);
   void UnregisterReader(ReaderDefinition rdToRemove);
-  void SelectReaderByIndex(int idx);
   void SelectReader(ReaderDefinition readerDefinition);
+  void SelectReaderByIndex(int idx);
 }

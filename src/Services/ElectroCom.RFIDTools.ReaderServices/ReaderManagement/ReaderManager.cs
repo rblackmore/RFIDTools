@@ -1,5 +1,4 @@
 ﻿namespace ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
-using System;
 using System.Collections.Generic;
 
 using MediatR;
@@ -78,7 +77,8 @@ public class ReaderManager : IReaderManager
   }
 
   // Call this whenever the collection may change.
-  // This Adjusts the currently selected reader if the currently one is null or removed.
+  // This Adjusts the currently selected reader
+  // if the current one is null or removed.
   private void OnCollectionChanged()
   {
     if (!this.readerDefinitions.Any())

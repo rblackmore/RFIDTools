@@ -18,7 +18,7 @@ internal class LogReaderRegistered : INotificationHandler<ReaderRegistered>
 
   public Task Handle(ReaderRegistered notification, CancellationToken cancellationToken)
   {
-    this.logger.LogInformation("New Reader Registered {DeviceId}: {ReaderName}", notification.DeviceID, notification.ReaderType);
+    this.logger.LogInformation("New Reader Registered {DeviceId}: {ReaderName}", notification.DeviceID, notification.DeviceName);
     return Task.CompletedTask;
   }
 }

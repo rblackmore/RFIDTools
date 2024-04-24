@@ -46,8 +46,8 @@ public class ReaderManagementVM : ViewModel,
 
   public void Receive(SelectedReaderChanged message)
   {
-    this.DeviceID = message.DeviceID;
-    this.ReaderName = message.ReaderType;
+    this.DeviceID = message.DeviceName;
+    this.ReaderName = message.ReaderName;
   }
 
   //public void SelectedReaderChanged(uint deviceId)

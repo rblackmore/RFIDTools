@@ -8,9 +8,11 @@ public class ReaderRegistered : INotification
 
   public ReaderRegistered(ReaderDefinition readerDefinition)
   {
+    ArgumentNullException.ThrowIfNull(readerDefinition);
+
     this.readerDefinition = readerDefinition;
   }
 
   public uint DeviceID => this.readerDefinition.DeviceID;
-  public string ReaderType => this.readerDefinition.ReaderModule.info().readerTypeToString();
+  public string DeviceName => this.readerDefinition.DeviceName;
 }
