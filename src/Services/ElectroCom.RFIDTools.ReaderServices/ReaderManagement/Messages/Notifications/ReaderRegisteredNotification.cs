@@ -16,5 +16,4 @@ public class ReaderRegistered : INotification
   public uint DeviceID => this.readerDefinition.DeviceID;
   public string DeviceName => this.readerDefinition.DeviceName;
   public bool IsConnected => this.readerDefinition.IsConnected;
-
 }

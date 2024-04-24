@@ -9,6 +9,7 @@ public class ReaderUnregistered : INotification
   public ReaderUnregistered(ReaderDefinition readerDefinition)
   {
     ArgumentNullException.ThrowIfNull(readerDefinition);
+
     this.readerDefinition = readerDefinition;
   }
 

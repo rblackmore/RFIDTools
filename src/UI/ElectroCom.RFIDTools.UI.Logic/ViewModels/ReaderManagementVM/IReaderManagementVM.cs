@@ -3,6 +3,6 @@
 public interface IReaderManagementVM : IViewModel
 {
   bool IsConnected { get; }
-  string? ReaderName { get; }
+  string DeviceName { get; }
   uint DeviceID { get; }
 }

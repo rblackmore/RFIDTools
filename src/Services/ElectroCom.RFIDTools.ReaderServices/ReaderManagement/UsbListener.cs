@@ -72,6 +72,9 @@ public class UsbListener : IHostedService, IUsbListener
 
   private void OnReaderGone(UsbScanInfo scanInfo)
   {
-    this.readerManager.UnregisterReader(scanInfo.deviceId());
+    var rdToRemove = this.readerManager.GetReaderDefinitions()
+      .First(rd => rd.DeviceID == scanInfo.deviceId());
+
+    this.readerManager.UnregisterReader(rdToRemove);
   }
 }

@@ -9,6 +9,6 @@ internal class NullReaderDefinition : ReaderDefinition
   }
 
   public override uint DeviceID => 0;
-  public override string DeviceName => String.Empty;
+  public override string DeviceName => "No Reader";
   public override bool IsConnected => false;
 }

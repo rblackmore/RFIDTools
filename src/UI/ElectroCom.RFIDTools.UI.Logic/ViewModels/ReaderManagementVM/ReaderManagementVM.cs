@@ -17,7 +17,7 @@ public class ReaderManagementVM : ViewModel,
   public ReaderManagementVM(IReaderManager readerManager)
   {
     this.IsConnected = false;
-    this.ReaderName = string.Empty;
+    this.DeviceName = string.Empty;
     this.DeviceID = 0;
     this.readerManager = readerManager;
   }
@@ -29,11 +29,11 @@ public class ReaderManagementVM : ViewModel,
     set => SetProperty(ref this.isConnected, value);
   }
 
-  private string? readerName;
-  public string? ReaderName
+  private string deviceName = string.Empty;
+  public string DeviceName
   {
-    get => readerName;
-    set => SetProperty(ref this.readerName, value);
+    get => deviceName;
+    set => SetProperty(ref this.deviceName, value);
   }
 
   private uint deviceID;
@@ -46,20 +46,8 @@ public class ReaderManagementVM : ViewModel,
 
   public void Receive(SelectedReaderChanged message)
   {
-    this.DeviceID = message.DeviceName;
-    this.ReaderName = message.ReaderName;
+    this.DeviceID = message.DeviceID;
+    this.DeviceName = message.DeviceName;
+    this.IsConnected = message.IsConnected;
   }
-
-  //public void SelectedReaderChanged(uint deviceId)
-  //{
-  //  this.readerDescription = this.readerManager.SelectedReader;
-
-  //  if (!this.readerDescription.IsConnected)
-  //    this.readerDescription.Connect();
-
-  //  this.IsConnected = this.readerDescription.IsConnected;
-
-  //  this.DeviceID = this.readerDescription.DeviceID;
-  //  this.ReaderName = this.readerDescription.ReaderName;
-  //}
 }

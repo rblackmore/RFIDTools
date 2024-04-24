@@ -1,4 +1,4 @@
-﻿namespace ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
+﻿namespace ElectroCom.RFIDTools.ReaderServices;
 using System.Collections.Generic;
 
 using MediatR;
@@ -15,11 +15,12 @@ public class ReaderManager : IReaderManager
   public ReaderManager(IMediator mediator, ILogger<ReaderManager> logger)
   {
     this.readerDefinitions = new List<ReaderDefinition>();
+    this.SelectedReader = ReaderFactory.CreateReader(CommsInterface.None);
     this.mediator = mediator;
     this.logger = logger;
   }
 
-  public ReaderDefinition? SelectedReader { get; private set; }
+  public ReaderDefinition SelectedReader { get; private set; }
 
   public IReadOnlyCollection<ReaderDefinition> GetReaderDefinitions()
   {
@@ -28,12 +29,15 @@ public class ReaderManager : IReaderManager
 
   public void RegisterReader(ReaderDefinition rd)
   {
+    if (rd is NullReaderDefinition)
+      return;
+
     if (this.readerDefinitions.Contains(rd))
       return;
 
     this.readerDefinitions.Add(rd);
 
-    this.mediator.Send(new ReaderRegistered(rd));
+    this.mediator.Publish(new ReaderRegistered(rd));
 
     OnCollectionChanged();
   }
@@ -45,7 +49,7 @@ public class ReaderManager : IReaderManager
 
     if (this.readerDefinitions.Remove(rdToRemove))
     {
-      this.mediator.Send(new ReaderUnregistered(rdToRemove));
+      this.mediator.Publish(new ReaderUnregistered(rdToRemove));
       OnCollectionChanged();
     }
   }
@@ -65,7 +69,8 @@ public class ReaderManager : IReaderManager
     if (idx < 0)
     {
       this.SelectedReader = ReaderFactory.CreateReader(CommsInterface.None);
-      this.mediator.Send(new SelectedReaderChanged(SelectedReader));
+      this.mediator.Publish(new SelectedReaderChanged(SelectedReader));
+      return;
     }
 
     if (idx >= this.readerDefinitions.Count)
@@ -73,7 +78,7 @@ public class ReaderManager : IReaderManager
 
     this.SelectedReader = this.readerDefinitions[idx];
 
-    this.mediator.Send(new SelectedReaderChanged(SelectedReader));
+    this.mediator.Publish(new SelectedReaderChanged(SelectedReader));
   }
 
   // Call this whenever the collection may change.
@@ -84,11 +89,13 @@ public class ReaderManager : IReaderManager
     if (!this.readerDefinitions.Any())
       SelectReaderByIndex(-1);
 
-    var notContains =
-      this.SelectedReader is not null &&
-      !this.readerDefinitions.Contains(this.SelectedReader);
-
-    if (notContains || this.readerDefinitions.Count == 1)
+    if (this.readerDefinitions.Any() && this.SelectedReader is NullReaderDefinition)
       SelectReaderByIndex(0);
+
+    if(!this.readerDefinitions.Contains(this.SelectedReader))
+      SelectReaderByIndex(0);
+
+    if (this.SelectedReader is null)
+      this.SelectedReader = ReaderFactory.CreateReader(CommsInterface.None);
   }
 }

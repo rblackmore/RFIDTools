@@ -18,7 +18,9 @@ internal class LogSelectedreaderChanged : INotificationHandler<SelectedReaderCha
 
   public Task Handle(SelectedReaderChanged notification, CancellationToken cancellationToken)
   {
-    this.logger.LogInformation("Selected Reader changed to {DeviceID}: {ReaderName}", notification.DeviceName, notification.ReaderName);
+    var messageFormat = "Reader Selected {DeviceId}: {DeviceName}";
+
+    this.logger.LogInformation(messageFormat, notification.DeviceID, notification.DeviceName);
     return Task.CompletedTask;
   }
 }
