@@ -2,13 +2,10 @@
 
 public interface IReaderManager
 {
-  public ReaderDefinition? SelectedReader { get; }
+  ReaderDefinition? SelectedReader { get; }
   IReadOnlyCollection<ReaderDefinition> GetReaderDefinitions();
-  public void RegisterReader(ReaderDefinition readerDefinition);
-  bool UnregisterReader(ReaderDefinition rdToRemove);
-  bool UnregisterReader(uint deviceId);
-  bool UnregisterSelectedReader();
-  bool SelectReader(int idx);
-  bool SelectReader(uint deviceId);
-  bool SelectReader(ReaderDefinition? rd);
+  void RegisterReader(ReaderDefinition readerDefinition);
+  void UnregisterReader(ReaderDefinition rdToRemove);
+  void SelectReaderByIndex(int idx);
+  void SelectReader(ReaderDefinition readerDefinition);
 }

@@ -1,5 +1,5 @@
-﻿namespace ElectroCom.RFIDTools.ReaderServices;
-
+﻿namespace ElectroCom.RFIDTools.ReaderServices.ReaderManagement;
+using System;
 using System.Collections.Generic;
 
 using MediatR;
@@ -10,135 +10,85 @@ public class ReaderManager : IReaderManager
 {
   private List<ReaderDefinition> readerDefinitions;
 
-  private int selectedIdx;
   private readonly ILogger<ReaderManager> logger;
   private readonly IMediator mediator;
 
-  public ReaderManager(ILogger<ReaderManager> logger, IMediator mediator)
+  public ReaderManager(IMediator mediator, ILogger<ReaderManager> logger)
   {
     this.readerDefinitions = new List<ReaderDefinition>();
-    this.logger = logger;
     this.mediator = mediator;
+    this.logger = logger;
   }
 
-  public int SelectedIdx
-  {
-    get
-    {
-      this.selectedIdx = EnsureSelectedIndexIsWithinBounds(this.selectedIdx);
-      return selectedIdx;
-    }
-    set
-    {
-      this.selectedIdx = EnsureSelectedIndexIsWithinBounds(value);
-    }
-  }
-
-  public ReaderDefinition? SelectedReader
-  {
-    get
-    {
-      if (this.readerDefinitions.Any())
-        return this.readerDefinitions[SelectedIdx];
-
-      return null;
-    }
-  }
+  public ReaderDefinition? SelectedReader { get; private set; }
 
   public IReadOnlyCollection<ReaderDefinition> GetReaderDefinitions()
   {
-    return this.readerDefinitions.AsReadOnly();
+    return readerDefinitions.AsReadOnly();
   }
 
-  public void RegisterReader(ReaderDefinition readerDefinition)
+  public void RegisterReader(ReaderDefinition rd)
   {
-    ArgumentNullException.ThrowIfNull(readerDefinition, nameof(readerDefinition));
-
-    if (!readerDefinition.IsValid())
+    if (this.readerDefinitions.Contains(rd))
       return;
 
-    this.readerDefinitions.Add(readerDefinition);
-    
-    if (this.readerDefinitions.Count == 1)
-      SelectReader(readerDefinition);
+    this.readerDefinitions.Add(rd);
 
-    this.mediator.Publish(new ReaderRegistered(readerDefinition));
+    this.mediator.Send(new ReaderRegistered(rd));
+
+    OnCollectionChanged();
   }
 
-  public bool UnregisterSelectedReader()
+  public void UnregisterReader(ReaderDefinition rdToRemove)
   {
-    var rdToRemove = this.SelectedReader;
+    if (!this.readerDefinitions.Contains(rdToRemove))
+      return;
 
-    return UnregisterReader(rdToRemove);
+    if (this.readerDefinitions.Remove(rdToRemove))
+    {
+      this.mediator.Send(new ReaderUnregistered(rdToRemove));
+      OnCollectionChanged();
+    }
   }
 
-  public bool UnregisterReader(uint deviceId)
+  public void SelectReader(ReaderDefinition rd)
   {
-    var rdToRemove =
-      this.readerDefinitions.FirstOrDefault(rd => rd.DeviceID == deviceId);
-
-    return UnregisterReader(rdToRemove);
-  }
-
-  public bool UnregisterReader(ReaderDefinition rdToRemove)
-  {
-    if (rdToRemove is null)
-      return false;
-
-    var isRemoved = this.readerDefinitions.Remove(rdToRemove);
-
-    if (!isRemoved)
-      return false;
-
-    this.selectedIdx =
-      EnsureSelectedIndexIsWithinBounds(this.selectedIdx);
-
-    this.mediator.Publish(new ReaderUnregistered(rdToRemove));
-
-    return isRemoved;
-  }
-
-  public bool SelectReader(int idx)
-  {
-    int newIdx = EnsureSelectedIndexIsWithinBounds(idx);
-
-    if (this.selectedIdx == newIdx)
-      return false;
-
-    this.mediator.Publish(new SelectedReaderChanged(SelectedReader));
-
-    return true;
-  }
-
-  public bool SelectReader(uint deviceId)
-  {
-    var rd =
-      this.readerDefinitions.FirstOrDefault(r => r.DeviceID == deviceId);
-
-    return SelectReader(rd);
-  }
-
-  public bool SelectReader(ReaderDefinition? rd)
-  {
-    if (rd is null)
-      return false;
+    if (!this.readerDefinitions.Contains(rd))
+      return;
 
     var idx = this.readerDefinitions.IndexOf(rd);
 
-    return SelectReader(idx);
+    SelectReaderByIndex(idx);
   }
 
-  private int EnsureSelectedIndexIsWithinBounds(int idx)
+  public void SelectReaderByIndex(int idx)
   {
-    if (this.readerDefinitions.Count <= 0)
-      return -1;
+    if (idx < 0)
+    {
+      this.SelectedReader = null;
+      this.mediator.Send(new SelectedReaderChanged(SelectedReader));
+    }
 
-    if (this.readerDefinitions.Count == 1)
-      return 0;
+    if (idx >= this.readerDefinitions.Count)
+      return;
 
-    if (selectedIdx >= this.readerDefinitions.Count)
-      return this.readerDefinitions.Count - 1;
+    this.SelectedReader = this.readerDefinitions[idx];
 
-    return idx;
+    this.mediator.Send(new SelectedReaderChanged(SelectedReader));
+  }
+
+  // Call this whenever the collection may change.
+  // This Adjusts the currently selected reader if the currently one is null or removed.
+  private void OnCollectionChanged()
+  {
+    if (!this.readerDefinitions.Any())
+      SelectReaderByIndex(-1);
+
+    var notContains =
+      this.SelectedReader is not null &&
+      !this.readerDefinitions.Contains(this.SelectedReader);
+
+    if (notContains || this.readerDefinitions.Count == 1)
+      SelectReaderByIndex(0);
   }
 }

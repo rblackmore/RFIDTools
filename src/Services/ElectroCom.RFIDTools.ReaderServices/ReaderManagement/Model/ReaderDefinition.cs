@@ -3,7 +3,6 @@
 using System.Diagnostics.CodeAnalysis;
 
 using FEDM;
-using FEDM.TagHandler;
 
 public abstract class ReaderDefinition
 {
