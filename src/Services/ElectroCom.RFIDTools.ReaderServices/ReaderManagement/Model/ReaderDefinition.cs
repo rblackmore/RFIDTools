@@ -9,14 +9,13 @@ public abstract class ReaderDefinition
   private ReaderModule readerModule = new ReaderModule(RequestMode.UniDirectional);
   private ReaderInfo? readerInfo;
   protected uint? deviceId = null!;
+  public CommsInterface CommsInterface { get; protected set; } = CommsInterface.None;
 
   internal ReaderModule ReaderModule => this.readerModule;
 
-  protected abstract Connector Connector { get; set; }
+  protected virtual Connector? Connector { get; set; }
 
-  public abstract CommsInterface CommsInterface { get; }
-
-  public uint DeviceID
+  public virtual uint DeviceID
   {
     get
     {
@@ -32,7 +31,7 @@ public abstract class ReaderDefinition
     }
   }
 
-  public string DeviceName
+  public virtual string DeviceName
   {
     get
     {
@@ -43,9 +42,11 @@ public abstract class ReaderDefinition
     }
   }
 
+  public virtual bool IsConnected => this.ReaderModule.isConnected();
+
   public virtual bool IsValid()
   {
-    return this.Connector.isValid();
+    return this.Connector?.isValid() ?? false;
   }
 
   [MemberNotNullWhen(true, nameof(readerInfo))]
@@ -71,7 +72,7 @@ public abstract class ReaderDefinition
   /// <returns>True if reader is connected. False if Connection is unsuccessful.</returns>
   public bool Connect()
   {
-    if (!this.Connector.isValid())
+    if (!this.Connector?.isValid() ?? true)
       return false;
 
     var status = this.ReaderModule.connect(this.Connector);
@@ -81,6 +82,7 @@ public abstract class ReaderDefinition
 
     return this.ReaderModule.isConnected();
   }
+
   /// <summary>
   /// Disconnects the Reader.
   /// </summary>

@@ -7,13 +7,12 @@ public class TCPReaderDefinition : ReaderDefinition
   public TCPReaderDefinition(string ipAddress, int port)
   {
     this.Connector = Connector.createTcpConnector(ipAddress, port);
+    this.CommsInterface = CommsInterface.TCP;
   }
-  protected override Connector Connector { get; set; }
+  public string IPAddress => this.Connector?.tcpIpAddress() ?? string.Empty;
+  public int Port => this.Connector?.tcpPort() ?? 0;
 
-  public override CommsInterface CommsInterface => CommsInterface.TCP;
-  public string IPAddress => this.Connector.tcpIpAddress();
-  public int Port => this.Connector.tcpPort();
-  public void ChangeIPAddress(string ipAddress) => this.Connector.setTcpIpAddress(ipAddress);
-  public void ChangePort(int port) => this.Connector.setTcpPort(port);
+  public void ChangeIPAddress(string ipAddress) => this.Connector?.setTcpIpAddress(ipAddress);
+  public void ChangePort(int port) => this.Connector?.setTcpPort(port);
 
 }

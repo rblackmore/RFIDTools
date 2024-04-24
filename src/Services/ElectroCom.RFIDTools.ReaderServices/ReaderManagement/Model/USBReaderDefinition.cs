@@ -8,10 +8,8 @@ public sealed class USBReaderDefinition : ReaderDefinition
   {
     this.deviceId = deviceId;
     this.Connector = Connector.createUsbConnector(deviceId);
+    this.CommsInterface = CommsInterface.USB;
   }
-  public override CommsInterface CommsInterface => CommsInterface.USB;
-
-  protected override Connector Connector { get; set; }
 
   public void ChangeDeviceID(uint deviceId)
   {
@@ -19,7 +17,7 @@ public sealed class USBReaderDefinition : ReaderDefinition
       return;
 
     this.deviceId = deviceId;
-    this.Connector.setUsbDeviceId(deviceId);
+    this.Connector?.setUsbDeviceId(deviceId);
   }
 
   public override bool IsValid()
