@@ -13,5 +13,20 @@ public sealed class USBReaderDefinition : ReaderDefinition
 
   protected override Connector Connector { get; set; }
 
-  public void ChangeDeviceID(uint deviceId) => this.Connector.setUsbDeviceId(deviceId);
+  public void ChangeDeviceID(uint deviceId)
+  {
+    if (deviceId <= 0)
+      return;
+
+    this.deviceId = deviceId;
+    this.Connector.setUsbDeviceId(deviceId);
+  }
+
+  public override bool IsValid()
+  {
+    if (this.DeviceID == 0)
+      return false;
+
+    return base.IsValid();
+  }
 }

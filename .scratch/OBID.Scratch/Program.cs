@@ -1,54 +1,28 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FEDM;
 
-using OBID.Scratch;
-using OBID.Scratch.ReaderManagement.Factories;
-using OBID.Scratch.ReaderManagement.Model;
+var readerModule = new ReaderModule(RequestMode.UniDirectional);
 
-await ServiceManager.ConfigureAndRunHost();
 
-var readerManager = ServiceManager.ServiceProvider.GetRequiredService<IReaderManager>();
+var tcpConnector = Connector.createTcpConnector("192.168.10.10");
 
-Console.WriteLine("StartUp");
+var info = readerModule.info();
 
-PrintAllReaderDetails(readerManager);
+PrintDetails(info);
 
-var tcpReader = ReaderFactory.CreateReader(CommsInterface.TCP);
-readerManager.RegisterReader(tcpReader);
-Console.WriteLine("TCP Added");
-PrintAllReaderDetails(readerManager);
-Console.Write("Device ID: ");
+readerModule.connect(tcpConnector);
 
-if (!UInt32.TryParse(Console.ReadLine(), out uint deviceId))
-  Console.WriteLine("Invalid Device ID");
+readerModule.disconnect();
 
-readerManager.SelectReader(deviceId);
+info = readerModule.info();
 
-readerManager.SelectedReader.Connect();
+PrintDetails(info);
 
-PrintAllReaderDetails(readerManager);
 
-void PrintAllReaderDetails(IReaderManager readerManager)
+
+void PrintDetails(ReaderInfo info)
 {
-  foreach (var rd in readerManager.GetReaderDefinitions())
-  {
-    var deviceId = 0;
-    var readerType = rd.ReaderModule.info().readerTypeToString();
-    var commsType = rd.CommsInterface.ToString();
-    var connected = (rd.ReaderModule.isConnected()) ? "Connected" : "Disconnected";
-    Console.WriteLine($"ID: {deviceId} ({connected})");
-    Console.WriteLine("------------------");
-    Console.WriteLine($"ReaderType: {readerType}");
-    Console.WriteLine($"Interface: {commsType}");
-    PrintReaderDetails(rd);
-    Console.WriteLine();
-  }
+  var deviceId = info.deviceId();
+  var deviceType = info.readerTypeToString();
+  Console.WriteLine($"{deviceId}: {deviceType}");
 }
 
-void PrintReaderDetails(ReaderDefinition rd)
-{
-  if (rd is TCPReaderDefinition tcp)
-  {
-    Console.WriteLine($"IP Address: {tcp.IPAddress}");
-    Console.WriteLine($"IP Port: {tcp.Port}");
-  }
-}

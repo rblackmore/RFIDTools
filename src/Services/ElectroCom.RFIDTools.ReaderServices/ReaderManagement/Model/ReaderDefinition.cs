@@ -1,21 +1,17 @@
 ﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
+using System.Diagnostics.CodeAnalysis;
+
 using FEDM;
+using FEDM.TagHandler;
 
 public abstract class ReaderDefinition
 {
-  private ReaderModule? readerModule;
+  private ReaderModule readerModule = new ReaderModule(RequestMode.UniDirectional);
+  private ReaderInfo? readerInfo;
   protected uint? deviceId = null!;
 
-  internal ReaderModule ReaderModule
-  {
-    get
-    {
-      this.readerModule ??= new ReaderModule(RequestMode.UniDirectional);
-
-      return readerModule!;
-    }
-  }
+  internal ReaderModule ReaderModule => this.readerModule;
 
   protected abstract Connector Connector { get; set; }
 
@@ -25,36 +21,55 @@ public abstract class ReaderDefinition
   {
     get
     {
-      if (!this.deviceId.HasValue || this.deviceId is 0)
-      {
-        DetectReader();
+      if (deviceId.HasValue && this.deviceId is not 0)
+        return this.deviceId.Value;
 
-        this.deviceId = this.ReaderModule.info().deviceId();
-      }
+      if (!IsInfoValid())
+        this.readerInfo = ReadReaderInfo();
 
-      return this.deviceId!.Value;
+      this.deviceId = this.readerInfo.deviceId();
+
+      return this.deviceId.Value;
     }
   }
 
-  public bool DetectReader()
+  public string DeviceName
   {
-    if (this.ReaderModule.isConnected())
-      return true;
-
-    if (Connect())
+    get
     {
-      Disconnect();
-      return true;
-    }
+      if (!IsInfoValid())
+        this.readerInfo = ReadReaderInfo();
 
-    return false;
+      return this.readerInfo.readerTypeToString();
+    }
   }
 
-  public bool IsValid()
+  public virtual bool IsValid()
   {
     return this.Connector.isValid();
   }
 
+  [MemberNotNullWhen(true, nameof(readerInfo))]
+  private bool IsInfoValid()
+  {
+    if (this.readerInfo is null)
+      return false;
+
+    if (this.readerInfo.deviceId() == 0)
+      return false;
+
+    var readerType = this.readerInfo.readerTypeToString();
+
+    if (String.IsNullOrEmpty(readerType))
+      return false;
+
+    return true;
+  }
+
+  /// <summary>
+  /// Connects to the reader.
+  /// </summary>
+  /// <returns>True if reader is connected. False if Connection is unsuccessful.</returns>
   public bool Connect()
   {
     if (!this.Connector.isValid())
@@ -67,12 +82,38 @@ public abstract class ReaderDefinition
 
     return this.ReaderModule.isConnected();
   }
-
+  /// <summary>
+  /// Disconnects the Reader.
+  /// </summary>
+  /// <returns>True if reader is disconnected. False if reader is still connected.</returns>
   public bool Disconnect()
   {
-    if (this.readerModule!.isConnected())
-      this.readerModule.disconnect();
+    if (this.ReaderModule.isConnected())
+      this.ReaderModule.disconnect();
 
-    return !this.readerModule.isConnected();
+    return !this.ReaderModule.isConnected();
+  }
+
+  /// <summary>
+  /// Reads Info and Returns it.
+  /// If read is not already connected, then it connects and disconnects to read the info first.
+  /// </summary>
+  /// <returns>ReaderInfo, or null if unable to connect to reader.</returns>
+  private ReaderInfo ReadReaderInfo()
+  {
+    if (this.ReaderModule.isConnected())
+    {
+      this.ReaderModule.readReaderInfo();
+      return this.ReaderModule.info();
+    }
+
+    if (Connect())
+    {
+      this.ReaderModule.readReaderInfo();
+      Disconnect();
+      return this.ReaderModule.info();
+    }
+
+    return this.ReaderModule.info();
   }
 }
