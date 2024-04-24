@@ -15,6 +15,7 @@ public static class ReaderFactory
   {
     return commsInterface switch
     {
+      CommsInterface.None => new NullReaderDefinition(),
       CommsInterface.USB => new USBReaderDefinition(deviceId),
       CommsInterface.TCP => new TCPReaderDefinition(ipAddress, tcpPort),
       CommsInterface.COM => new COMReaderDefinition(comPort, frame, baudrate, busAddress),

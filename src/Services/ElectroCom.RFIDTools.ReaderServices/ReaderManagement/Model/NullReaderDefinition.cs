@@ -1,4 +1,4 @@
-﻿namespace ElectroCom.RFIDTools.ReaderServices.ReaderManagement.Model;
+﻿namespace ElectroCom.RFIDTools.ReaderServices;
 using FEDM;
 
 internal class NullReaderDefinition : ReaderDefinition

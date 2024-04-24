@@ -64,7 +64,7 @@ public class ReaderManager : IReaderManager
   {
     if (idx < 0)
     {
-      this.SelectedReader = null;
+      this.SelectedReader = ReaderFactory.CreateReader(CommsInterface.None);
       this.mediator.Send(new SelectedReaderChanged(SelectedReader));
     }
 
