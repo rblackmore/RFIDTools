@@ -62,6 +62,7 @@ public class ReaderManager : IReaderManager
 
     if (this.readerDefinitions.Remove(rdToRemove))
     {
+      rdToRemove.Disconnect();
       rdToRemove.ReaderConnected -= ReaderConnected_Handler;
       rdToRemove.ReaderDisconnected += ReaderDisconnected_Handler;
 
