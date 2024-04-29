@@ -37,9 +37,22 @@ public class ReaderManager : IReaderManager
 
     this.readerDefinitions.Add(rd);
 
+    rd.ReaderConnected += ReaderConnected_Handler;
+    rd.ReaderDisconnected += ReaderDisconnected_Handler;
+
     this.mediator.Publish(new ReaderRegistered(rd));
 
     OnCollectionChanged();
+  }
+
+  private void ReaderConnected_Handler(object sender, ReaderConnectedEventArgs e)
+  {
+    this.mediator.Publish(new ReaderConnected(e.ReaderDefinition));
+  }
+
+  private void ReaderDisconnected_Handler(object sender, ReaderDisconnectedEventArgs e)
+  {
+    this.mediator.Publish(new ReaderDisconnected(e.ReaderDefinition));
   }
 
   public void UnregisterReader(ReaderDefinition rdToRemove)
@@ -49,6 +62,9 @@ public class ReaderManager : IReaderManager
 
     if (this.readerDefinitions.Remove(rdToRemove))
     {
+      rdToRemove.ReaderConnected -= ReaderConnected_Handler;
+      rdToRemove.ReaderDisconnected += ReaderDisconnected_Handler;
+
       this.mediator.Publish(new ReaderUnregistered(rdToRemove));
       OnCollectionChanged();
     }
@@ -92,7 +108,7 @@ public class ReaderManager : IReaderManager
     if (this.readerDefinitions.Any() && this.SelectedReader is NullReaderDefinition)
       SelectReaderByIndex(0);
 
-    if(!this.readerDefinitions.Contains(this.SelectedReader))
+    if (!this.readerDefinitions.Contains(this.SelectedReader))
       SelectReaderByIndex(0);
 
     if (this.SelectedReader is null)

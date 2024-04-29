@@ -8,18 +8,22 @@ using ElectroCom.RFIDTools.ReaderServices;
 // Update the view to match as well.
 // Display the currently selected Reader Details, included conneciton Status.
 public class ReaderManagementVM : ViewModel,
+  IDisposable,
   IReaderManagementVM,
   IRecipient<SelectedReaderChanged>
 {
 
   private readonly IReaderManager readerManager;
+  private readonly IMessenger messenger;
 
-  public ReaderManagementVM(IReaderManager readerManager)
+  public ReaderManagementVM(IReaderManager readerManager, IMessenger messenger)
   {
     this.IsConnected = false;
     this.DeviceName = string.Empty;
     this.DeviceID = 0;
     this.readerManager = readerManager;
+    this.messenger = messenger;
+    this.messenger.RegisterAll(this);
   }
 
   private bool isConnected;
@@ -49,5 +53,10 @@ public class ReaderManagementVM : ViewModel,
     this.DeviceID = message.DeviceID;
     this.DeviceName = message.DeviceName;
     this.IsConnected = message.IsConnected;
+  }
+
+  public void Dispose()
+  {
+    this.messenger.UnregisterAll(this);
   }
 }

@@ -38,9 +38,9 @@
 
         <!-- Reader Details if Connected -->
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
-            <TextBlock Text="{Binding ReaderName}" d:Text="CPR74" FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Text="{Binding DeviceName}" d:Text="CPR74" FontWeight="SemiBold" FontSize="14"/>
             <TextBlock Text="{Binding DeviceID}" d:Text="123456789" FontSize="12" FontWeight="Regular">
-                <TextBlock.Style>
+                <!--<TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsConnected}" Value="False">
@@ -48,7 +48,7 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </TextBlock.Style>
+                </TextBlock.Style>-->
             </TextBlock>
         </StackPanel>
     </Grid>

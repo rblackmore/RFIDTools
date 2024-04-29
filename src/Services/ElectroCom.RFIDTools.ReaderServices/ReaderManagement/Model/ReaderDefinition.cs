@@ -4,6 +4,29 @@ using System.Diagnostics.CodeAnalysis;
 
 using FEDM;
 
+internal delegate void ReaderConnectedEventHandler(object sender, ReaderConnectedEventArgs e);
+internal delegate void ReaderDisconnectedEventHandler(object sender, ReaderDisconnectedEventArgs e);
+
+internal class ReaderConnectedEventArgs : EventArgs
+{
+  public ReaderConnectedEventArgs(ReaderDefinition readerDefinition)
+  {
+    this.ReaderDefinition = readerDefinition;
+  }
+
+  public ReaderDefinition ReaderDefinition { get; private set; }
+}
+
+internal class ReaderDisconnectedEventArgs : EventArgs
+{
+  public ReaderDisconnectedEventArgs(ReaderDefinition readerDefinition)
+  {
+    this.ReaderDefinition = readerDefinition;
+  }
+
+  public ReaderDefinition ReaderDefinition { get; private set; }
+}
+
 public abstract class ReaderDefinition
 {
   private ReaderModule readerModule = new ReaderModule(RequestMode.UniDirectional);
@@ -12,6 +35,9 @@ public abstract class ReaderDefinition
   public CommsInterface CommsInterface { get; protected set; } = CommsInterface.None;
 
   internal ReaderModule ReaderModule => this.readerModule;
+
+  internal event ReaderConnectedEventHandler? ReaderConnected;
+  internal event ReaderDisconnectedEventHandler? ReaderDisconnected;
 
   protected virtual Connector? Connector { get; set; }
 
@@ -80,6 +106,8 @@ public abstract class ReaderDefinition
     if (status is not ErrorCode.Ok)
       return false;
 
+    OnReaderConnected();
+
     return this.ReaderModule.isConnected();
   }
 
@@ -90,7 +118,10 @@ public abstract class ReaderDefinition
   public bool Disconnect()
   {
     if (this.ReaderModule.isConnected())
+    {
       this.ReaderModule.disconnect();
+      OnReaderDisconected();
+    }
 
     return !this.ReaderModule.isConnected();
   }
@@ -116,5 +147,15 @@ public abstract class ReaderDefinition
     }
 
     return this.ReaderModule.info();
+  }
+
+  private void OnReaderConnected()
+  {
+    this.ReaderConnected?.Invoke(this, new ReaderConnectedEventArgs(this));
+  }
+
+  private void OnReaderDisconected()
+  {
+    this.ReaderDisconnected?.Invoke(this, new ReaderDisconnectedEventArgs(this));
   }
 }
