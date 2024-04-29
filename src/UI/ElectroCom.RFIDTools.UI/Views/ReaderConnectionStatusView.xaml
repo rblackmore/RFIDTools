@@ -17,6 +17,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="48"/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="48"/>
         </Grid.ColumnDefinitions>
 
         <Ellipse Stroke="{StaticResource BorderBrush}" 
@@ -39,17 +40,12 @@
         <!-- Reader Details if Connected -->
         <StackPanel Grid.Column="1" VerticalAlignment="Center">
             <TextBlock Text="{Binding DeviceName}" d:Text="CPR74" FontWeight="SemiBold" FontSize="14"/>
-            <TextBlock Text="{Binding DeviceID}" d:Text="123456789" FontSize="12" FontWeight="Regular">
-                <!--<TextBlock.Style>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsConnected}" Value="False">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>-->
-            </TextBlock>
+            <TextBlock Text="{Binding DeviceID}" d:Text="123456789" FontSize="12" FontWeight="Regular"/>
         </StackPanel>
+
+        <Button Grid.Column="2" 
+                Style="{StaticResource BasicButton}" 
+                Command="{Binding ConnectReader}" 
+                Content="Connect"/>
     </Grid>
 </UserControl>

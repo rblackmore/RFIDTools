@@ -1,5 +1,6 @@
 ﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 
 using ElectroCom.RFIDTools.ReaderServices;
@@ -10,7 +11,9 @@ using ElectroCom.RFIDTools.ReaderServices;
 public class ReaderManagementVM : ViewModel,
   IDisposable,
   IReaderManagementVM,
-  IRecipient<SelectedReaderChanged>
+  IRecipient<SelectedReaderChanged>,
+  IRecipient<ReaderConnected>,
+  IRecipient<ReaderDisconnected>
 {
 
   private readonly IReaderManager readerManager;
@@ -24,6 +27,9 @@ public class ReaderManagementVM : ViewModel,
     this.readerManager = readerManager;
     this.messenger = messenger;
     this.messenger.RegisterAll(this);
+
+    this.ConnectReader =
+      new RelayCommand(ConnectReaderExecute, ConnectReaderCanExecute);
   }
 
   private bool isConnected;
@@ -48,15 +54,62 @@ public class ReaderManagementVM : ViewModel,
     set => SetProperty(ref this.deviceID, value);
   }
 
+  public IRelayCommand ConnectReader { get; private set; }
+
+  private void ConnectReaderExecute()
+  {
+    var rd = this.readerManager.SelectedReader;
+
+    if (rd is NullReaderDefinition || rd.IsConnected)
+      return;
+
+    rd.Connect();
+  }
+
+  private bool ConnectReaderCanExecute()
+  {
+    var rd = this.readerManager.SelectedReader;
+
+    if (rd.IsConnected)
+      return false;
+
+    if (rd is NullReaderDefinition)
+      return false;
+
+    return true;
+  }
+
   public void Receive(SelectedReaderChanged message)
   {
     this.DeviceID = message.DeviceID;
     this.DeviceName = message.DeviceName;
     this.IsConnected = message.IsConnected;
+    ConnectReaderCanExecuteChanged();
+  }
+
+  public void Receive(ReaderConnected message)
+  {
+    this.IsConnected = message.ReaderDefinition.IsConnected;
+    ConnectReaderCanExecuteChanged();
+  }
+
+  public void Receive(ReaderDisconnected message)
+  {
+    this.IsConnected = message.ReaderDefinition.IsConnected;
+    ConnectReaderCanExecuteChanged();
+  }
+
+  private void ConnectReaderCanExecuteChanged()
+  {
+    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+    {
+      this.ConnectReader.NotifyCanExecuteChanged();
+    });
   }
 
   public void Dispose()
   {
     this.messenger.UnregisterAll(this);
   }
+
 }
