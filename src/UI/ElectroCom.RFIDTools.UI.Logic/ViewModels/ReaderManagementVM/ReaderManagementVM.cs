@@ -89,12 +89,18 @@ public class ReaderManagementVM : ViewModel,
 
   public void Receive(ReaderConnected message)
   {
+    if (!message.IsSelectedReader)
+      return;
+
     this.IsConnected = message.ReaderDefinition.IsConnected;
     ConnectReaderCanExecuteChanged();
   }
 
   public void Receive(ReaderDisconnected message)
   {
+    if (!message.IsSelectedReader)
+      return;
+
     this.IsConnected = message.ReaderDefinition.IsConnected;
     ConnectReaderCanExecuteChanged();
   }

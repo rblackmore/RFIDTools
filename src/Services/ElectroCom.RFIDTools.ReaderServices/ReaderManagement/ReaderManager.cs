@@ -47,12 +47,24 @@ public class ReaderManager : IReaderManager
 
   private void ReaderConnected_Handler(object sender, ReaderConnectedEventArgs e)
   {
-    this.mediator.Publish(new ReaderConnected(e.ReaderDefinition));
+    var isSelected =
+      object.ReferenceEquals(e.ReaderDefinition, this.SelectedReader);
+
+    var connectedNotification =
+      new ReaderConnected(e.ReaderDefinition, isSelected);
+
+    this.mediator.Publish(connectedNotification);
   }
 
   private void ReaderDisconnected_Handler(object sender, ReaderDisconnectedEventArgs e)
   {
-    this.mediator.Publish(new ReaderDisconnected(e.ReaderDefinition));
+    var isSelected =
+      object.ReferenceEquals(e.ReaderDefinition, this.SelectedReader);
+
+    var disconnectedNotification =
+      new ReaderDisconnected(e.ReaderDefinition, isSelected);
+
+    this.mediator.Publish(disconnectedNotification);
   }
 
   public void UnregisterReader(ReaderDefinition rdToRemove)
