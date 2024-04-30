@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="ElectroCom.RFIDTools.UI.Controls.WindowTitleBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElectroCom.RFIDTools.UI.Controls"
+             mc:Ignorable="d"
+             d:Width="720">
+    <!-- Window Title Bar -->
+    <Border BorderThickness="0,0,0,1" 
+                    BorderBrush="{StaticResource BorderBrush}"
+                    Background="{StaticResource BackgroundTitlebarBrush}"
+                    MouseDown="Border_MouseDown">
+
+        <Border.CornerRadius>
+            <CornerRadius TopLeft="{StaticResource WinCornerRadiusValue}" 
+                                  TopRight="{StaticResource WinCornerRadiusValue}"/>
+        </Border.CornerRadius>
+
+        <Grid HorizontalAlignment="Stretch">
+            <Label Margin="8,0,0,0"
+                           Content="Tag Shelf Locator"
+                           FontSize="15"
+                           FontFamily="Work Sans"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Foreground="{StaticResource ForegroundBrush}"/>
+
+            <StackPanel Orientation="Horizontal" Margin="0"
+                            VerticalAlignment="Stretch" 
+                            HorizontalAlignment="Right">
+                <Button Margin="0" Click="WindowMinimize_Click" Padding="0,0,0,5" Style="{StaticResource WindowButton}">
+                    <Path Style="{StaticResource DashIcon}" Fill="{StaticResource ForegroundBrush}"/>
+                </Button>
+
+                <Button Margin="0" Click="WindowMaximize_Click" Style="{StaticResource WindowButton}">
+                    <Path Style="{StaticResource SquareIcon}" Fill="{StaticResource ForegroundBrush}"/>
+                </Button>
+
+                <Button Margin="0" Click="WindowClose_Click" Style="{StaticResource CloseWindowButton}">
+                    <Path Style="{StaticResource CrossIcon}" Fill="{StaticResource ForegroundBrush}"/>
+                </Button>
+
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</UserControl>

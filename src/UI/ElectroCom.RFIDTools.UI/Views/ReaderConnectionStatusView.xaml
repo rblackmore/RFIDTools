@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="ElectroCom.RFIDTools.UI.Views.ReaderConnectionStatusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ElectroCom.RFIDTools.UI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="56" d:DesignWidth="208"
+             Background="Transparent"
+             d:Background="{StaticResource BackgroundBrush}">
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource readerStatusVML}" Path="ViewModel"/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="88"/>
+        </Grid.ColumnDefinitions>
+        <!--<Button Grid.Column="1">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+            </Button.Style>
+            
+
+        </Button>-->
+
+        <!--<Ellipse Grid.Column="0" Stroke="{StaticResource BorderBrush}" 
+                 StrokeThickness="1" 
+                 Width="40" Height="40">
+            <Ellipse.Style>
+                <Style TargetType="Ellipse">
+                    <Setter Property="Fill" Value="{StaticResource ErrorBrush}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsConnected}" Value="True">
+                            <Setter Property="Fill" Value="{StaticResource SuccessBrush}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Ellipse.Style>
+        </Ellipse>-->
+
+        <!-- Reader Details -->
+        <StackPanel Margin="8,0" Grid.Column="0" VerticalAlignment="Center">
+            <StackPanel.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="{StaticResource ErrorBrush}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
+            <TextBlock Text="{Binding DeviceName}" d:Text="ID.ISC.LRU1002" FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock Text="{Binding DeviceID}" d:Text="123456789" FontSize="12" FontWeight="Regular"/>
+        </StackPanel>
+
+        <Button Grid.Column="2" 
+                Margin="4,0">
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource ConnectDisconectButton}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsConnected}" Value="False">
+                            <Setter Property="Command" Value="{Binding ConnectReader}"/>
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <TextBlock Text="Connect"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource ErrorBrush}"/>
+                            <Setter Property="Command" Value="{Binding DisconnectReader}"/>
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <TextBlock Text="Disconnect"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <!--<Button Grid.Column="2" 
+                Style="{StaticResource BasicButton}" 
+                Command="{Binding ConnectReader}" 
+                Content="Connect"
+                Width="32"
+                Height="32"/>-->
+    </Grid>
+</UserControl>

@@ -1,0 +1,98 @@
+﻿<UserControl x:Class="ElectroCom.RFIDTools.UI.Views.InventoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:l="clr-namespace:ElectroCom.RFIDTools.UI.Controls.ListViews"
+             mc:Ignorable="d"
+             Background="Transparent"
+             d:Background="{StaticResource BackgroundBrush}"
+             d:DesignHeight="600" d:DesignWidth="1080">
+
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+            <Grid HorizontalAlignment="Stretch">
+                <StackPanel Margin="12,0,0,0" Orientation="Horizontal" 
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center">
+                    <Button Style="{StaticResource BasicButton}"
+                            Margin="0,0,8,0"
+                            Click="TiledButton_Click">
+                        <Path Stretch="Uniform"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" 
+                              Style="{StaticResource GridIcon}" 
+                              Fill="{StaticResource ForegroundBrush}"/>
+                    </Button>
+
+                    <Button Style="{StaticResource BasicButton}" Width="32"
+                            Click="ListButton_Click">
+                        <Path Stretch="Uniform"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" 
+                              Style="{StaticResource ListIcon}" 
+                              Fill="{StaticResource ForegroundBrush}"/>
+                    </Button>
+
+                    <Button Style="{StaticResource BasicButton}" 
+                            Command="{Binding ClearTagList}"
+                            Margin="16,0,0,0">
+                        <TextBlock Text="Clear"/>
+                    </Button>
+
+                </StackPanel>
+                <!-- Control Buttons -->
+                <StackPanel Margin="0,0,12,0" 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                    <CheckBox IsChecked="{Binding ClearOnStart}" Content="Clear On Start" VerticalAlignment="Center"
+                              Margin="0,0,8,0"/>
+                    <Button Style="{StaticResource BasicButton}" 
+                            Command="{Binding StartInventoryAsync}"
+                            Width="32"
+                            Height="32">
+
+                        <Path Stretch="Uniform"
+                              Height="16"
+                              Width="16"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" 
+                              Style="{StaticResource PlayIcon}" 
+                              Fill="{StaticResource ForegroundBrush}"/>
+                    </Button>
+
+                    <Button Style="{StaticResource BasicButton}" 
+                            Command="{Binding StopInventoryAsync}"
+                            Width="32"
+                            Height="32"
+                            Margin="8,0,0,0">
+
+                        <Path Stretch="Uniform"
+                              Height="16"
+                              Width="16"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" 
+                              Style="{StaticResource StopIcon}" 
+                              Fill="{StaticResource ForegroundBrush}"/>
+                    </Button>
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
+            <ListView x:Name="lv_Inventory" ItemsSource="{Binding TagList}"
+                      BorderThickness="0"
+                      Background="{StaticResource TagListBackground}"
+                      Style="{StaticResource ListedLayout}"/>
+        </Border>
+
+    </Grid>
+</UserControl>
