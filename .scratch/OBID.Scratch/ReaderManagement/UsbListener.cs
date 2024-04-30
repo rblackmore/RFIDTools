@@ -9,16 +9,13 @@ using FEDM;
 
 using Microsoft.Extensions.Hosting;
 
-using OBID.Scratch.ReaderManagement.Factories;
-using OBID.Scratch.ReaderManagement.Model;
-
 public class UsbListener : IHostedService, IUsbListener
 {
-  private readonly IReaderManager readerManager;
+  public ReaderModule ReaderModule { get; }
 
-  public UsbListener(IReaderManager readerManager)
+  public UsbListener(ReaderModule readerModule)
   {
-    this.readerManager = readerManager;
+    ReaderModule = readerModule;
   }
 
   public void onUsbEvent()
@@ -67,14 +64,25 @@ public class UsbListener : IHostedService, IUsbListener
 
   private void OnReaderDiscovered(UsbScanInfo scanInfo)
   {
-    var readerDefinition = 
-      ReaderFactory.CreateReader(CommsInterface.USB, deviceId: scanInfo.deviceId());
-
-    this.readerManager.RegisterReader(readerDefinition);
+    var connector = scanInfo.connector();
+    this.ReaderModule.connect(connector);
   }
 
   private void OnReaderGone(UsbScanInfo scanInfo)
   {
-    this.readerManager.UnregisterReader(scanInfo.deviceId());
+    if (!this.ReaderModule.isConnected())
+    {
+      return;
+    }
+
+    var scannedId = scanInfo.deviceId();
+    var readerId = this.ReaderModule.info().deviceId();
+
+    if (scannedId != readerId)
+    {
+      return;
+    }
+
+    this.ReaderModule.disconnect();
   }
 }

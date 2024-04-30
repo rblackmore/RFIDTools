@@ -1,21 +1,16 @@
 ﻿using FEDM;
 
-var readerModule = new ReaderModule(RequestMode.UniDirectional);
+using Microsoft.Extensions.DependencyInjection;
+
+using OBID.Scratch;
 
 
-var tcpConnector = Connector.createTcpConnector("192.168.10.10");
+await ServiceManager.ConfigureAndRunHost();
 
-var info = readerModule.info();
+var services = ServiceManager.ServiceProvider;
 
-PrintDetails(info);
+var readerModule = services.GetRequiredService<ReaderModule>();
 
-readerModule.connect(tcpConnector);
-
-readerModule.disconnect();
-
-info = readerModule.info();
-
-PrintDetails(info);
 
 
 
