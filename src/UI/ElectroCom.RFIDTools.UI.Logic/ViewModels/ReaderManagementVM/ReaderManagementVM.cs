@@ -30,6 +30,9 @@ public class ReaderManagementVM : ViewModel,
 
     this.ConnectReader =
       new RelayCommand(ConnectReaderExecute, ConnectReaderCanExecute);
+
+    this.DisconnectReader =
+      new RelayCommand(DisconnectReaderExecute, DisconnectReaderCanExecute);
   }
 
   private bool isConnected;
@@ -56,11 +59,13 @@ public class ReaderManagementVM : ViewModel,
 
   public IRelayCommand ConnectReader { get; private set; }
 
+  public IRelayCommand DisconnectReader { get; private set; }
+
   private void ConnectReaderExecute()
   {
     var rd = this.readerManager.SelectedReader;
 
-    if (rd is NullReaderDefinition || rd.IsConnected)
+    if (!ConnectReaderCanExecute())
       return;
 
     rd.Connect();
@@ -70,13 +75,36 @@ public class ReaderManagementVM : ViewModel,
   {
     var rd = this.readerManager.SelectedReader;
 
+    if (rd is NullReaderDefinition)
+      return false;
+
     if (rd.IsConnected)
       return false;
+
+    return true;
+  }
+
+  private void DisconnectReaderExecute()
+  {
+    var rd = this.readerManager.SelectedReader;
+
+    if (!DisconnectReaderCanExecute())
+      return;
+
+    rd.Disconnect();
+  }
+
+  private bool DisconnectReaderCanExecute()
+  {
+    var rd = this.readerManager.SelectedReader;
 
     if (rd is NullReaderDefinition)
       return false;
 
-    return true;
+    if (rd.IsConnected)
+      return true;
+
+    return false;
   }
 
   public void Receive(SelectedReaderChanged message)
@@ -110,6 +138,7 @@ public class ReaderManagementVM : ViewModel,
     DispatcherHelper.CheckBeginInvokeOnUI(() =>
     {
       this.ConnectReader.NotifyCanExecuteChanged();
+      this.DisconnectReader.NotifyCanExecuteChanged();
     });
   }
 
@@ -117,5 +146,4 @@ public class ReaderManagementVM : ViewModel,
   {
     this.messenger.UnregisterAll(this);
   }
-
 }

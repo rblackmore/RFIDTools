@@ -9,4 +9,5 @@ public interface IReaderManagementVM : IViewModel
   uint DeviceID { get; }
 
   IRelayCommand ConnectReader { get; }
+  IRelayCommand DisconnectReader { get; }
 }

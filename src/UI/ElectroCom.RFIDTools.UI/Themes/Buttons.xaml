@@ -8,7 +8,7 @@
         <Setter Property="FontFamily" Value="Open Sans"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+        <Setter Property="Foreground" Value="Red"/>
         <Setter Property="Background" Value="{StaticResource ButtonBackground}"/>
         <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
         <Setter Property="Padding" Value="8,4"/>
@@ -113,6 +113,26 @@
                 <Setter Property="Visibility" Value="Collapsed"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="ConnectDisconectButton" BasedOn="{StaticResource BasicButton}">
+        <Setter Property="BorderBrush" Value="{StaticResource SuccessBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Padding="{TemplateBinding Padding}" 
+                        Background="{TemplateBinding Background}" 
+                        BorderThickness="1" 
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        CornerRadius="4">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                      Content="{TemplateBinding Content}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>
