@@ -1,23 +1,17 @@
 ﻿using FEDM;
 
-using Microsoft.Extensions.DependencyInjection;
-
 using OBID.Scratch;
 
-
-await ServiceManager.ConfigureAndRunHost();
-
-var services = ServiceManager.ServiceProvider;
-
-var readerModule = services.GetRequiredService<ReaderModule>();
+var reader = new ReaderModule(RequestMode.UniDirectional);
+var usbListener = new UsbListener(reader);
+usbListener.ReaderConnected += Run;
+await usbListener.StartAsync();
 
 
 
-
-void PrintDetails(ReaderInfo info)
+static void Run(object? sender, EventArgs e)
 {
-  var deviceId = info.deviceId();
-  var deviceType = info.readerTypeToString();
-  Console.WriteLine($"{deviceId}: {deviceType}");
+  
 }
+
 

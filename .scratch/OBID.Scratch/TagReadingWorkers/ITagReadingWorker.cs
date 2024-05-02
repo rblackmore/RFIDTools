@@ -1,7 +1,11 @@
 ﻿namespace OBID.Scratch;
 
-public interface ITagReadingWorker
+public interface ITagReader
 {
-  Task StartAsync(CancellationToken token = default);
-  Task StopAsync(CancellationToken token = default);
+  bool IsRunning { get; }
+
+  Task StartReadingAsync(CancellationToken token = default);
+
+  Task StopReadingAsync(CancellationToken token = default);
+
 }

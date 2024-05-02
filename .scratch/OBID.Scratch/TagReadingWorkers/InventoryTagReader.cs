@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using FEDM;
 
-public class InventoryTagReadingWorker : ITagReadingWorker
+public class InventoryTagReader : ITagReader
 {
   private ChannelWriter<List<TagItem>> channelWriter;
   private ReaderModule readerModule;
@@ -15,7 +15,7 @@ public class InventoryTagReadingWorker : ITagReadingWorker
   private CancellationTokenSource? cancellationTokenSource;
   private Task runningTask = Task.CompletedTask;
 
-  public InventoryTagReadingWorker(
+  public InventoryTagReader(
     ChannelWriter<List<TagItem>> channelWriter,
     ReaderModule readerModule)
   {
@@ -23,7 +23,9 @@ public class InventoryTagReadingWorker : ITagReadingWorker
     this.readerModule = readerModule;
   }
 
-  public Task StartAsync(CancellationToken token = default)
+  public bool IsRunning => this.runningTask.Status == TaskStatus.Running;
+
+  public Task StartReadingAsync(CancellationToken token = default)
   {
     if (!this.readerModule.isConnected())
       throw new Exception("Reader Not Connected Exception");
@@ -41,7 +43,7 @@ public class InventoryTagReadingWorker : ITagReadingWorker
     return Task.CompletedTask;
   }
 
-  public async Task StopAsync(CancellationToken token = default)
+  public async Task StopReadingAsync(CancellationToken token = default)
   {
     if (runningTask.IsCompleted)
       return;
@@ -50,7 +52,6 @@ public class InventoryTagReadingWorker : ITagReadingWorker
 
     await runningTask;
   }
-
 
   private Task RunAsync(CancellationToken token)
   {

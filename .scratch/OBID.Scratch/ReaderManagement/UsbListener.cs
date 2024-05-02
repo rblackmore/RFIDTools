@@ -13,6 +13,8 @@ public class UsbListener : IHostedService, IUsbListener
 {
   public ReaderModule ReaderModule { get; }
 
+  public event EventHandler? ReaderConnected;
+
   public UsbListener(ReaderModule readerModule)
   {
     ReaderModule = readerModule;
@@ -65,7 +67,19 @@ public class UsbListener : IHostedService, IUsbListener
   private void OnReaderDiscovered(UsbScanInfo scanInfo)
   {
     var connector = scanInfo.connector();
-    this.ReaderModule.connect(connector);
+    var state = this.ReaderModule.connect(connector);
+
+    if (state is not ErrorCode.Ok)
+    {
+      Console.WriteLine("Error Connecting to Discovered Reader");
+    }
+
+    if (this.ReaderModule.isConnected())
+    {
+      var info = this.ReaderModule.info();
+      Console.WriteLine($"Connected to reader {info.deviceId()}: {info.readerTypeToString()}");
+      this.ReaderConnected?.Invoke(this, new EventArgs());
+    }
   }
 
   private void OnReaderGone(UsbScanInfo scanInfo)

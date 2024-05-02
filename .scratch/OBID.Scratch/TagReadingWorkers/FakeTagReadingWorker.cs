@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 
-public class FakeTagReadingWorker : ITagReadingWorker
+public class FakeTagReadingWorker : ITagReader
 {
   private ChannelWriter<string> channelWriter;
   private CancellationTokenSource cancellationTokenSource;
@@ -15,7 +15,7 @@ public class FakeTagReadingWorker : ITagReadingWorker
     this.channelWriter = channelWriter;
   }
 
-  public Task StartAsync(CancellationToken token = default)
+  public Task StartReadingAsync(CancellationToken token = default)
   {
     if (!runningTask.IsCompleted)
       return Task.CompletedTask;
@@ -31,7 +31,7 @@ public class FakeTagReadingWorker : ITagReadingWorker
 
   }
 
-  public async Task StopAsync(CancellationToken token = default)
+  public async Task StopReadingAsync(CancellationToken token = default)
   {
     if (runningTask.IsCompleted)
       return;
