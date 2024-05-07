@@ -14,9 +14,7 @@ using MediatR;
 
 using Microsoft.Extensions.Logging;
 
-public class OBIDTagInventoryService :
-  IDisposable,
-  ITagReadingService
+public class OBIDTagInventoryService
 {
   private readonly ILogger<OBIDTagInventoryService> logger;
   private readonly IReaderManager readerManager;
@@ -135,10 +133,5 @@ public class OBIDTagInventoryService :
 
       await this.mediator.Publish(new InventoryTagItemsDetectedNotification(tagList));
     }
-  }
-
-  public void Dispose()
-  {
-    //this.messenger.UnregisterAll(this);
   }
 }

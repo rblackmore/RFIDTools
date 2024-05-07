@@ -95,7 +95,11 @@ public class TagEntry : ValueObject
   {
     yield return this.SerialNumber;
   }
-
+  // Maybe use Specification Pattern Here, and pass in an ISpecification object.
+  // This way I can make any number of specification implementations
+  // To get data from a Tag item, these implementations exist within this project.
+  // Consumers can just new up the one they want, and pass it in here.
+  // OR... I could just add more properties to this class 🤷‍
   public T GetTagItemData<T>(Func<TagItem, T> factory)
   {
     return factory(this.tagItem);

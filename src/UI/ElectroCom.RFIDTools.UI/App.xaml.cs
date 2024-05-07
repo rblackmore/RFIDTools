@@ -1,10 +1,7 @@
 ﻿namespace ElectroCom.RFIDTools.UI;
 
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Threading;
 
 using ElectroCom.RFIDTools.UI.Logic;
