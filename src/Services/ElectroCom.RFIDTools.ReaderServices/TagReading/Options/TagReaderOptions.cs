@@ -1,4 +1,4 @@
-﻿namespace ElectroCom.RFIDTools.ReaderServices.TagReading;
+﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
 public class TagReaderOptions
 {

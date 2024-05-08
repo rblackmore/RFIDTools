@@ -1,11 +1,10 @@
-﻿namespace ElectroCom.RFIDTools.ReaderServices.TagReaders;
+﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using ElectroCom.RFIDTools.ReaderServices.Model;
-using ElectroCom.RFIDTools.ReaderServices.TagReading;
 
 using FEDM;
 
@@ -33,7 +32,7 @@ public class InventoryTagReader : ITagReader
 
   public bool IsRunning => this.readingTask?.Status < TaskStatus.RanToCompletion;
 
-  public Task StartReadingAsync(CancellationToken token = default)
+  public Task<TagReaderChannels> StartReadingAsync(CancellationToken token = default)
   {
     if (!this.readerDefinition.IsConnected)
     {
@@ -98,10 +97,5 @@ public class InventoryTagReader : ITagReader
         tagList.Add(new TagEntry(tagItem));
       }
     }
-  }
-
-  private Task HandleCompletion(Task t)
-  {
-
   }
 }

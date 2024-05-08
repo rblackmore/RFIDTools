@@ -1,4 +1,4 @@
-﻿namespace ElectroCom.RFIDTools.ReaderServices.TagReading;
+﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
 using ElectroCom.RFIDTools.ReaderServices.Model;
 

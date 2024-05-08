@@ -1,7 +1,4 @@
-﻿namespace ElectroCom.RFIDTools.ReaderServices.TagReading;
-
-using ElectroCom.RFIDTools.ReaderServices.TagReaders;
-using ElectroCom.RFIDTools.ReaderServices.TagReaders.InventoryMode;
+﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
 public enum TagReaderMode
 {
@@ -30,5 +27,6 @@ public class TagReaderFactory
 
     return new InventoryTagReader(rd, options);
 
+    //TODO: Create a different TagReader Implementations based on options provided.
   }
 }
