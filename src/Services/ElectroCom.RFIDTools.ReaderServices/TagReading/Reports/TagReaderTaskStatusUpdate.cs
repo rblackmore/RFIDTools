@@ -1,9 +1,11 @@
 ﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
-public class TagReaderProgressReport
+public class TagReaderTaskStatusUpdate
 {
+  //TODO: Add Multiple Constructors instead of using optional params.
+  //Don't need all possibilities, consider which ones are most important 🍺.
 
-  public TagReaderProgressReport(
+  public TagReaderTaskStatusUpdate(
     string message,
     bool isComplete = false,
     bool isFaulted = false,

@@ -2,6 +2,7 @@
 
 using System;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 using ElectroCom.RFIDTools.ReaderServices.Model;
@@ -32,24 +33,41 @@ public class InventoryTagReader : ITagReader
 
   public bool IsRunning => this.readingTask?.Status < TaskStatus.RanToCompletion;
 
-  public Task<TagReaderChannels> StartReadingAsync(CancellationToken token = default)
+  public async Task<TagReaderChannels> StartReadingAsync(CancellationToken token = default)
   {
     if (!this.readerDefinition.IsConnected)
     {
-      throw new Exception(("Reader Not connected"));
+      throw new Exception(("Reader Not connected."));
     }
 
-    if (!this.readingTask.IsCompleted)
+    if (this.IsRunning)
     {
-      return Task.CompletedTask;
+      throw new Exception("Reader Task Already Running.");
     }
 
-    this.cts = new CancellationTokenSource();
+    var dataChannel = Channel.CreateUnbounded<TagReadDataReport>(
+      new UnboundedChannelOptions
+      {
+        SingleReader = true,
+        SingleWriter = true,
+      });
 
-    this.readingTask = RunAsync(cts.Token)
-      .ContinueWith(HandleCompletion);
+    var statusChannel = Channel.CreateUnbounded<TagReaderTaskStatusUpdate>(
+      new UnboundedChannelOptions
+      {
+        SingleReader = true,
+        SingleWriter = true,
+      });
 
-    return Task.CompletedTask;
+    this.cts = CancellationTokenSource.CreateLinkedTokenSource(token);
+
+    await Task.Factory.StartNew(
+      async () => await ExecuteAsync(dataChannel.Writer, statusChannel.Writer, cts.Token),
+      token,
+      TaskCreationOptions.LongRunning,
+      TaskScheduler.Default);
+
+    return new TagReaderChannels(dataChannel.Reader, statusChannel.Reader);
   }
 
   public async Task StopReadingAsync(CancellationToken token = default)
@@ -64,7 +82,34 @@ public class InventoryTagReader : ITagReader
     await this.readingTask;
   }
 
-  private Task RunAsync(CancellationToken token)
+  private async Task ExecuteAsync(
+    ChannelWriter<TagReadDataReport> dataWriter,
+    ChannelWriter<TagReaderTaskStatusUpdate> statusWriter,
+    CancellationToken token)
+  {
+    //TODO: Catch FEDM Exceptions, and turn them into something meaningful.
+    try
+    {
+      this.readingTask = RunAsync(dataWriter, token);
+      await this.readingTask;
+      await statusWriter.WriteAsync(new TagReaderTaskStatusUpdate("Reading Finished", true, false, false));
+    }
+    catch (OperationCanceledException ex)
+    {
+      await statusWriter.WriteAsync(new TagReaderTaskStatusUpdate(ex.Message, true, true, true));
+    }
+    catch (Exception ex)
+    {
+      await statusWriter.WriteAsync(new TagReaderTaskStatusUpdate(ex.Message, false, true, false));
+    }
+    finally
+    {
+      dataWriter.Complete();
+      statusWriter.Complete();
+    }
+  }
+
+  private Task RunAsync(ChannelWriter<TagReadDataReport> dataWriter, CancellationToken token)
   {
     this.readerDefinition.ReaderModule.hm().setUsageMode(UsageMode.UseQueue);
 
