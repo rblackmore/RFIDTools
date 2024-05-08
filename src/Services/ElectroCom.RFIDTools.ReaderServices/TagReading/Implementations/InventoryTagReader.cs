@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using ElectroCom.RFIDTools.ReaderServices.Model;
-using ElectroCom.RFIDTools.ReaderServices.TagReaders.InventoryMode;
+using ElectroCom.RFIDTools.ReaderServices.TagReading;
 
 using FEDM;
 
@@ -14,20 +14,24 @@ using static FEDM.Hm;
 public class InventoryTagReader : ITagReader
 {
   private readonly ReaderDefinition readerDefinition;
-  private readonly InventoryTagReaderOptions options;
+  private readonly TagReaderOptions options;
 
-  private CancellationTokenSource? cancellationTokenSource;
-  private Task readingTask = Task.CompletedTask;
+  private CancellationTokenSource? cts;
+  private Task? readingTask;
 
   public InventoryTagReader(
     ReaderDefinition readerDefinition,
-    InventoryTagReaderOptions options = null!)
+    TagReaderOptions options)
   {
+
+    ArgumentNullException.ThrowIfNull(readerDefinition, nameof(readerDefinition));
+    ArgumentNullException.ThrowIfNull(options, nameof(options));
+
     this.readerDefinition = readerDefinition;
-    this.options = options ?? InventoryTagReaderOptions.Default;
+    this.options = options;
   }
 
-  public bool IsRunning => this.readingTask.Status < TaskStatus.RanToCompletion;
+  public bool IsRunning => this.readingTask?.Status < TaskStatus.RanToCompletion;
 
   public Task StartReadingAsync(CancellationToken token = default)
   {
@@ -41,9 +45,9 @@ public class InventoryTagReader : ITagReader
       return Task.CompletedTask;
     }
 
-    this.cancellationTokenSource = new CancellationTokenSource();
+    this.cts = new CancellationTokenSource();
 
-    this.readingTask = RunAsync(cancellationTokenSource.Token)
+    this.readingTask = RunAsync(cts.Token)
       .ContinueWith(HandleCompletion);
 
     return Task.CompletedTask;
@@ -56,7 +60,7 @@ public class InventoryTagReader : ITagReader
       return;
     }
 
-    this.cancellationTokenSource?.Cancel();
+    this.cts?.Cancel();
 
     await this.readingTask;
   }

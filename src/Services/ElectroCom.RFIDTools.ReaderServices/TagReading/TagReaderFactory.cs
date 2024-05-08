@@ -1,6 +1,15 @@
 ﻿namespace ElectroCom.RFIDTools.ReaderServices.TagReading;
 
 using ElectroCom.RFIDTools.ReaderServices.TagReaders;
+using ElectroCom.RFIDTools.ReaderServices.TagReaders.InventoryMode;
+
+public enum TagReaderMode
+{
+  HostMode,
+  BufferedReadMode,
+  NotificationMode,
+  ScanMode,
+}
 
 /// <summary>
 /// Create a <see cref="ITagReader"/> Intance appropriate for the Current reader Mode Settings.
@@ -15,10 +24,11 @@ public class TagReaderFactory
     this.readerManager = readerManager;
   }
 
-  public ITagReader Create()
+  public ITagReader Create(TagReaderOptions options)
   {
     var rd = this.readerManager.SelectedReader;
 
-    return new InventoryTagReader(rd);
+    return new InventoryTagReader(rd, options);
+
   }
 }
