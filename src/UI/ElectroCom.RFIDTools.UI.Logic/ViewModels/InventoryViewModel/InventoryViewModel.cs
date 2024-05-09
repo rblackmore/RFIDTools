@@ -6,6 +6,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 using ElectroCom.RFIDTools.ReaderServices;
 
@@ -13,30 +14,42 @@ using Microsoft.Extensions.Logging;
 
 public class InventoryViewModel : ViewModel,
   IInventoryViewModel,
+  IRecipient<ReaderConnected>,
+  IRecipient<ReaderDisconnected>,
   IDisposable
 {
   private readonly ILogger<InventoryViewModel> logger;
   private readonly ITagReaderFactory tagReaderFactory;
   private readonly INavigationService navigationService;
+  private readonly IMessenger messenger;
 
   private ITagReader? tagReader;
 
   private bool isReaderConnected;
   private bool clearOnStart;
+  private bool ant1 = false;
+  private bool ant2 = false;
+  private bool ant3 = false;
+  private bool ant4 = false;
 
   private Task readTask = Task.CompletedTask;
 
   public InventoryViewModel(
     ILogger<InventoryViewModel> logger,
+    IMessenger messenger,
     ITagReaderFactory tagReaderFactory,
     INavigationService navigationService)
   {
-    ClearOnStart = true;
+
     this.logger = logger;
     this.tagReaderFactory = tagReaderFactory;
     this.navigationService = navigationService;
-    TagList = new();
+    this.messenger = messenger;
 
+    ClearOnStart = true;
+    TagList = [];
+
+    this.messenger.RegisterAll(this);
 
     ClearTagList =
       new RelayCommand(ClearTagListExecute);
@@ -71,11 +84,12 @@ public class InventoryViewModel : ViewModel,
 
   public ObservableTagEntryCollection TagList { get; }
 
-  public bool ClearOnStart
-  {
-    get => clearOnStart;
-    set => SetProperty(ref clearOnStart, value);
-  }
+  public bool ClearOnStart { get => clearOnStart; set => SetProperty(ref clearOnStart, value); }
+
+  public bool Antenna1 { get => this.ant1; set => SetProperty(ref this.ant1, value); }
+  public bool Antenna2 { get => this.ant2; set => SetProperty(ref this.ant2, value); }
+  public bool Antenna3 { get => this.ant3; set => SetProperty(ref this.ant3, value); }
+  public bool Antenna4 { get => this.ant4; set => SetProperty(ref this.ant4, value); }
   public IRelayCommand ClearTagList { get; private set; }
   public IAsyncRelayCommand StartInventoryAsync { get; private set; }
   public IAsyncRelayCommand StopInventoryAsync { get; private set; }
@@ -98,12 +112,23 @@ public class InventoryViewModel : ViewModel,
       return;
 
     var options = TagReaderOptions.Create(TagReaderMode.HostMode);
-    //TODO: Allow VM to select Antennas and call options.UseAntennas(byte);
+
+    byte antennas = 0x00;
+
+    if (this.Antenna1) { antennas |= 0x01; }
+    if (this.Antenna2) { antennas |= 0x02; }
+    if (this.Antenna3) { antennas |= 0x04; }
+    if (this.Antenna4) { antennas |= 0x08; }
+
+    options.UseAntennas(antennas);
 
     this.tagReader = this.tagReaderFactory.Create(options);
 
     try
     {
+      if (this.ClearOnStart)
+        ClearTagListExecute();
+
       var channelReaders = await this.tagReader.StartReadingAsync();
 
       var readDataTask = ReadDataChannel(channelReaders.DataChannel);
@@ -133,6 +158,22 @@ public class InventoryViewModel : ViewModel,
   {
     await foreach (var data in statusChannel.ReadAllAsync())
     {
+      switch (data.State)
+      {
+        case TagReaderProcessState.Started:
+          DispatcherHelper.CheckBeginInvokeOnUI(OnInventoryTaskCanExecuteChanged);
+          break;
+        case TagReaderProcessState.Running:
+          break;
+        case TagReaderProcessState.Complete:
+          break;
+        case TagReaderProcessState.Canceled:
+          break;
+        case TagReaderProcessState.Faulted:
+          break;
+        default:
+          break;
+      }
       //TODO: Handle some different status.
       //Started (May need to add), Faulted, Canceled, Completed.
       //May all require OnProperteryChanged events for Is Running Property etc.
@@ -172,6 +213,24 @@ public class InventoryViewModel : ViewModel,
 
   public void Dispose()
   {
-    //messenger.UnregisterAll(this);
+    messenger.UnregisterAll(this);
+  }
+
+  public void Receive(ReaderConnected message)
+  {
+    if (message.IsSelectedReader && message.ReaderDefinition.IsConnected)
+    {
+      this.IsReaderConnected = true;
+      DispatcherHelper.CheckBeginInvokeOnUI(OnInventoryTaskCanExecuteChanged);
+    }
+  }
+
+  public void Receive(ReaderDisconnected message)
+  {
+    if (message.IsSelectedReader && !message.ReaderDefinition.IsConnected)
+    {
+      this.IsReaderConnected = false;
+      DispatcherHelper.CheckBeginInvokeOnUI(OnInventoryTaskCanExecuteChanged);
+    }
   }
 }

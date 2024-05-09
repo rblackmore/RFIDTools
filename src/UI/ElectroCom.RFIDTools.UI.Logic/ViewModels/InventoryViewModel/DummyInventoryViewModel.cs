@@ -30,4 +30,8 @@ public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
 
   public IRelayCommand AddTagEntry => throw new System.NotImplementedException();
 
+  public bool Antenna1 { get => false; set { } }
+  public bool Antenna2 { get => false; set { } }
+  public bool Antenna3 { get => false; set { } }
+  public bool Antenna4 { get => false; set { } }
 }

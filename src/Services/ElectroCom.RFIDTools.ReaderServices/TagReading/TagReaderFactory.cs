@@ -1,5 +1,8 @@
 ﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
 public enum TagReaderMode
 {
   HostMode,
@@ -14,18 +17,21 @@ public enum TagReaderMode
 /// </summary>
 public class TagReaderFactory : ITagReaderFactory
 {
-  private IReaderManager readerManager;
+  private readonly IServiceProvider services;
+  private readonly IReaderManager readerManager;
 
-  public TagReaderFactory(IReaderManager readerManager)
+  public TagReaderFactory(IServiceProvider services, IReaderManager readerManager)
   {
+    this.services = services;
     this.readerManager = readerManager;
   }
 
   public ITagReader Create(TagReaderOptions options)
   {
     var rd = this.readerManager.SelectedReader;
+    var logger = this.services.GetRequiredService<ILogger<InventoryTagReader>>();
 
-    return new InventoryTagReader(rd, options);
+    return new InventoryTagReader(logger, rd, options);
 
     //TODO: Create a different TagReader Implementations based on options provided.
   }

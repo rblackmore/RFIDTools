@@ -9,16 +9,16 @@ using ElectroCom.RFIDTools.ReaderServices;
 
 using MediatR;
 
-public class ReaderDisconnectedHandler : INotificationHandler<ReaderDisconnected>
+public class ReaderConnectedHandler : INotificationHandler<ReaderConnected>
 {
   private IMessenger messenger;
 
-  public ReaderDisconnectedHandler(IMessenger messenger)
+  public ReaderConnectedHandler(IMessenger messenger)
   {
     this.messenger = messenger;
   }
 
-  public Task Handle(ReaderDisconnected notification, CancellationToken cancellationToken)
+  public Task Handle(ReaderConnected notification, CancellationToken cancellationToken)
   {
     this.messenger.Send(notification);
     return Task.CompletedTask;
