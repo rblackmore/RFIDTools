@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
   {
     services.AddHostedService<UsbListener>();
     services.AddSingleton<IReaderManager, ReaderManager>();
-    services.AddTransient<TagReaderFactory>();
+    services.AddTransient<ITagReaderFactory, TagReaderFactory>();
 
     return services;
   }

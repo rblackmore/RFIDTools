@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.Input;
@@ -15,9 +16,10 @@ public class InventoryViewModel : ViewModel,
   IDisposable
 {
   private readonly ILogger<InventoryViewModel> logger;
-
-  private readonly ITagReader tagInventoryService;
+  private readonly ITagReaderFactory tagReaderFactory;
   private readonly INavigationService navigationService;
+
+  private ITagReader? tagReader;
 
   private bool isReaderConnected;
   private bool clearOnStart;
@@ -26,12 +28,12 @@ public class InventoryViewModel : ViewModel,
 
   public InventoryViewModel(
     ILogger<InventoryViewModel> logger,
-    ITagReader tagInventoryService,
+    ITagReaderFactory tagReaderFactory,
     INavigationService navigationService)
   {
     ClearOnStart = true;
     this.logger = logger;
-    this.tagInventoryService = tagInventoryService;
+    this.tagReaderFactory = tagReaderFactory;
     this.navigationService = navigationService;
     TagList = new();
 
@@ -92,76 +94,80 @@ public class InventoryViewModel : ViewModel,
 
   private async Task StartInventoryExecuteAsync()
   {
-    if (ClearOnStart)
-      ClearTagListExecute();
+    if (!StartInventoryCanExecute())
+      return;
 
-    await tagInventoryService.StartAsync();
+    var options = TagReaderOptions.Create(TagReaderMode.HostMode);
+    //TODO: Allow VM to select Antennas and call options.UseAntennas(byte);
+
+    this.tagReader = this.tagReaderFactory.Create(options);
+
+    try
+    {
+      var channelReaders = await this.tagReader.StartReadingAsync();
+
+      var readDataTask = ReadDataChannel(channelReaders.DataChannel);
+      var readStatusTask = ReadStatusChannel(channelReaders.StatusChannel);
+
+      await Task.WhenAll(readDataTask, readStatusTask);
+    }
+    catch (Exception ex)
+    {
+      //TODO: Display Error Status.
+    }
   }
+
+  private async Task ReadDataChannel(ChannelReader<TagReaderDataReport> dataChannel)
+  {
+    //TODO: Display data.Message information, so I know if there is RF Warning or something else wrong.
+    await foreach (var data in dataChannel.ReadAllAsync())
+    {
+      foreach (var tagEntry in data.Tags)
+      {
+        this.TagList.Add(new ObservableTagEntry(tagEntry));
+      }
+    }
+  }
+
+  private async Task ReadStatusChannel(ChannelReader<TagReaderProcessStatusUpdate> statusChannel)
+  {
+    await foreach (var data in statusChannel.ReadAllAsync())
+    {
+      //TODO: Handle some different status.
+      //Started (May need to add), Faulted, Canceled, Completed.
+      //May all require OnProperteryChanged events for Is Running Property etc.
+    }
+  }
+
 
   private async Task StopInventoryExecuteAsync()
   {
-    await tagInventoryService.StopAsync();
-  }
-
-  private async Task CancelInventoryChannelReaderAsync()
-  {
-    if (readTask is null)
-      return;
-
-    await readTask;
+    if (this.tagReader is not null)
+      await this.tagReader.StopReadingAsync();
   }
 
   private bool StartInventoryCanExecute()
   {
-    return IsReaderConnected && tagInventoryService.IsNotRunning;
+    if (this.tagReader is not null && this.tagReader.IsRunning)
+    {
+      return false;
+    }
+
+    return IsReaderConnected;
   }
 
   private bool StopInventoryCanExecute()
   {
-    return tagInventoryService.IsRunning;
+    if (this.tagReader is not null && this.tagReader.IsRunning)
+      return true;
+
+    return false;
   }
-
-  //public async void Receive(ReaderConnected message)
-  //{
-  //  IsReaderConnected = true;
-  //}
-
-  //public async void Receive(ReaderDisconnected message)
-  //{
-  //  IsReaderConnected = false;
-  //  await CancelInventoryChannelReaderAsync();
-  //  OnInventoryTaskCanExecuteChanged();
-  //}
-
-  //public void Receive(InventoryStartedMessage message)
-  //{
-  //  OnInventoryTaskCanExecuteChanged();
-  //}
-
-  //public async void Receive(InventoryStoppedMessage message)
-  //{
-  //  await CancelInventoryChannelReaderAsync();
-  //  OnInventoryTaskCanExecuteChanged();
-  //}
-
-  //public void Receive(InventoryTagItemsDetectedMessage message)
-  //{
-  //  DispatcherHelper.CheckBeginInvokeOnUI(() =>
-  //  {
-  //    foreach (var tag in message.Tags)
-  //    {
-  //      TagList.Add(tag);
-  //    }
-  //  });
-  //}
 
   private void OnInventoryTaskCanExecuteChanged()
   {
-    DispatcherHelper.CheckBeginInvokeOnUI(() =>
-    {
-      StartInventoryAsync.NotifyCanExecuteChanged();
-      StopInventoryAsync.NotifyCanExecuteChanged();
-    });
+    StartInventoryAsync.NotifyCanExecuteChanged();
+    StopInventoryAsync.NotifyCanExecuteChanged();
   }
 
   public void Dispose()

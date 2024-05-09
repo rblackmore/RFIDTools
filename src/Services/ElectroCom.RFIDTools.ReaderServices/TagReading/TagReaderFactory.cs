@@ -12,7 +12,7 @@ public enum TagReaderMode
 /// Create a <see cref="ITagReader"/> Intance appropriate for the Current reader Mode Settings.
 /// It will inject the Currently Selected Reader from <see cref="IReaderManager"/>
 /// </summary>
-public class TagReaderFactory
+public class TagReaderFactory : ITagReaderFactory
 {
   private IReaderManager readerManager;
 
