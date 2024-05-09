@@ -16,7 +16,7 @@ public class InventoryViewModel : ViewModel,
 {
   private readonly ILogger<InventoryViewModel> logger;
 
-  private readonly ITagReadingService tagInventoryService;
+  private readonly ITagReader tagInventoryService;
   private readonly INavigationService navigationService;
 
   private bool isReaderConnected;
@@ -26,7 +26,7 @@ public class InventoryViewModel : ViewModel,
 
   public InventoryViewModel(
     ILogger<InventoryViewModel> logger,
-    ITagReadingService tagInventoryService,
+    ITagReader tagInventoryService,
     INavigationService navigationService)
   {
     ClearOnStart = true;

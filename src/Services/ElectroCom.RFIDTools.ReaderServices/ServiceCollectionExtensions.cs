@@ -9,7 +9,7 @@ public static class ServiceCollectionExtensions
   {
     services.AddHostedService<UsbListener>();
     services.AddSingleton<IReaderManager, ReaderManager>();
-    services.AddSingleton<ITagReadingService, OBIDTagInventoryService>();
+    //services.AddSingleton<ITagReader, OBIDTagInventoryService>();
 
     return services;
   }
