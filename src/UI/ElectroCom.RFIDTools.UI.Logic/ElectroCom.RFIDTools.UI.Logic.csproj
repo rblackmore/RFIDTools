@@ -19,5 +19,25 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Services\ElectroCom.RFIDTools.ReaderServices\ElectroCom.RFIDTools.ReaderServices.csproj" />
   </ItemGroup>
-
+  
+  <PropertyGroup>
+    <VersionPrefix>
+      0.1.0
+    </VersionPrefix>
+    <Version Condition=" '$(VersionSuffix)' == '' ">
+      $(VersionPrefix)
+    </Version>
+    <Version Condition=" '$(VersionSuffix)' != '' ">
+      $(VersionPrefix)$(VersionSuffix)
+    </Version>
+    <InformationalVersion Condition=" '$(VersionSuffix)' == '' ">
+      $(VersionPrefix)
+    </InformationalVersion>
+    <InformationalVersion Condition=" '$(VersionSuffix)' != '' ">
+      $(VersionPrefix)$(VersionSuffix)
+    </InformationalVersion>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <FileVersion>$(VersionPrefix).0</FileVersion>
+  </PropertyGroup>
+  
 </Project>
