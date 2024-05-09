@@ -1,24 +1,26 @@
 ﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
-public class TagReaderTaskStatusUpdate
+public enum TagReaderProcessState
 {
-  //TODO: Add Multiple Constructors instead of using optional params.
-  //Don't need all possibilities, consider which ones are most important 🍺.
+  Running = 0,
+  Complete = 1,
+  Canceled = 2,
+  Faulted = 3,
+}
 
-  public TagReaderTaskStatusUpdate(
-    string message,
-    bool isComplete = false,
-    bool isFaulted = false,
-    bool isCancelled = false)
+public class TagReaderProcessStatusUpdate
+{
+  private readonly string message = string.Empty;
+  private readonly TagReaderProcessState state;
+
+  public TagReaderProcessStatusUpdate(
+    string message, TagReaderProcessState state)
   {
-    Message = message;
-    IsComplete = isComplete;
-    IsFaulted = isFaulted;
-    IsCancelled = isCancelled;
+    this.message = message;
+    this.state = state;
   }
 
-  public string Message { get; private set; }
-  public bool IsCancelled { get; private set; }
-  public bool IsFaulted { get; private set; }
-  public bool IsComplete { get; private set; }
+  public TagReaderProcessState State => this.state;
+  public string Message => this.message;
+  public bool HasMessage => !string.IsNullOrEmpty(this.message);
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ElectroCom.RFIDTools.ReaderServices.Model;
 
 using FEDM;
+using FEDM.TagHandler;
 
 using static FEDM.Hm;
 
@@ -36,23 +37,19 @@ public class InventoryTagReader : ITagReader
   public async Task<TagReaderChannels> StartReadingAsync(CancellationToken token = default)
   {
     if (!this.readerDefinition.IsConnected)
-    {
       throw new Exception(("Reader Not connected."));
-    }
 
     if (this.IsRunning)
-    {
       throw new Exception("Reader Task Already Running.");
-    }
 
-    var dataChannel = Channel.CreateUnbounded<TagReadDataReport>(
+    var dataChannel = Channel.CreateUnbounded<TagReaderDataReport>(
       new UnboundedChannelOptions
       {
         SingleReader = true,
         SingleWriter = true,
       });
 
-    var statusChannel = Channel.CreateUnbounded<TagReaderTaskStatusUpdate>(
+    var statusChannel = Channel.CreateUnbounded<TagReaderProcessStatusUpdate>(
       new UnboundedChannelOptions
       {
         SingleReader = true,
@@ -72,35 +69,47 @@ public class InventoryTagReader : ITagReader
 
   public async Task StopReadingAsync(CancellationToken token = default)
   {
-    if (this.readingTask.IsCompleted)
+    if (this.cts is not null)
     {
-      return;
+      await this.cts.CancelAsync();
     }
-
-    this.cts?.Cancel();
-
-    await this.readingTask;
   }
 
   private async Task ExecuteAsync(
-    ChannelWriter<TagReadDataReport> dataWriter,
-    ChannelWriter<TagReaderTaskStatusUpdate> statusWriter,
+    ChannelWriter<TagReaderDataReport> dataWriter,
+    ChannelWriter<TagReaderProcessStatusUpdate> statusWriter,
     CancellationToken token)
   {
-    //TODO: Catch FEDM Exceptions, and turn them into something meaningful.
+
     try
     {
       this.readingTask = RunAsync(dataWriter, token);
       await this.readingTask;
-      await statusWriter.WriteAsync(new TagReaderTaskStatusUpdate("Reading Finished", true, false, false));
+
+      var statusUpdate =
+        new TagReaderProcessStatusUpdate(
+          "Reading Finished",
+          TagReaderProcessState.Complete);
+
+      await statusWriter.WriteAsync(statusUpdate);
     }
     catch (OperationCanceledException ex)
     {
-      await statusWriter.WriteAsync(new TagReaderTaskStatusUpdate(ex.Message, true, true, true));
+      var statusUpdate =
+        new TagReaderProcessStatusUpdate(
+          ex.Message,
+          TagReaderProcessState.Canceled);
+
+      await statusWriter.WriteAsync(statusUpdate);
     }
     catch (Exception ex)
     {
-      await statusWriter.WriteAsync(new TagReaderTaskStatusUpdate(ex.Message, false, true, false));
+      var statusUpdate =
+        new TagReaderProcessStatusUpdate(
+          ex.Message,
+          TagReaderProcessState.Faulted);
+
+      await statusWriter.WriteAsync(statusUpdate);
     }
     finally
     {
@@ -109,7 +118,7 @@ public class InventoryTagReader : ITagReader
     }
   }
 
-  private Task RunAsync(ChannelWriter<TagReadDataReport> dataWriter, CancellationToken token)
+  private async Task RunAsync(ChannelWriter<TagReaderDataReport> dataWriter, CancellationToken token)
   {
     this.readerDefinition.ReaderModule.hm().setUsageMode(UsageMode.UseQueue);
 
@@ -125,8 +134,9 @@ public class InventoryTagReader : ITagReader
 
       var status = reader.hm().inventory(true, inventoryParams);
 
-      if (status != ErrorCode.Ok)
+      if (status != ReaderStatus.Ok)
       {
+        await HandleStatus_ThrowIfError(dataWriter, status, token);
         continue;
       }
 
@@ -141,6 +151,25 @@ public class InventoryTagReader : ITagReader
 
         tagList.Add(new TagEntry(tagItem));
       }
+
+      var dataReport = new TagReaderDataReport(tagList, $"{tagList.Count} tag reads.");
+
+      await dataWriter.WriteAsync(dataReport, token);
     }
+  }
+
+  private async Task HandleStatus_ThrowIfError(
+    ChannelWriter<TagReaderDataReport> dataWriter,
+    int status, CancellationToken token = default)
+  {
+    string message = this.readerDefinition.ReaderModule.lastErrorStatusText();
+
+    if (status < ErrorCode.Ok)
+    {
+      throw new Exception(message);
+    }
+
+    var report = new TagReaderDataReport(message);
+    await dataWriter.WriteAsync(report, token);
   }
 }

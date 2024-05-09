@@ -2,21 +2,21 @@
 
 using ElectroCom.RFIDTools.ReaderServices.Model;
 
-public class TagReadDataReport
+public class TagReaderDataReport
 {
-  private List<TagEntry> tagEntries = [];
-  private string message = string.Empty;
+  private readonly List<TagEntry> tagEntries = [];
+  private readonly string message = string.Empty;
 
-  public TagReadDataReport(List<TagEntry> tagEntries)
+  public TagReaderDataReport(List<TagEntry> tagEntries)
   {
     this.tagEntries = tagEntries;
   }
-  public TagReadDataReport(string message)
+  public TagReaderDataReport(string message)
   {
     this.message = message;
   }
 
-  public TagReadDataReport(List<TagEntry> tagEntries, string message)
+  public TagReaderDataReport(List<TagEntry> tagEntries, string message)
   {
     this.tagEntries = tagEntries;
     this.message = message;
@@ -25,4 +25,6 @@ public class TagReadDataReport
   public IReadOnlyCollection<TagEntry> Tags => this.tagEntries.AsReadOnly();
 
   public string Message => this.message;
+  public bool HasMessage => !string.IsNullOrEmpty(this.Message);
+  public bool HasData => this.tagEntries is not null && this.tagEntries.Count != 0;
 }
