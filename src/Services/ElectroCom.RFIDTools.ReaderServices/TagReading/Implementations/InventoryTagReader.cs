@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using ElectroCom.RFIDTools.ReaderServices.Model;
 
 using FEDM;
-using FEDM.TagHandler;
 
 using static FEDM.Hm;
 

@@ -1,6 +1,5 @@
 ﻿namespace Microsoft.Extensions.DependencyInjection;
 
-using ElectroCom.RFIDTools.ReaderServices.InventoryService;
 using ElectroCom.RFIDTools.ReaderServices;
 
 public static class ServiceCollectionExtensions
@@ -9,7 +8,7 @@ public static class ServiceCollectionExtensions
   {
     services.AddHostedService<UsbListener>();
     services.AddSingleton<IReaderManager, ReaderManager>();
-    //services.AddSingleton<ITagReader, OBIDTagInventoryService>();
+    services.AddTransient<TagReaderFactory>();
 
     return services;
   }

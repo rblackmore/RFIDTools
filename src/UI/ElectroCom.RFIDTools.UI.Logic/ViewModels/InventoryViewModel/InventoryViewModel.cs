@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using CommunityToolkit.Mvvm.Input;
 
-using ElectroCom.RFIDTools.ReaderServices.InventoryService;
+using ElectroCom.RFIDTools.ReaderServices;
 
 using Microsoft.Extensions.Logging;
 
