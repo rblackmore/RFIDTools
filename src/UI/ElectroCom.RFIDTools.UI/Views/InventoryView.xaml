@@ -47,6 +47,7 @@
                     </Button>
 
                 </StackPanel>
+                <TextBlock Text="{Binding PollingFeedback}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <!-- Control Buttons -->
                 <StackPanel Margin="0,0,12,0" 
                             HorizontalAlignment="Right"

@@ -25,6 +25,7 @@ public class InventoryViewModel : ViewModel,
 
   private ITagReader? tagReader;
 
+  private string pollingFeedback;
   private bool isReaderConnected;
   private bool clearOnStart;
   private bool ant1 = false;
@@ -83,6 +84,12 @@ public class InventoryViewModel : ViewModel,
   public bool IsReaderDisconnected => !IsReaderConnected;
 
   public ObservableTagEntryCollection TagList { get; }
+
+  public string PollingFeedback
+  {
+    get => this.pollingFeedback;
+    private set => SetProperty(ref this.pollingFeedback, value);
+  }
 
   public bool ClearOnStart { get => clearOnStart; set => SetProperty(ref clearOnStart, value); }
 
@@ -147,6 +154,11 @@ public class InventoryViewModel : ViewModel,
     //TODO: Display data.Message information, so I know if there is RF Warning or something else wrong.
     await foreach (var data in dataChannel.ReadAllAsync())
     {
+      if (data.HasMessage)
+      {
+        this.PollingFeedback = $"{DateTime.Now.ToString()}: {data.Message}";
+      }
+
       foreach (var tagEntry in data.Tags)
       {
         this.TagList.Add(new ObservableTagEntry(tagEntry));

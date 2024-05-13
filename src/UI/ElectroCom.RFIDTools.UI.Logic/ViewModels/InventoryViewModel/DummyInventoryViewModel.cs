@@ -34,4 +34,6 @@ public class DummyInventoryViewModel : ViewModel, IInventoryViewModel
   public bool Antenna2 { get => false; set { } }
   public bool Antenna3 { get => false; set { } }
   public bool Antenna4 { get => false; set { } }
+
+  public string PollingFeedback => "17 Tags Read in Inventory";
 }

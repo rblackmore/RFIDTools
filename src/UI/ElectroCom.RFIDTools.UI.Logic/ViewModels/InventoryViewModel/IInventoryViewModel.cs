@@ -7,15 +7,14 @@ public interface IInventoryViewModel : IViewModel
   bool IsReaderConnected { get; }
   bool IsReaderDisconnected { get; }
   ObservableTagEntryCollection TagList { get; }
+  string PollingFeedback { get; }
   bool ClearOnStart { get; set; }
-  public bool Antenna1 { get; set; }
-  public bool Antenna2 { get; set; }
-  public bool Antenna3 { get; set; }
-  public bool Antenna4 { get; set; }
+  bool Antenna1 { get; set; }
+  bool Antenna2 { get; set; }
+  bool Antenna3 { get; set; }
+  bool Antenna4 { get; set; }
   IRelayCommand ClearTagList { get; }
   IAsyncRelayCommand StartInventoryAsync { get; }
   IAsyncRelayCommand StopInventoryAsync { get; }
   IRelayCommand OpenSettings { get; }
-  
-
 }
