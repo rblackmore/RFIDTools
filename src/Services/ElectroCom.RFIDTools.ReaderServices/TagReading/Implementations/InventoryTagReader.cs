@@ -63,7 +63,7 @@ public class InventoryTagReader : ITagReader
     this.cts = CancellationTokenSource.CreateLinkedTokenSource(token);
 
     _ = Task.Run(
-     async () => await ExecuteAsync(dataChannel.Writer, statusChannel.Writer, cts.Token),
+     () => ExecuteAsync(dataChannel.Writer, statusChannel.Writer, cts.Token),
      token)
       .ContinueWith(t =>
       {
@@ -97,12 +97,14 @@ public class InventoryTagReader : ITagReader
   {
     try
     {
-      this.readingTask = RunAsync(dataWriter, token);
+      this.readingTask = Task.Run(() => RunAsync(dataWriter, token));
 
       await statusWriter.WriteAsync(TagReaderProcessStatusUpdate.Started(), token);
 
       await this.readingTask;
 
+      // Likely Unreachable, since the only way to complete, is to cancel,
+      // then exception is caught instead.
       var statusUpdate =
         new TagReaderProcessStatusUpdate(
           "Reading Finished",
@@ -139,6 +141,7 @@ public class InventoryTagReader : ITagReader
     ChannelWriter<TagReaderDataReport> dataWriter,
     CancellationToken token)
   {
+
     this.readerDefinition.ReaderModule.hm().setUsageMode(UsageMode.UseQueue);
 
     var inventoryParams = new InventoryParam();

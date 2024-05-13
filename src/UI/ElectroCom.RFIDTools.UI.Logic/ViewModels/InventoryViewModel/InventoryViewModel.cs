@@ -161,7 +161,6 @@ public class InventoryViewModel : ViewModel,
       switch (data.State)
       {
         case TagReaderProcessState.Started:
-          DispatcherHelper.CheckBeginInvokeOnUI(OnInventoryTaskCanExecuteChanged);
           break;
         case TagReaderProcessState.Running:
           break;
@@ -174,9 +173,8 @@ public class InventoryViewModel : ViewModel,
         default:
           break;
       }
-      //TODO: Handle some different status.
-      //Started (May need to add), Faulted, Canceled, Completed.
-      //May all require OnProperteryChanged events for Is Running Property etc.
+
+      DispatcherHelper.CheckBeginInvokeOnUI(OnInventoryTaskCanExecuteChanged);
     }
   }
 
