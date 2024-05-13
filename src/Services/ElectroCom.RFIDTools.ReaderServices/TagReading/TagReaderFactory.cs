@@ -1,5 +1,7 @@
 ﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
+using ElectroCom.RFIDTools.ReaderServices.TagReading.Implementations;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -34,5 +36,12 @@ public class TagReaderFactory : ITagReaderFactory
     return new InventoryTagReader(logger, rd, options);
 
     //TODO: Create a different TagReader Implementations based on options provided.
+  }
+
+  public ITagReader CreateNullTagReader(TagReaderOptions options)
+  {
+    var logger = this.services.GetRequiredService<ILogger<NullTagReader>>();
+
+    return new NullTagReader(logger, options);
   }
 }

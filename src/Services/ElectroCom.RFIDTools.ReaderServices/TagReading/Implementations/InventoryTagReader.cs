@@ -1,7 +1,6 @@
 ﻿namespace ElectroCom.RFIDTools.ReaderServices;
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -74,7 +73,8 @@ public class InventoryTagReader : ITagReader
 
           foreach (var ex in exceptions)
           {
-            this.logger.LogError("Exception in ExecuteAsync {type} {message}", ex.GetType(), ex.Message);
+            var messageFormat = "Exception in ExecuteAsync {type} {message}";
+            this.logger.LogError(messageFormat, ex.GetType(), ex.Message);
           }
         }
       });
@@ -135,7 +135,9 @@ public class InventoryTagReader : ITagReader
     }
   }
 
-  private async Task RunAsync(ChannelWriter<TagReaderDataReport> dataWriter, CancellationToken token)
+  private async Task RunAsync(
+    ChannelWriter<TagReaderDataReport> dataWriter,
+    CancellationToken token)
   {
     this.readerDefinition.ReaderModule.hm().setUsageMode(UsageMode.UseQueue);
 
@@ -169,7 +171,8 @@ public class InventoryTagReader : ITagReader
         tagList.Add(new TagEntry(tagItem));
       }
 
-      var dataReport = new TagReaderDataReport(tagList, $"{tagList.Count} tag reads.");
+      var dataReport =
+        new TagReaderDataReport(tagList, $"{tagList.Count} tag reads.");
 
       await dataWriter.WriteAsync(dataReport, token);
     }

@@ -6,8 +6,8 @@ using FEDM;
 
 public class TagEntry : ValueObject
 {
-  private TagItem tagItem;
-  private List<Antenna> antennas;
+  private TagItem? tagItem;
+  private List<Antenna> antennas = [];
 
   internal TagEntry(TagItem tagItem)
   {
@@ -26,6 +26,12 @@ public class TagEntry : ValueObject
 
     if (tagItem.isIso14443A())
       SetISO14443A(tagItem);
+  }
+
+  internal TagEntry(string tagType, string serialNumber)
+  {
+    TagType = tagType;
+    SerialNumber = serialNumber;
   }
 
   // Tag Details
@@ -81,11 +87,10 @@ public class TagEntry : ValueObject
 
     foreach (var rssi in rssiValues)
     {
-      ants.Add(new Antenna
-      {
-        AntennaNo = rssi.antennaNumber(),
-        RSSI = rssi.rssi()
-      });
+      var antNo = rssi.antennaNumber();
+      var rssival = rssi.rssi();
+
+      ants.Add(new Antenna(antNo, rssival));
     }
 
     return ants;
@@ -100,10 +105,13 @@ public class TagEntry : ValueObject
   // To get data from a Tag item, these implementations exist within this project.
   // Consumers can just new up the one they want, and pass it in here.
   // OR... I could just add more properties to this class 🤷‍
-  public T GetTagItemData<T>(Func<TagItem, T> factory)
+  public T? GetTagItemData<T>(Func<TagItem, T> factory)
   {
-    return factory(this.tagItem);
+    if (this.tagItem is not null)
+      return factory(this.tagItem);
+
+    return default;
   }
 
-  internal TagItem TagItem => tagItem;
+  internal TagItem? TagItem => tagItem;
 }
