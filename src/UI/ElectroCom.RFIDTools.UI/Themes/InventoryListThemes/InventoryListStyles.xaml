@@ -69,16 +69,20 @@
 
         <Setter Property="ItemContainerStyle" 
                 Value="{StaticResource ListedListViewItem}"/>
+        
+        <Setter Property="ItemTemplate" 
+                Value="{StaticResource ListedTagEntry}"/>
 
-        <Setter Property="ItemTemplateSelector">
+        <!--<Setter Property="ItemTemplateSelector">
             <Setter.Value>
-                <selectors:TagEntryTemplateSelector/>
-                <!--Default="{StaticResource ListedTagEntry}"
+                <selectors:TagEntryTemplateSelector
+                    Default="{StaticResource ListedTagEntry}"/>
+                --><!--Default="{StaticResource ListedTagEntry}"
                     EPCC1G2_Template="{StaticResource ListedTagEntry_EPCC1G2}"
                     ISO14443A_Template="{StaticResource ListedTagEntry_ISO14443A}"
-                    ISO15693_Template="{StaticResource ListedTagEntry_ISO15693}"/>-->
+                    ISO15693_Template="{StaticResource ListedTagEntry_ISO15693}"/>--><!--
             </Setter.Value>
-        </Setter>
+        </Setter>-->
 
     </Style>
 

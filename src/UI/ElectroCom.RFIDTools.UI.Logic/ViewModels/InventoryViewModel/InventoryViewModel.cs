@@ -151,7 +151,6 @@ public class InventoryViewModel : ViewModel,
 
   private async Task ReadDataChannel(ChannelReader<TagReaderDataReport> dataChannel)
   {
-    //TODO: Display data.Message information, so I know if there is RF Warning or something else wrong.
     await foreach (var data in dataChannel.ReadAllAsync())
     {
       if (data.HasMessage)

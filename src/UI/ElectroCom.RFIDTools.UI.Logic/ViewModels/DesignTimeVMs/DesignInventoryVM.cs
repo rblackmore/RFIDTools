@@ -1,5 +1,7 @@
 ﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
+using System.Collections;
+
 using CommunityToolkit.Mvvm.Input;
 
 using ElectroCom.RFIDTools.ReaderServices.Model;
@@ -9,19 +11,22 @@ public class DesignInventoryVM : ViewModel, IInventoryViewModel
 
   public DesignInventoryVM()
   {
-    this.TagList = [];
-    this.TagList.Add(new ObservableTagEntry(new TagEntry("EPCC1G2", "12345")));
-    this.TagList.Add(new ObservableTagEntry(new TagEntry("EPCC1G2", "12345")));
-    this.TagList.Add(new ObservableTagEntry(new TagEntry("EPCC1G2", "12345")));
-    this.TagList.Add(new ObservableTagEntry(new TagEntry("EPCC1G2", "12345")));
-    this.TagList.Add(new ObservableTagEntry(new TagEntry("EPCC1G2", "12345")));
   }
 
   public bool IsReaderConnected => true;
 
   public bool IsReaderDisconnected => false;
 
-  public ObservableTagEntryCollection TagList { get; }
+  private ObservableTagEntryCollection tagList = new ObservableTagEntryCollection(new ObservableTagEntry[5]
+    {
+      new ObservableTagEntry(new TagEntry("EPCC1G2", "12345")),
+      new ObservableTagEntry(new TagEntry("EPCC1G2", "12345")),
+      new ObservableTagEntry(new TagEntry("EPCC1G2", "12345")),
+      new ObservableTagEntry(new TagEntry("EPCC1G2", "12345")),
+      new ObservableTagEntry(new TagEntry("EPCC1G2", "12345"))
+    }.ToArray());
+
+  public ObservableTagEntryCollection TagList => tagList;
 
   private string pollingFeedback = "17 Tag Reads";
   private bool clearOnStart = true;
