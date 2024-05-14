@@ -28,7 +28,7 @@ public class TagEntry : ValueObject
       SetISO14443A(tagItem);
   }
 
-  internal TagEntry(string tagType, string serialNumber)
+  public TagEntry(string tagType, string serialNumber)
   {
     TagType = tagType;
     SerialNumber = serialNumber;

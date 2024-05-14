@@ -41,7 +41,7 @@ public class UsbListener : IHostedService, IUsbListener
 
   public async Task StartAsync(CancellationToken cancellationToken = default)
   {
-    await Task.Delay(2500);
+    await Task.Delay(1500);
     UsbManager.startDiscover(this);
   }
 

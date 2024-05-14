@@ -18,6 +18,9 @@ public class TagEntryTemplateSelector : DataTemplateSelector
 
     if (element is null || item is null || item is not ObservableTagEntry tagEntry) return Default;
 
+    // TODO: Should not longer check subtype of tagEntry.
+    // Instead will have a property or methods to check tag type, like FEDM.TagItem has eg. 'isEPCClass1Gen2()'
+
     //if (tagEntry is EPCClass1Gen2_TagEntry)
     //  return EPCC1G2_Template;
 

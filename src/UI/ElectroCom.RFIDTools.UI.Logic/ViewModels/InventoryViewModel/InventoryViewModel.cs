@@ -25,7 +25,7 @@ public class InventoryViewModel : ViewModel,
 
   private ITagReader? tagReader;
 
-  private string pollingFeedback;
+  private string pollingFeedback = String.Empty;
   private bool isReaderConnected;
   private bool clearOnStart;
   private bool ant1 = false;

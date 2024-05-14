@@ -4,15 +4,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:ElectroCom.RFIDTools.UI.Controls.ListViews"
+             xmlns:vms="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic" 
              mc:Ignorable="d"
              Background="Transparent"
              d:Background="{StaticResource BackgroundBrush}"
              d:DesignHeight="600" d:DesignWidth="1080">
-
     <UserControl.DataContext>
         <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
     </UserControl.DataContext>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="64"/>
@@ -41,7 +40,7 @@
                     </Button>
 
                     <Button Style="{StaticResource BasicButton}" 
-                            Command="{Binding ClearTagList}"
+                            Command="{Binding ClearOnStart}"
                             Margin="16,0,0,0">
                         <TextBlock Text="Clear"/>
                     </Button>
@@ -89,7 +88,7 @@
         </Border>
 
         <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
-            <ListView x:Name="lv_Inventory" ItemsSource="{Binding TagList}"
+            <ListView x:Name="lv_Inventory" ItemsSource="{Binding Taglist}"
                       BorderThickness="0"
                       Background="{StaticResource TagListBackground}"
                       Style="{StaticResource ListedLayout}"/>

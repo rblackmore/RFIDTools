@@ -3,6 +3,6 @@ public class InventoryViewModelLocator : ViewModelLocatorBase<IInventoryViewMode
 {
   public InventoryViewModelLocator()
   {
-    DesignTimeViewModel = new DummyInventoryViewModel();
+    DesignTimeViewModel = new DesignInventoryVM();
   }
 }

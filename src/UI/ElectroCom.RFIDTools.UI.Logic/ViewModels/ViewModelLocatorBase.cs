@@ -10,11 +10,11 @@ public abstract class ViewModelLocatorBase<TViewModel>
   private TViewModel? runtimeViewModel;
   private TViewModel? designTimeViewModel;
 
-  private Func<Type, IViewModel> viewModelFactory;
+  private Func<Type, IViewModel>? viewModelFactory;
 
   protected ViewModelLocatorBase()
   {
-    this.viewModelFactory = ServiceLocator.ServiceProvider.GetRequiredService<Func<Type, IViewModel>>();
+    this.viewModelFactory = ServiceLocator.ServiceProvider?.GetService<Func<Type, IViewModel>>();
   }
 
   protected TViewModel RuntimeViewModel

@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ElectroCom.RFIDTools.UI"
         xmlns:views="clr-namespace:ElectroCom.RFIDTools.UI.Views" 
-        xmlns:viewModels="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic"
         xmlns:controls="clr-namespace:ElectroCom.RFIDTools.UI.Controls"
         mc:Ignorable="d"
         Height="750" Width="1200"
