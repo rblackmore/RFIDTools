@@ -6,17 +6,22 @@
     <!-- Listed TagEntry -->
     <DataTemplate x:Key="ListedTagEntry" DataType="model:ObservableTagEntry">
         <Grid>
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" 
+                            Value="{Binding (ListView.View).FontSize, RelativeSource={RelativeSource AncestorType=ListView}}"/>
+                </Style>
+            </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="3*"/>
                 <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" TextAlignment="Left" VerticalAlignment="Center"
                        FontWeight="SemiBold"
-                       FontSize="{Binding (ListView.View).FontSize,
-                                  RelativeSource={RelativeSource AncestorType=ListView}}"
                        Text="{Binding SerialNumber}"/>
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <controls:LabelValueUserControl Label="Type: " Value="{Binding TagType}"/>
+                <controls:TagDataItem Label="Type: " Value="{Binding TagType}"/>
+                <controls:TagDataItem Label=" | Count: " Value="{Binding ReadCount}"/>
             </StackPanel>
         </Grid>
     </DataTemplate>
@@ -29,29 +34,29 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <WrapPanel VerticalAlignment="Center">
-                <controls:LabelValueUserControl Margin="0,0,4,0" Label="EPC: " Value="{Binding EPCHex}" 
+                <controls:TagDataItem Margin="0,0,4,0" Label="EPC: " Value="{Binding EPCHex}" 
                                                 FontSize="{Binding (ListView.View).FontSize,
                                                            RelativeSource={RelativeSource AncestorType=ListView}}"/>
-                <controls:LabelValueUserControl Label="| TID: " Value="{Binding TIDHex}" 
+                <controls:TagDataItem Label="| TID: " Value="{Binding TIDHex}" 
                                                 FontSize="{Binding (ListView.View).FontSize,
                                                        RelativeSource={RelativeSource AncestorType=ListView}}">
-                    <controls:LabelValueUserControl.Style>
-                        <Style TargetType="controls:LabelValueUserControl">
+                    <controls:TagDataItem.Style>
+                        <Style TargetType="controls:TagDataItem">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding TIDHex}" Value="{x:Static sys:String.Empty}">
                                     <Setter Property="Visibility" Value="Hidden"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </controls:LabelValueUserControl.Style>
+                    </controls:TagDataItem.Style>
 
-                </controls:LabelValueUserControl>
+                </controls:TagDataItem>
             </WrapPanel>
             <StackPanel VerticalAlignment="Bottom" Grid.Row="1" Orientation="Horizontal">
-                <controls:LabelValueUserControl FontSize="14" Margin="0,0,4,0" Label="Type: " Value="{Binding TagType}"/>
-                <controls:LabelValueUserControl FontSize="14" Margin="0,0,4,0" Label="| LastRead: " Value="{Binding LastRead, StringFormat=hh:mm:ss}"/>
-                <controls:LabelValueUserControl FontSize="14" Margin="0,0,4,0" Label="| Seconds: " Value="{Binding SecondsSinceLastRead}"/>
-                <controls:LabelValueUserControl FontSize="14" Label="| ReadCount: " Value="{Binding ReadCount}"/>
+                <controls:TagDataItem FontSize="14" Margin="0,0,4,0" Label="Type: " Value="{Binding TagType}"/>
+                <controls:TagDataItem FontSize="14" Margin="0,0,4,0" Label="| LastRead: " Value="{Binding LastRead, StringFormat=hh:mm:ss}"/>
+                <controls:TagDataItem FontSize="14" Margin="0,0,4,0" Label="| Seconds: " Value="{Binding SecondsSinceLastRead}"/>
+                <controls:TagDataItem FontSize="14" Label="| ReadCount: " Value="{Binding ReadCount}"/>
             </StackPanel>
         </Grid>
     </DataTemplate>
@@ -69,10 +74,10 @@
                           RelativeSource={RelativeSource AncestorType=ListView}}"
                Text="{Binding SerialNumber}"/>
             <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <controls:LabelValueUserControl Margin="0,0,4,0" Label="Type: " Value="{Binding TagType}"/>
-                <controls:LabelValueUserControl Label=" | Manufacturer: " Value="{Binding ManufacturerName}"/>
-                <controls:LabelValueUserControl Label=" | Seconds Since Last Read: " Value="{Binding SecondsSinceLastRead}"/>
-                <controls:LabelValueUserControl Label=" | ReadCount: " Value="{Binding ReadCount}"/>
+                <controls:TagDataItem Margin="0,0,4,0" Label="Type: " Value="{Binding TagType}"/>
+                <controls:TagDataItem Label=" | Manufacturer: " Value="{Binding ManufacturerName}"/>
+                <controls:TagDataItem Label=" | Seconds Since Last Read: " Value="{Binding SecondsSinceLastRead}"/>
+                <controls:TagDataItem Label=" | ReadCount: " Value="{Binding ReadCount}"/>
             </StackPanel>
         </Grid>
     </DataTemplate>

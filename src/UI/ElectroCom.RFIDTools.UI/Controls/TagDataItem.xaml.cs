@@ -6,9 +6,9 @@ using System.Windows.Controls;
 /// <summary>
 /// Interaction logic for LabelValueUserControl.xaml
 /// </summary>
-public partial class LabelValueUserControl : UserControl
+public partial class TagDataItem : UserControl
 {
-  public LabelValueUserControl()
+  public TagDataItem()
   {
     InitializeComponent();
   }
@@ -19,7 +19,7 @@ public partial class LabelValueUserControl : UserControl
     set { SetValue(LabelProperty, value); }
   }
   public static readonly DependencyProperty LabelProperty =
-      DependencyProperty.Register("Label", typeof(string), typeof(LabelValueUserControl),
+      DependencyProperty.Register("Label", typeof(string), typeof(TagDataItem),
         new PropertyMetadata("Label"));
 
   public string Value
@@ -28,5 +28,5 @@ public partial class LabelValueUserControl : UserControl
     set { SetValue(ValueProperty, value); }
   }
   public static readonly DependencyProperty ValueProperty =
-      DependencyProperty.Register("Value", typeof(string), typeof(LabelValueUserControl), new PropertyMetadata("Value"));
+      DependencyProperty.Register("Value", typeof(string), typeof(TagDataItem), new PropertyMetadata("Value"));
 }

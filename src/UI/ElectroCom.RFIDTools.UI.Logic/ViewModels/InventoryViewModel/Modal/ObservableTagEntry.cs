@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 using ElectroCom.RFIDTools.ReaderServices.Model;
 
-public class ObservableTagEntry : ObservableObject
+public class ObservableTagEntry : ObservableObject, IEquatable<ObservableTagEntry>
 {
   private TagEntry tagEntry;
 
@@ -26,5 +26,19 @@ public class ObservableTagEntry : ObservableObject
   public void IncrementReadCount()
   {
     ReadCount++;
+  }
+
+  public bool Equals(ObservableTagEntry? other)
+  {
+    if (other is null)
+      return false;
+
+    if (ReferenceEquals(this, other))
+      return true;
+
+    if (other.SerialNumber == this.SerialNumber)
+      return true;
+
+    return false;
   }
 }
