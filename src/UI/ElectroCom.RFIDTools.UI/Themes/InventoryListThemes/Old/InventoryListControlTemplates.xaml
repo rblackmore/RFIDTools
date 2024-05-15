@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <ItemsPanelTemplate x:Key="ListedPanelTemplate">
-        <StackPanel Width="{Binding (FrameworkElement.ActualWidth),
-                                       RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"/>
-    </ItemsPanelTemplate>
+    <!-- Panel Templates -->
 
+
+
+    <!-- Tiled Template -->
     <ItemsPanelTemplate x:Key="TiledPanelTemplate">
         <WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
                                        RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"/>
@@ -38,7 +38,7 @@
                             <TextBlock Text="%): " FontWeight="Regular" FontSize="12"/>
                         </StackPanel>
                     </Label>
-                    
+
                     <Slider VerticalAlignment="Center"
                         Width="150" 
                         IsSnapToTickEnabled="False"

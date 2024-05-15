@@ -1,4 +1,4 @@
-﻿namespace ElectroCom.RFIDTools.UI.Controls.ListViews;
+﻿namespace ElectroCom.RFIDTools.UI.Controls;
 
 using System;
 using System.Windows;
@@ -8,8 +8,8 @@ public class ScaleableView : ViewBase
 {
   private const int defaultScale = 100;
   private const double defaultWidth = 150d;
-  private const double defaultHeight = 48d;
-  private const double defaultFontSize = 12d;
+  private const double defaultHeight = 96d;
+  private const double defaultFontSize = 32d;
 
   #region Dependency_Properties
   public static readonly DependencyProperty ItemWidthProperty =
@@ -24,10 +24,10 @@ public class ScaleableView : ViewBase
         new PropertyMetadata(defaultScale, OnScalePercentageChanged, CoerceScalePercentage));
 
   public static readonly DependencyProperty MinScaleProperty =
-      DependencyProperty.Register("MinScale", typeof(int), typeof(ScaleableView), new PropertyMetadata(20));
+      DependencyProperty.Register("MinScale", typeof(int), typeof(ScaleableView), new PropertyMetadata(0));
 
   public static readonly DependencyProperty MaxScaleProperty =
-      DependencyProperty.Register("MaxScale", typeof(int), typeof(ScaleableView), new PropertyMetadata(150));
+      DependencyProperty.Register("MaxScale", typeof(int), typeof(ScaleableView), new PropertyMetadata(100));
 
   public static readonly DependencyProperty FontSizeProperty =
     DependencyProperty.Register("FontSize", typeof(double), typeof(ScaleableView),

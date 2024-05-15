@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:l="clr-namespace:ElectroCom.RFIDTools.UI.Controls.ListViews"
+             xmlns:controls="clr-namespace:ElectroCom.RFIDTools.UI.Controls"
              xmlns:vms="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic" 
              mc:Ignorable="d"
              Background="Transparent"
@@ -88,11 +88,13 @@
         </Border>
 
         <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
-            <ListView x:Name="lv_Inventory" ItemsSource="{Binding TagList}"
-                      BorderThickness="0"
-                      Background="{StaticResource TagListBackground}"
-                      ItemTemplate="{StaticResource ListedTagEntry}"
-                      Style="{StaticResource ListedLayout}"/>
+            <ListView x:Name="lv_Inventory" 
+                      ItemsSource="{Binding TagList}"
+                      Style="{StaticResource InventoryListLayout_Style}">
+                <ListView.View>
+                    <controls:ScaleableView MinScale="80" MaxScale="300"/>
+                </ListView.View>
+            </ListView>
         </Border>
 
     </Grid>

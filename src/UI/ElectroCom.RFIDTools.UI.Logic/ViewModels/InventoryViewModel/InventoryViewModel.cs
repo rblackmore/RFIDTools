@@ -126,7 +126,7 @@ public class InventoryViewModel : ViewModel,
     if (this.Antenna2) { antennas |= 0x02; }
     if (this.Antenna3) { antennas |= 0x04; }
     if (this.Antenna4) { antennas |= 0x08; }
-
+    
     options.UseAntennas(antennas);
 
     this.tagReader = this.tagReaderFactory.Create(options);
