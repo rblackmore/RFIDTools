@@ -83,9 +83,20 @@ public class ScalableListBox : ListBox
   {
     var slb = (ScalableListBox)d;
 
-    slb.ItemTemplate = slb.ItemTemplateSelector?.SelectTemplate(e.NewValue, slb);
-    slb.ItemContainerStyle = slb.ItemContainerStyleSelector?.SelectStyle(e.NewValue, slb);
-    slb.ItemsPanel = slb.ItemsPanelTemplateSelector?.SelectTemplate(e.NewValue, slb);
+    if (slb.ItemsPanelTemplateSelector is not null)
+    {
+      slb.ItemsPanel = slb.ItemsPanelTemplateSelector.SelectTemplate(e.NewValue, slb);
+    }
+
+    if (slb.ItemTemplateSelector is not null)
+    {
+      slb.ItemTemplate = slb.ItemTemplateSelector.SelectTemplate(e.NewValue, slb);
+    }
+
+    if (slb.ItemContainerStyleSelector is not null)
+    {
+      slb.ItemContainerStyle = slb.ItemContainerStyleSelector.SelectStyle(e.NewValue, slb);
+    }
   }
   #endregion
 

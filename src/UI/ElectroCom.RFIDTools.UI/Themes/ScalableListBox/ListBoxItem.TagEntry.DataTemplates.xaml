@@ -74,7 +74,7 @@
           <TextBlock Text="{Binding SerialNumber}" Style="{StaticResource TagEntry.SerialNumber.Style}"/>
         </Grid>
 
-        <Grid Grid.Row="1" Margin="0,4">
+        <Grid Grid.Row="1" Margin="0,4" HorizontalAlignment="Stretch">
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
             <TextBlock Style="{StaticResource TagEntry.Details.Style}">
               <TextBlock.Text>
@@ -85,9 +85,9 @@
             </TextBlock>
           </StackPanel>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-            <TextBlock Style="{StaticResource TagEntry.Details.Style}">
+            <TextBlock Style="{StaticResource TagEntry.Details.Style}" TextAlignment="Right">
               <TextBlock.Text>
-                <MultiBinding StringFormat="Type: {0}">
+                <MultiBinding StringFormat="Reads: {0}">
                   <Binding Path="ReadCount"/>
                 </MultiBinding>
               </TextBlock.Text>

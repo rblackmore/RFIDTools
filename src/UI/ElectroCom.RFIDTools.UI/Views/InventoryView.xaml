@@ -24,7 +24,7 @@
                             VerticalAlignment="Center">
           <Button Style="{StaticResource BasicButton}"
                             Margin="0,0,8,0"
-                            Click="TiledButton_Click">
+                            Click="TagInventoryList_SetTileOption_Clicked">
             <Path Stretch="Uniform"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource GridIcon}" 
@@ -32,7 +32,7 @@
           </Button>
 
           <Button Style="{StaticResource BasicButton}" Width="32"
-                            Click="ListButton_Click">
+                            Click="TagInventoryList_SetListOption_Clicked">
             <Path Stretch="Uniform"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource ListIcon}" 
@@ -93,16 +93,16 @@
                                 ItemsPanelTemplateSelector="{StaticResource ScalableListBox.ItemsPanel.TemplateSelector}"
                                 ItemContainerStyle="{StaticResource TagEntry.ListBoxItem.ContainerStyle}"
                                 ItemTemplateSelector="{StaticResource ScalableListBox.ItemTemplate.Selector}"
-                                Layout="List"/>
+                                Layout="List">
+        <controls:ScalableListBox.ContextMenu>
+          <ContextMenu x:Name="ListDisplayCM">
+            <MenuItem Header="List" Click="TagInventoryList_SetListOption_Clicked"/>
+            <MenuItem Header="Tile" Click="TagInventoryList_SetTileOption_Clicked"/>
+          </ContextMenu>
+        </controls:ScalableListBox.ContextMenu>
 
+      </controls:ScalableListBox>
 
-      <!--<ListView x:Name="lv_Inventory" 
-                      ItemsSource="{Binding TagList}"
-                      Style="{StaticResource InventoryListLayout_Style}">
-                <ListView.View>
-                    <controls:ScaleableView MinScale="80" MaxScale="300"/>
-                </ListView.View>
-            </ListView>-->
     </Border>
 
   </Grid>
