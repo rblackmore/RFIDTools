@@ -22,7 +22,7 @@ public class ObservableTagEntry : ObservableObject, IEquatable<ObservableTagEntr
     {
       this.Antennas.Add(new ObservableAntenna(ant));
     }
-    this.ReadRecently = true;
+    this.SeenRecently = true;
     this.timer = new Timer(TimeSpan.FromSeconds(1));
     this.timer.Elapsed += NoLongerReadRecently;
     this.timer.AutoReset = false;
@@ -31,7 +31,7 @@ public class ObservableTagEntry : ObservableObject, IEquatable<ObservableTagEntr
 
   private void NoLongerReadRecently(object? sender, ElapsedEventArgs e)
   {
-    this.ReadRecently = false;
+    this.SeenRecently = false;
 
   }
 
@@ -46,12 +46,12 @@ public class ObservableTagEntry : ObservableObject, IEquatable<ObservableTagEntr
   public string TagType => tagEntry.TagType;
   public string SerialNumber => tagEntry.SerialNumber;
 
-  private bool readRecently;
+  private bool seenRecently;
 
-  public bool ReadRecently
+  public bool SeenRecently
   {
-    get => this.readRecently;
-    set => SetProperty(ref readRecently, value);
+    get => this.seenRecently;
+    set => SetProperty(ref seenRecently, value);
   }
 
   public ObservableCollection<ObservableAntenna> Antennas { get; private set; }
@@ -59,7 +59,7 @@ public class ObservableTagEntry : ObservableObject, IEquatable<ObservableTagEntr
   public void IncrementReadCount()
   {
     this.timer.Interval = 1000;
-    this.ReadRecently = true;
+    this.SeenRecently = true;
     ReadCount++;
   }
 

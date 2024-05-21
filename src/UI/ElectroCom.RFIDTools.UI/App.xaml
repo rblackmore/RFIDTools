@@ -4,34 +4,36 @@
              xmlns:local="clr-namespace:ElectroCom.RFIDTools.UI"
              xmlns:vms="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic"
              xmlns:views="clr-namespace:ElectroCom.RFIDTools.UI.Views">
-    <Application.Resources>
-        <ResourceDictionary>
+  <Application.Resources>
+    <ResourceDictionary>
 
-            <!-- View Model View Mapper -->
-            <DataTemplate DataType="{x:Type TypeName=vms:InventoryViewModel}">
-                <views:InventoryView/>
-            </DataTemplate>
+      <!-- View Model View Mapper -->
+      <DataTemplate DataType="{x:Type TypeName=vms:InventoryViewModel}">
+        <views:InventoryView/>
+      </DataTemplate>
 
-            <DataTemplate DataType="{x:Type TypeName=vms:SettingsViewModel}">
-                <views:SettingsView/>
-            </DataTemplate>
+      <DataTemplate DataType="{x:Type TypeName=vms:SettingsViewModel}">
+        <views:SettingsView/>
+      </DataTemplate>
 
-            <!-- Themes -->
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="./Themes/Colours/LightTheme.xaml"/>
-                <ResourceDictionary Source="./Themes/Colours/ColourBrushes.xaml"/>
-                
-                <ResourceDictionary Source="./Themes/GlobalResources.xaml"/>
-                
-                <ResourceDictionary Source="./Themes/Buttons.xaml"/>
-                <ResourceDictionary Source="./Themes/Icons.xaml"/>
-                
-                <ResourceDictionary Source="./Themes/Generic.xaml"/>
-                <ResourceDictionary Source="./Themes/InventoryListThemes/InventoryListViewStyles.xaml"/>
-                <!--<ResourceDictionary Source="./Themes/InventoryListThemes/InventoryListStyles.xaml"/>-->
-                <ResourceDictionary Source="pack://application:,,,/ElectroCom.RFIDTools.UI.Logic;component/Resources/ViewModelLocators.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
+      <!-- Themes -->
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="./Themes/Colours/LightTheme.xaml"/>
+        <ResourceDictionary Source="./Themes/Colours/ColourBrushes.xaml"/>
 
-        </ResourceDictionary>
-    </Application.Resources>
+        <ResourceDictionary Source="./Themes/GlobalResources.xaml"/>
+
+        <ResourceDictionary Source="./Themes/Buttons.xaml"/>
+        <ResourceDictionary Source="./Themes/Icons.xaml"/>
+
+        <ResourceDictionary Source="./Themes/Generic.xaml"/>
+        <ResourceDictionary Source="./Themes/ScalableListBox/ListBox.ItemPanelTemplates.xaml"/>
+        <ResourceDictionary Source="./Themes/ScalableListBox/ListBoxItem.Styles.xaml"/>
+        <ResourceDictionary Source="./Themes/ScalableListBox/ListBoxItem.TagEntry.DataTemplates.xaml"/>
+        <!--<ResourceDictionary Source="./Themes/InventoryListThemes/InventoryListStyles.xaml"/>-->
+        <ResourceDictionary Source="pack://application:,,,/ElectroCom.RFIDTools.UI.Logic;component/Resources/ViewModelLocators.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+    </ResourceDictionary>
+  </Application.Resources>
 </Application>

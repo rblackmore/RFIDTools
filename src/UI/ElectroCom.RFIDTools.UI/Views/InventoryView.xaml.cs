@@ -16,11 +16,9 @@ public partial class InventoryView : UserControl
 
   private void TiledButton_Click(object sender, System.Windows.RoutedEventArgs e)
   {
-    lv_Inventory.Style = (Style)FindResource("TiledLayout");
   }
 
   private void ListButton_Click(object sender, System.Windows.RoutedEventArgs e)
   {
-    lv_Inventory.Style = (Style)FindResource("ListedLayout");
   }
 }

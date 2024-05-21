@@ -3,8 +3,6 @@
 using System.Windows;
 using System.Windows.Controls;
 
-using ElectroCom.RFIDTools.UI.Logic.ViewModels;
-
 public class TagEntryTemplateSelector : DataTemplateSelector
 {
   public DataTemplate? Default { get; set; }

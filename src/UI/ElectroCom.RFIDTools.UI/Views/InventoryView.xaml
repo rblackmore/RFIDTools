@@ -9,93 +9,101 @@
              Background="Transparent"
              d:Background="{StaticResource BackgroundBrush}"
              d:DesignHeight="600" d:DesignWidth="1080">
-    <UserControl.DataContext>
-        <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
-    </UserControl.DataContext>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="64"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Border Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
-            <Grid HorizontalAlignment="Stretch">
-                <StackPanel Margin="12,0,0,0" Orientation="Horizontal" 
+  <UserControl.DataContext>
+    <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
+  </UserControl.DataContext>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="64"/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+    <Border Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+      <Grid HorizontalAlignment="Stretch">
+        <StackPanel Margin="12,0,0,0" Orientation="Horizontal" 
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center">
-                    <Button Style="{StaticResource BasicButton}"
+          <Button Style="{StaticResource BasicButton}"
                             Margin="0,0,8,0"
                             Click="TiledButton_Click">
-                        <Path Stretch="Uniform"
+            <Path Stretch="Uniform"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource GridIcon}" 
                               Fill="{StaticResource ForegroundBrush}"/>
-                    </Button>
+          </Button>
 
-                    <Button Style="{StaticResource BasicButton}" Width="32"
+          <Button Style="{StaticResource BasicButton}" Width="32"
                             Click="ListButton_Click">
-                        <Path Stretch="Uniform"
+            <Path Stretch="Uniform"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource ListIcon}" 
                               Fill="{StaticResource ForegroundBrush}"/>
-                    </Button>
+          </Button>
 
-                    <Button Style="{StaticResource BasicButton}" 
+          <Button Style="{StaticResource BasicButton}" 
                             Command="{Binding ClearOnStart}"
                             Margin="16,0,0,0">
-                        <TextBlock Text="Clear"/>
-                    </Button>
+            <TextBlock Text="Clear"/>
+          </Button>
 
-                </StackPanel>
-                <TextBlock Text="{Binding PollingFeedback}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <!-- Control Buttons -->
-                <StackPanel Margin="0,0,12,0" 
+        </StackPanel>
+        <TextBlock Text="{Binding PollingFeedback}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <!-- Control Buttons -->
+        <StackPanel Margin="0,0,12,0" 
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
-                    <CheckBox IsChecked="{Binding ClearOnStart}" Content="Clear On Start" VerticalAlignment="Center"
+          <CheckBox IsChecked="{Binding ClearOnStart}" Content="Clear On Start" VerticalAlignment="Center"
                               Margin="0,0,8,0"/>
-                    <Button Style="{StaticResource BasicButton}" 
+          <Button Style="{StaticResource BasicButton}" 
                             Command="{Binding StartInventoryAsync}"
                             Width="32"
                             Height="32">
 
-                        <Path Stretch="Uniform"
+            <Path Stretch="Uniform"
                               Height="16"
                               Width="16"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource PlayIcon}" 
                               Fill="{StaticResource ForegroundBrush}"/>
-                    </Button>
+          </Button>
 
-                    <Button Style="{StaticResource BasicButton}" 
+          <Button Style="{StaticResource BasicButton}" 
                             Command="{Binding StopInventoryAsync}"
                             Width="32"
                             Height="32"
                             Margin="8,0,0,0">
 
-                        <Path Stretch="Uniform"
+            <Path Stretch="Uniform"
                               Height="16"
                               Width="16"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource StopIcon}" 
                               Fill="{StaticResource ForegroundBrush}"/>
-                    </Button>
-                </StackPanel>
+          </Button>
+        </StackPanel>
 
-                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                </StackPanel>
-            </Grid>
-        </Border>
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+        </StackPanel>
+      </Grid>
+    </Border>
 
-        <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
-            <ListView x:Name="lv_Inventory" 
+    <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
+      <controls:ScalableListBox x:Name="slb_TagInventory" 
+                                ItemsSource="{Binding TagList}"
+                                ItemsPanelTemplateSelector="{StaticResource ScalableListBox.ItemsPanel.TemplateSelector}"
+                                ItemContainerStyle="{StaticResource TagEntry.ListBoxItem.ContainerStyle}"
+                                ItemTemplateSelector="{StaticResource ScalableListBox.ItemTemplate.Selector}"
+                                Layout="List"/>
+
+
+      <!--<ListView x:Name="lv_Inventory" 
                       ItemsSource="{Binding TagList}"
                       Style="{StaticResource InventoryListLayout_Style}">
                 <ListView.View>
                     <controls:ScaleableView MinScale="80" MaxScale="300"/>
                 </ListView.View>
-            </ListView>
-        </Border>
+            </ListView>-->
+    </Border>
 
-    </Grid>
+  </Grid>
 </UserControl>
