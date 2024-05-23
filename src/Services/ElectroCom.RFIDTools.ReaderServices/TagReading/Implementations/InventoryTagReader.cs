@@ -9,10 +9,13 @@ using ElectroCom.RFIDTools.ReaderServices.Model;
 
 using FEDM;
 
+using Microsoft.Extensions.Logging;
+
 using static FEDM.Hm;
 
 public class InventoryTagReader : ITagReader
 {
+  private readonly ILogger<InventoryTagReader> logger;
   private readonly ReaderDefinition readerDefinition;
   private readonly TagReaderOptions options;
 
@@ -20,6 +23,7 @@ public class InventoryTagReader : ITagReader
   private Task? readingTask;
 
   public InventoryTagReader(
+    ILogger<InventoryTagReader> logger,
     ReaderDefinition readerDefinition,
     TagReaderOptions options)
   {
@@ -29,6 +33,7 @@ public class InventoryTagReader : ITagReader
 
     this.readerDefinition = readerDefinition;
     this.options = options;
+    this.logger = logger;
   }
 
   public bool IsRunning => this.readingTask?.Status < TaskStatus.RanToCompletion;
@@ -57,11 +62,22 @@ public class InventoryTagReader : ITagReader
 
     this.cts = CancellationTokenSource.CreateLinkedTokenSource(token);
 
-    await Task.Factory.StartNew(
-      async () => await ExecuteAsync(dataChannel.Writer, statusChannel.Writer, cts.Token),
-      token,
-      TaskCreationOptions.LongRunning,
-      TaskScheduler.Default);
+    _ = Task.Run(
+     () => ExecuteAsync(dataChannel.Writer, statusChannel.Writer, cts.Token),
+     token)
+      .ContinueWith(t =>
+      {
+        if (t.IsFaulted)
+        {
+          var exceptions = t.Exception.Flatten().InnerExceptions;
+
+          foreach (var ex in exceptions)
+          {
+            var messageFormat = "Exception in ExecuteAsync {type} {message}";
+            this.logger.LogError(messageFormat, ex.GetType(), ex.Message);
+          }
+        }
+      });
 
     return new TagReaderChannels(dataChannel.Reader, statusChannel.Reader);
   }
@@ -79,12 +95,16 @@ public class InventoryTagReader : ITagReader
     ChannelWriter<TagReaderProcessStatusUpdate> statusWriter,
     CancellationToken token)
   {
-
     try
     {
-      this.readingTask = RunAsync(dataWriter, token);
+      this.readingTask = Task.Run(() => RunAsync(dataWriter, token));
+
+      await statusWriter.WriteAsync(TagReaderProcessStatusUpdate.Started(), token);
+
       await this.readingTask;
 
+      // Likely Unreachable, since the only way to complete, is to cancel,
+      // then exception is caught instead.
       var statusUpdate =
         new TagReaderProcessStatusUpdate(
           "Reading Finished",
@@ -117,8 +137,11 @@ public class InventoryTagReader : ITagReader
     }
   }
 
-  private async Task RunAsync(ChannelWriter<TagReaderDataReport> dataWriter, CancellationToken token)
+  private async Task RunAsync(
+    ChannelWriter<TagReaderDataReport> dataWriter,
+    CancellationToken token)
   {
+
     this.readerDefinition.ReaderModule.hm().setUsageMode(UsageMode.UseQueue);
 
     var inventoryParams = new InventoryParam();
@@ -151,7 +174,8 @@ public class InventoryTagReader : ITagReader
         tagList.Add(new TagEntry(tagItem));
       }
 
-      var dataReport = new TagReaderDataReport(tagList, $"{tagList.Count} tag reads.");
+      var dataReport =
+        new TagReaderDataReport(tagList, $"{tagList.Count} tag reads.");
 
       await dataWriter.WriteAsync(dataReport, token);
     }

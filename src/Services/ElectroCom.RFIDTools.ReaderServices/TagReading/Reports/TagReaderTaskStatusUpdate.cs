@@ -2,10 +2,11 @@
 
 public enum TagReaderProcessState
 {
-  Running = 0,
-  Complete = 1,
-  Canceled = 2,
-  Faulted = 3,
+  Started = 0,
+  Running = 1,
+  Complete = 2,
+  Canceled = 3,
+  Faulted = 4,
 }
 
 public class TagReaderProcessStatusUpdate
@@ -23,4 +24,9 @@ public class TagReaderProcessStatusUpdate
   public TagReaderProcessState State => this.state;
   public string Message => this.message;
   public bool HasMessage => !string.IsNullOrEmpty(this.message);
+
+  public static TagReaderProcessStatusUpdate Started()
+  {
+    return new TagReaderProcessStatusUpdate("Tag Reading Started", TagReaderProcessState.Started);
+  }
 }

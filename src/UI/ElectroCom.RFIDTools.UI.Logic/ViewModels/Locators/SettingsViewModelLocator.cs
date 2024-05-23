@@ -3,6 +3,6 @@ public class SettingsViewModelLocator : ViewModelLocatorBase<ISettingsViewModel>
 {
   public SettingsViewModelLocator()
   {
-    DesignTimeViewModel = new DummySettingsViewModel();
+    DesignTimeViewModel = new DesignSettingsVM();
   }
 }

@@ -3,8 +3,6 @@
 using System.Windows;
 using System.Windows.Controls;
 
-using ElectroCom.RFIDTools.UI.Logic.ViewModels;
-
 public class TagEntryTemplateSelector : DataTemplateSelector
 {
   public DataTemplate? Default { get; set; }
@@ -14,9 +12,13 @@ public class TagEntryTemplateSelector : DataTemplateSelector
 
   public override DataTemplate? SelectTemplate(object item, DependencyObject container)
   {
-    FrameworkElement? element = container as FrameworkElement;
+    return Default;
+    //FrameworkElement? element = container as FrameworkElement;
 
-    if (element is null || item is null || item is not ObservableTagEntry tagEntry) return Default;
+    //if (element is null || item is null || item is not ObservableTagEntry tagEntry) return Default;
+
+    // TODO: Should not longer check subtype of tagEntry.
+    // Instead will have a property or methods to check tag type, like FEDM.TagItem has eg. 'isEPCClass1Gen2()'
 
     //if (tagEntry is EPCClass1Gen2_TagEntry)
     //  return EPCC1G2_Template;
@@ -27,6 +29,5 @@ public class TagEntryTemplateSelector : DataTemplateSelector
     //if (tagEntry is ISO15693_TagEntry)
     //  return ISO15693_Template;
 
-    return Default;
   }
 }

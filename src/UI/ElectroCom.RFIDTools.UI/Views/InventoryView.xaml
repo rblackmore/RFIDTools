@@ -3,96 +3,126 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:l="clr-namespace:ElectroCom.RFIDTools.UI.Controls.ListViews"
+             xmlns:controls="clr-namespace:ElectroCom.RFIDTools.UI.Controls"
+             xmlns:vms="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic" 
              mc:Ignorable="d"
              Background="Transparent"
              d:Background="{StaticResource BackgroundBrush}"
              d:DesignHeight="600" d:DesignWidth="1080">
-
-    <UserControl.DataContext>
-        <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
-    </UserControl.DataContext>
-
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="64"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Border Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
-            <Grid HorizontalAlignment="Stretch">
-                <StackPanel Margin="12,0,0,0" Orientation="Horizontal" 
+  <UserControl.DataContext>
+    <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
+  </UserControl.DataContext>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="64"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="40"/>
+    </Grid.RowDefinitions>
+    <!-- Top Row Button Controls -->
+    <Border Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+      <Grid HorizontalAlignment="Stretch">
+        <StackPanel Margin="12,0,0,0" Orientation="Horizontal" 
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center">
-                    <Button Style="{StaticResource BasicButton}"
+          <Button Style="{StaticResource BasicButton}"
                             Margin="0,0,8,0"
-                            Click="TiledButton_Click">
-                        <Path Stretch="Uniform"
+                            Click="TagInventoryList_SetTileOption_Clicked">
+            <Path Stretch="Uniform"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource GridIcon}" 
                               Fill="{StaticResource ForegroundBrush}"/>
-                    </Button>
+          </Button>
 
-                    <Button Style="{StaticResource BasicButton}" Width="32"
-                            Click="ListButton_Click">
-                        <Path Stretch="Uniform"
+          <Button Style="{StaticResource BasicButton}" Width="32"
+                            Click="TagInventoryList_SetListOption_Clicked">
+            <Path Stretch="Uniform"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource ListIcon}" 
                               Fill="{StaticResource ForegroundBrush}"/>
-                    </Button>
+          </Button>
 
-                    <Button Style="{StaticResource BasicButton}" 
+          <Button Style="{StaticResource BasicButton}" 
                             Command="{Binding ClearTagList}"
                             Margin="16,0,0,0">
-                        <TextBlock Text="Clear"/>
-                    </Button>
+            <TextBlock Text="Clear"/>
+          </Button>
 
-                </StackPanel>
-                <!-- Control Buttons -->
-                <StackPanel Margin="0,0,12,0" 
+        </StackPanel>
+        <!-- Control Buttons -->
+        <StackPanel Margin="0,0,12,0" 
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
-                    <CheckBox IsChecked="{Binding ClearOnStart}" Content="Clear On Start" VerticalAlignment="Center"
+          <CheckBox IsChecked="{Binding TagList.IncrementReadCountOnAdd}" Content="Exclusive Tags" VerticalAlignment="Center"
+                    Margin="0,0,8,0"/>
+          <CheckBox IsChecked="{Binding ClearOnStart}" Content="Clear On Start" VerticalAlignment="Center"
                               Margin="0,0,8,0"/>
-                    <Button Style="{StaticResource BasicButton}" 
+          <Button Style="{StaticResource BasicButton}" 
                             Command="{Binding StartInventoryAsync}"
                             Width="32"
                             Height="32">
 
-                        <Path Stretch="Uniform"
+            <Path Stretch="Uniform"
                               Height="16"
                               Width="16"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource PlayIcon}" 
                               Fill="{StaticResource ForegroundBrush}"/>
-                    </Button>
+          </Button>
 
-                    <Button Style="{StaticResource BasicButton}" 
+          <Button Style="{StaticResource BasicButton}" 
                             Command="{Binding StopInventoryAsync}"
                             Width="32"
                             Height="32"
                             Margin="8,0,0,0">
 
-                        <Path Stretch="Uniform"
+            <Path Stretch="Uniform"
                               Height="16"
                               Width="16"
                               HorizontalAlignment="Center" VerticalAlignment="Center" 
                               Style="{StaticResource StopIcon}" 
                               Fill="{StaticResource ForegroundBrush}"/>
-                    </Button>
-                </StackPanel>
+          </Button>
+        </StackPanel>
 
-                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                </StackPanel>
-            </Grid>
-        </Border>
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+        </StackPanel>
+      </Grid>
+    </Border>
 
-        <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
-            <ListView x:Name="lv_Inventory" ItemsSource="{Binding TagList}"
-                      BorderThickness="0"
-                      Background="{StaticResource TagListBackground}"
-                      Style="{StaticResource ListedLayout}"/>
-        </Border>
+    <!-- Main Tag List control -->
+    <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
 
-    </Grid>
+      <controls:ScalableListBox x:Name="slb_TagInventory" 
+                                ItemsSource="{Binding TagList}"
+                                ItemsPanelTemplateSelector="{StaticResource ScalableListBox.ItemsPanel.TemplateSelector}"
+                                ItemContainerStyle="{StaticResource TagEntry.ListBoxItem.ContainerStyle}"
+                                ItemTemplateSelector="{StaticResource ScalableListBox.ItemTemplate.Selector}"
+                                Layout="Tile">
+        <controls:ScalableListBox.ContextMenu>
+          <ContextMenu x:Name="ListDisplayCM">
+            <MenuItem Header="List" Click="TagInventoryList_SetListOption_Clicked"/>
+            <MenuItem Header="Tile" Click="TagInventoryList_SetTileOption_Clicked"/>
+          </ContextMenu>
+        </controls:ScalableListBox.ContextMenu>
+
+      </controls:ScalableListBox>
+
+    </Border>
+
+    <!-- Botton Status Bar and Controls -->
+    <Border Grid.Row="2" Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+      <Grid HorizontalAlignment="Stretch">
+        <Slider 
+          Minimum="{Binding ElementName=slb_TagInventory, Path=MinScale}" 
+          Maximum="{Binding ElementName=slb_TagInventory, Path=MaxScale}" 
+          Value="{Binding   ElementName=slb_TagInventory, Path=Scale}"
+          TickFrequency="1"
+          VerticalAlignment="Center"
+          HorizontalAlignment="Left"
+          Width="150"
+          IsSnapToTickEnabled="True"/>
+      </Grid>
+    </Border>
+  </Grid>
 </UserControl>

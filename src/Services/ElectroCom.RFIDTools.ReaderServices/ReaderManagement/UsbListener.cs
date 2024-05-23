@@ -39,10 +39,10 @@ public class UsbListener : IHostedService, IUsbListener
       ProcessUsbEventAsync(scan);
   }
 
-  public Task StartAsync(CancellationToken cancellationToken = default)
+  public async Task StartAsync(CancellationToken cancellationToken = default)
   {
+    await Task.Delay(1500);
     UsbManager.startDiscover(this);
-    return Task.CompletedTask;
   }
 
   public Task StopAsync(CancellationToken cancellationToken = default)

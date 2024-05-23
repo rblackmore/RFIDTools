@@ -3,6 +3,8 @@
 using System.Windows;
 using System.Windows.Controls;
 
+using ElectroCom.RFIDTools.UI.Controls;
+
 /// <summary>
 /// Interaction logic for InventoryView.xaml
 /// </summary>
@@ -14,13 +16,13 @@ public partial class InventoryView : UserControl
 
   }
 
-  private void TiledButton_Click(object sender, System.Windows.RoutedEventArgs e)
+  private void TagInventoryList_SetListOption_Clicked(object sender, RoutedEventArgs e)
   {
-    lv_Inventory.Style = (Style)FindResource("TiledLayout");
+    this.slb_TagInventory.Layout = Layout.List;
   }
 
-  private void ListButton_Click(object sender, System.Windows.RoutedEventArgs e)
+  private void TagInventoryList_SetTileOption_Clicked(object sender, RoutedEventArgs e)
   {
-    lv_Inventory.Style = (Style)FindResource("ListedLayout");
+    this.slb_TagInventory.Layout = Layout.Tile;
   }
 }
