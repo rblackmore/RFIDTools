@@ -30,8 +30,9 @@
         <ResourceDictionary Source="./Themes/ScalableListBox/ListBox.ItemPanelTemplates.xaml"/>
         <ResourceDictionary Source="./Themes/ScalableListBox/ListBoxItem.Styles.xaml"/>
         <ResourceDictionary Source="./Themes/ScalableListBox/ListBoxItem.TagEntry.DataTemplates.xaml"/>
-        <!--<ResourceDictionary Source="./Themes/InventoryListThemes/InventoryListStyles.xaml"/>-->
+        
         <ResourceDictionary Source="pack://application:,,,/ElectroCom.RFIDTools.UI.Logic;component/Resources/ViewModelLocators.xaml"/>
+        
       </ResourceDictionary.MergedDictionaries>
 
     </ResourceDictionary>

@@ -1,5 +1,7 @@
 ﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
+using System.Collections.ObjectModel;
+
 using CommunityToolkit.Mvvm.Input;
 
 public interface IInventoryViewModel : IViewModel
@@ -7,7 +9,7 @@ public interface IInventoryViewModel : IViewModel
   bool IsReaderConnected { get; }
   bool IsReaderDisconnected { get; }
   ObservableTagEntryCollection TagList { get; }
-  string PollingFeedback { get; }
+  ObservableCollection<PollingFeedback> PollingFeedback { get; }
   bool ClearOnStart { get; set; }
   bool Antenna1 { get; set; }
   bool Antenna2 { get; set; }

@@ -1,6 +1,7 @@
 ﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -25,7 +26,6 @@ public class InventoryViewModel : ViewModel,
 
   private ITagReader? tagReader;
 
-  private string pollingFeedback = String.Empty;
   private bool isReaderConnected;
   private bool clearOnStart;
   private bool ant1 = false;
@@ -49,6 +49,7 @@ public class InventoryViewModel : ViewModel,
 
     ClearOnStart = true;
     TagList = [];
+    PollingFeedback = [];
 
     this.messenger.RegisterAll(this);
 
@@ -85,12 +86,7 @@ public class InventoryViewModel : ViewModel,
 
   public ObservableTagEntryCollection TagList { get; }
 
-  public string PollingFeedback
-  {
-    get => this.pollingFeedback;
-    private set => SetProperty(ref this.pollingFeedback, value);
-  }
-
+  public ObservableCollection<PollingFeedback> PollingFeedback { get; }
   public bool ClearOnStart { get => clearOnStart; set => SetProperty(ref clearOnStart, value); }
 
   public bool Antenna1 { get => this.ant1; set => SetProperty(ref this.ant1, value); }
@@ -126,7 +122,7 @@ public class InventoryViewModel : ViewModel,
     if (this.Antenna2) { antennas |= 0x02; }
     if (this.Antenna3) { antennas |= 0x04; }
     if (this.Antenna4) { antennas |= 0x08; }
-    
+
     options.UseAntennas(antennas);
 
     this.tagReader = this.tagReaderFactory.Create(options);
@@ -155,7 +151,7 @@ public class InventoryViewModel : ViewModel,
     {
       if (data.HasMessage)
       {
-        this.PollingFeedback = $"{DateTime.Now.ToString()}: {data.Message}";
+        this.PollingFeedback.Add(new PollingFeedback(data.Message));
       }
 
       foreach (var tagEntry in data.Tags)
@@ -216,8 +212,11 @@ public class InventoryViewModel : ViewModel,
 
   private void OnInventoryTaskCanExecuteChanged()
   {
-    StartInventoryAsync.NotifyCanExecuteChanged();
-    StopInventoryAsync.NotifyCanExecuteChanged();
+    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+    {
+      StartInventoryAsync.NotifyCanExecuteChanged();
+      StopInventoryAsync.NotifyCanExecuteChanged();
+    });
   }
 
   public void Dispose()

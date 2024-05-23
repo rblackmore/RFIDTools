@@ -15,8 +15,10 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="64"/>
-      <RowDefinition/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="40"/>
     </Grid.RowDefinitions>
+    <!-- Top Row Button Controls -->
     <Border Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
       <Grid HorizontalAlignment="Stretch">
         <StackPanel Margin="12,0,0,0" Orientation="Horizontal" 
@@ -40,18 +42,19 @@
           </Button>
 
           <Button Style="{StaticResource BasicButton}" 
-                            Command="{Binding ClearOnStart}"
+                            Command="{Binding ClearTagList}"
                             Margin="16,0,0,0">
             <TextBlock Text="Clear"/>
           </Button>
 
         </StackPanel>
-        <TextBlock Text="{Binding PollingFeedback}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <!-- Control Buttons -->
         <StackPanel Margin="0,0,12,0" 
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
+          <CheckBox IsChecked="{Binding TagList.IncrementReadCountOnAdd}" Content="Exclusive Tags" VerticalAlignment="Center"
+                    Margin="0,0,8,0"/>
           <CheckBox IsChecked="{Binding ClearOnStart}" Content="Clear On Start" VerticalAlignment="Center"
                               Margin="0,0,8,0"/>
           <Button Style="{StaticResource BasicButton}" 
@@ -87,13 +90,15 @@
       </Grid>
     </Border>
 
+    <!-- Main Tag List control -->
     <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
+
       <controls:ScalableListBox x:Name="slb_TagInventory" 
                                 ItemsSource="{Binding TagList}"
                                 ItemsPanelTemplateSelector="{StaticResource ScalableListBox.ItemsPanel.TemplateSelector}"
                                 ItemContainerStyle="{StaticResource TagEntry.ListBoxItem.ContainerStyle}"
                                 ItemTemplateSelector="{StaticResource ScalableListBox.ItemTemplate.Selector}"
-                                Layout="List">
+                                Layout="Tile">
         <controls:ScalableListBox.ContextMenu>
           <ContextMenu x:Name="ListDisplayCM">
             <MenuItem Header="List" Click="TagInventoryList_SetListOption_Clicked"/>
@@ -105,5 +110,19 @@
 
     </Border>
 
+    <!-- Botton Status Bar and Controls -->
+    <Border Grid.Row="2" Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+      <Grid HorizontalAlignment="Stretch">
+        <Slider 
+          Minimum="{Binding ElementName=slb_TagInventory, Path=MinScale}" 
+          Maximum="{Binding ElementName=slb_TagInventory, Path=MaxScale}" 
+          Value="{Binding   ElementName=slb_TagInventory, Path=Scale}"
+          TickFrequency="1"
+          VerticalAlignment="Center"
+          HorizontalAlignment="Left"
+          Width="150"
+          IsSnapToTickEnabled="True"/>
+      </Grid>
+    </Border>
   </Grid>
 </UserControl>

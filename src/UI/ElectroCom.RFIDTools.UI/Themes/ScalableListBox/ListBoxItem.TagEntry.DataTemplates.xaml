@@ -4,7 +4,7 @@
                     xmlns:controls="clr-namespace:ElectroCom.RFIDTools.UI.Controls"
                     xmlns:converters="clr-namespace:ElectroCom.RFIDTools.UI.Controls.Converters"
                     xmlns:model="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic">
-  
+
   <!-- TagEntry List Layout Template -->
   <DataTemplate x:Key="ListBoxItem.ListLayout.TagEntry.DataTemplate" DataType="model:ObservableTagEntry">
     <DataTemplate.Resources>
@@ -128,18 +128,27 @@
         </Setter>
       </Style>
     </DataTemplate.Resources>
-    <StackPanel>
-      <Viewbox StretchDirection="Both" Stretch="Uniform" Margin="4">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition/>
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+      <Viewbox Grid.Row="0" StretchDirection="Both" Margin="4">
         <Path Style="{StaticResource RFIDLabel}" Fill="Black" />
       </Viewbox>
-      <TextBlock Text="{Binding SerialNumber}" Style="{StaticResource SerialNumberStyle}"/>
-      <TextBlock Text="{Binding TagType}" Style="{StaticResource DetailStyle}"/>
-    </StackPanel>
+      <Viewbox Grid.Row="1" Margin="4,0" VerticalAlignment="Center" Stretch="Fill">
+        <TextBlock Text="{Binding SerialNumber}" Style="{StaticResource SerialNumberStyle}"/>
+      </Viewbox>
+      <Viewbox Grid.Row="2" Margin="16,0"  VerticalAlignment="Bottom" Stretch="Fill">
+        <TextBlock Text="{Binding TagType}" Style="{StaticResource DetailStyle}"/>
+      </Viewbox>
+    </Grid>
   </DataTemplate>
 
   <controls:ScalableListBoxItemTemplateSelector
     x:Key="ScalableListBox.ItemTemplate.Selector"
     ListItemTemplate="{StaticResource ListBoxItem.ListLayout.TagEntry.DataTemplate}"
     TileItemTemplate="{StaticResource ListBoxItem.TileLayout.TagEntry.DataTemplate}"/>
-  
+
 </ResourceDictionary>

@@ -1,6 +1,7 @@
 ﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
 using System.Collections;
+using System.Collections.ObjectModel;
 
 using CommunityToolkit.Mvvm.Input;
 
@@ -35,7 +36,6 @@ public class DesignInventoryVM : ViewModel, IInventoryViewModel
   private bool ant3 = true;
   private bool ant4 = true;
 
-  public string PollingFeedback { get => pollingFeedback; set => SetProperty(ref pollingFeedback, value); }
   public bool ClearOnStart { get => clearOnStart; set => SetProperty(ref clearOnStart, value); }
   public bool Antenna1 { get => ant1; set => SetProperty(ref ant1, value); }
   public bool Antenna2 { get => ant2; set => SetProperty(ref ant2, value); }
@@ -49,4 +49,6 @@ public class DesignInventoryVM : ViewModel, IInventoryViewModel
   public IAsyncRelayCommand StopInventoryAsync => throw new NotImplementedException();
 
   public IRelayCommand OpenSettings => throw new NotImplementedException();
+
+  ObservableCollection<PollingFeedback> IInventoryViewModel.PollingFeedback => throw new NotImplementedException();
 }

@@ -77,7 +77,7 @@ public class ScalableListBox : ListBox
   }
 
   public static readonly DependencyProperty LayoutProperty =
-      DependencyProperty.Register(nameof(Layout), typeof(Layout), typeof(ScalableListBox), new PropertyMetadata(OnLayoutChanged));
+      DependencyProperty.Register(nameof(Layout), typeof(Layout), typeof(ScalableListBox), new PropertyMetadata(Layout.List, OnLayoutChanged));
 
   private static void OnLayoutChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
   {
