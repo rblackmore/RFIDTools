@@ -17,6 +17,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroCom.RFIDTools.UI.Log
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroCom.RFIDTools.ReaderServices", "src\Services\ElectroCom.RFIDTools.ReaderServices\ElectroCom.RFIDTools.ReaderServices.csproj", "{D3E8E4DA-9A06-4BAD-9965-8F0CF17068E9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ControlLibraries", "ControlLibraries", "{AC1D0391-8409-4A34-9F13-89A6B5373EB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectroCom.ClassLibrary", "src\UI\ControlLibraries\ElectroCom.ClassLibrary\ElectroCom.ClassLibrary.csproj", "{E23DEC7F-5399-4867-8475-5B64DC9646C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectroCom.CustomControlLibrary", "ElectroCom.CustomControlLibrary\ElectroCom.CustomControlLibrary.csproj", "{9CDDBC75-3D86-4F78-A2FC-7F0BFC8812BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectroCom.UserControlLibrary", "src\UI\ControlLibraries\ElectroCom.UserControlLibrary\ElectroCom.UserControlLibrary.csproj", "{5F2DE7DD-725C-4749-8417-E11B080CE281}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +43,18 @@ Global
 		{D3E8E4DA-9A06-4BAD-9965-8F0CF17068E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3E8E4DA-9A06-4BAD-9965-8F0CF17068E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3E8E4DA-9A06-4BAD-9965-8F0CF17068E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E23DEC7F-5399-4867-8475-5B64DC9646C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E23DEC7F-5399-4867-8475-5B64DC9646C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E23DEC7F-5399-4867-8475-5B64DC9646C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E23DEC7F-5399-4867-8475-5B64DC9646C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CDDBC75-3D86-4F78-A2FC-7F0BFC8812BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CDDBC75-3D86-4F78-A2FC-7F0BFC8812BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CDDBC75-3D86-4F78-A2FC-7F0BFC8812BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDDBC75-3D86-4F78-A2FC-7F0BFC8812BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F2DE7DD-725C-4749-8417-E11B080CE281}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F2DE7DD-725C-4749-8417-E11B080CE281}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F2DE7DD-725C-4749-8417-E11B080CE281}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F2DE7DD-725C-4749-8417-E11B080CE281}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,6 +65,10 @@ Global
 		{E01A3225-7D05-4BAE-8C01-092606A5B2D6} = {6B376F80-F1EE-498D-AC8E-05CAAEA07FF5}
 		{ADED6A9E-7CE8-4918-A59E-18C215242558} = {6B376F80-F1EE-498D-AC8E-05CAAEA07FF5}
 		{D3E8E4DA-9A06-4BAD-9965-8F0CF17068E9} = {56D21DF1-AD96-4A87-8026-79F83DCD7327}
+		{AC1D0391-8409-4A34-9F13-89A6B5373EB1} = {6B376F80-F1EE-498D-AC8E-05CAAEA07FF5}
+		{E23DEC7F-5399-4867-8475-5B64DC9646C2} = {AC1D0391-8409-4A34-9F13-89A6B5373EB1}
+		{9CDDBC75-3D86-4F78-A2FC-7F0BFC8812BC} = {AC1D0391-8409-4A34-9F13-89A6B5373EB1}
+		{5F2DE7DD-725C-4749-8417-E11B080CE281} = {AC1D0391-8409-4A34-9F13-89A6B5373EB1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FF5794C1-ED4A-4449-8BD8-BCE56E318818}
