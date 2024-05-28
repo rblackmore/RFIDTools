@@ -29,6 +29,7 @@
   <SolidColorBrush x:Key="ListedTagListItemBackgroundSelected" Color="{StaticResource Primary-200}"/>
   <SolidColorBrush x:Key="ListedTagListItemBorderSelected" Color="{StaticResource Primary-300}"/>
 
+  <!-- Primary Colour Brush Scale -->
   <SolidColorBrush x:Key="PrimaryBrush-100" Color="{StaticResource Primary-100}"/>
   <SolidColorBrush x:Key="PrimaryBrush-200" Color="{StaticResource Primary-200}"/>
   <SolidColorBrush x:Key="PrimaryBrush-300" Color="{StaticResource Primary-300}"/>
@@ -39,6 +40,7 @@
   <SolidColorBrush x:Key="PrimaryBrush-800" Color="{StaticResource Primary-800}"/>
   <SolidColorBrush x:Key="PrimaryBrush-900" Color="{StaticResource Primary-900}"/>
 
+  <!-- Gray Colour Brush Scale -->
   <SolidColorBrush x:Key="GrayBrush-100" Color="{StaticResource Gray-100}"/>
   <SolidColorBrush x:Key="GrayBrush-200" Color="{StaticResource Gray-200}"/>
   <SolidColorBrush x:Key="GrayBrush-300" Color="{StaticResource Gray-300}"/>
@@ -49,6 +51,7 @@
   <SolidColorBrush x:Key="GrayBrush-800" Color="{StaticResource Gray-800}"/>
   <SolidColorBrush x:Key="GrayBrush-900" Color="{StaticResource Gray-900}"/>
 
+  <!-- Success Colour Brush Scale -->
   <SolidColorBrush x:Key="SuccessBrush-100" Color="{StaticResource Success-100}"/>
   <SolidColorBrush x:Key="SuccessBrush-200" Color="{StaticResource Success-200}"/>
   <SolidColorBrush x:Key="SuccessBrush-300" Color="{StaticResource Success-300}"/>
@@ -59,6 +62,7 @@
   <SolidColorBrush x:Key="SuccessBrush-800" Color="{StaticResource Success-800}"/>
   <SolidColorBrush x:Key="SuccessBrush-900" Color="{StaticResource Success-900}"/>
 
+  <!-- Error Colour Brush Scale -->
   <SolidColorBrush x:Key="ErrorBrush-100" Color="{StaticResource Error-100}"/>
   <SolidColorBrush x:Key="ErrorBrush-200" Color="{StaticResource Error-200}"/>
   <SolidColorBrush x:Key="ErrorBrush-300" Color="{StaticResource Error-300}"/>

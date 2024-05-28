@@ -1,28 +1,33 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=netstandard">
+  
+  <!-- Default Style Properties for Controls -->
+  <Style TargetType="{x:Type Control}">
+    <Setter Property="FontSize" Value="12"/>
+    <Setter Property="FontFamily" Value="Open Sans"/>
+    <Setter Property="FontWeight" Value="Regular"/>
+    <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+    <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
+  </Style>
 
-    <Style TargetType="{x:Type Control}">
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="FontFamily" Value="Open Sans"/>
-        <Setter Property="FontWeight" Value="Regular"/>
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
-        <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
-    </Style>
+  <!-- Default Style Properties for TextBlocks -->
+  <Style TargetType="{x:Type TextBlock}">
+    <Setter Property="FontSize" Value="12"/>
+    <Setter Property="FontFamily" Value="Open Sans"/>
+    <Setter Property="FontWeight" Value="Regular"/>
+    <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
 
-    <Style TargetType="{x:Type TextBlock}">
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="FontFamily" Value="Open Sans"/>
-        <Setter Property="FontWeight" Value="Regular"/>
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
-        <Setter Property="Background" Value="Transparent"/>
-    </Style>
+  <!-- Default Corner Radius Value -->
+  <sys:Double x:Key="WinCornerRadiusValue">0</sys:Double>
 
-    <sys:Double x:Key="WinCornerRadiusValue">0</sys:Double>
-
-    <CornerRadius x:Key="WindowCornerRadius" TopLeft="{StaticResource WinCornerRadiusValue}"
-                  TopRight="{StaticResource WinCornerRadiusValue}"
-                  BottomLeft="{StaticResource WinCornerRadiusValue}"
-                  BottomRight="{StaticResource WinCornerRadiusValue}"/>
+  <!-- Default Corner Radius All Corners -->
+  <CornerRadius x:Key="WindowCornerRadius" 
+                TopLeft="{StaticResource WinCornerRadiusValue}"
+                TopRight="{StaticResource WinCornerRadiusValue}"
+                BottomLeft="{StaticResource WinCornerRadiusValue}"
+                BottomRight="{StaticResource WinCornerRadiusValue}"/>
 
 </ResourceDictionary>
