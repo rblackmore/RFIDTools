@@ -17,35 +17,8 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="88"/>
         </Grid.ColumnDefinitions>
-        <!--<Button Grid.Column="1">
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                </Style>
-            </Button.Style>
-            
 
-        </Button>-->
-
-        <!--<Ellipse Grid.Column="0" Stroke="{StaticResource BorderBrush}" 
-                 StrokeThickness="1" 
-                 Width="40" Height="40">
-            <Ellipse.Style>
-                <Style TargetType="Ellipse">
-                    <Setter Property="Fill" Value="{StaticResource ErrorBrush}"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=IsConnected}" Value="True">
-                            <Setter Property="Fill" Value="{StaticResource SuccessBrush}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Ellipse.Style>
-        </Ellipse>-->
-
-        <!-- Reader Details -->
-        <StackPanel Margin="8,0" Grid.Column="0" VerticalAlignment="Center">
+      <StackPanel Margin="8,0" Grid.Column="0" VerticalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="Foreground" Value="{StaticResource ErrorBrush}"/>
@@ -86,11 +59,5 @@
                 </Style>
             </Button.Style>
         </Button>
-        <!--<Button Grid.Column="2" 
-                Style="{StaticResource BasicButton}" 
-                Command="{Binding ConnectReader}" 
-                Content="Connect"
-                Width="32"
-                Height="32"/>-->
     </Grid>
 </UserControl>

@@ -6,7 +6,7 @@
     <Setter Property="FontFamily" Value="Open Sans"/>
     <Setter Property="FontSize" Value="12"/>
     <Setter Property="FontWeight" Value="SemiBold"/>
-    <Setter Property="Foreground" Value="Red"/>
+    <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
     <Setter Property="Background" Value="{StaticResource ButtonBackground}"/>
     <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
     <Setter Property="Padding" Value="8,4"/>

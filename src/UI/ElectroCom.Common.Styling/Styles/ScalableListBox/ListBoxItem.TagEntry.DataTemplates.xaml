@@ -9,6 +9,7 @@
   <!-- TagEntry List Layout Template -->
   <DataTemplate x:Key="ListBoxItem.ListLayout.TagEntry.DataTemplate" DataType="model:ObservableTagEntry">
     <DataTemplate.Resources>
+      
       <SolidColorBrush x:Key="TagEntry.ForegroundColor" Color="{StaticResource Gray-800}"/>
 
       <sys:Double x:Key="TagEntry.SerialNumber.FontSize">24</sys:Double>

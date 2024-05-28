@@ -7,10 +7,10 @@
     <Style.Resources>
       <SolidColorBrush x:Key="ListBoxItem.BorderColor"                 Color="Transparent"/>
       <SolidColorBrush x:Key="ListBoxItem.BackgroundColor"             Color="Transparent"/>
-      <SolidColorBrush x:Key="ListBoxItem.IsMouseOver.BorderColor"      Color="{StaticResource Primary-500}"/>
-      <SolidColorBrush x:Key="ListBoxItem.IsMouseOver.BackgroundColor"  Color="{StaticResource Primary-200}"/>
-      <SolidColorBrush x:Key="ListBoxItem.IsSelected.BorderColor"     Color="{StaticResource Gray-500}"/>
-      <SolidColorBrush x:Key="ListBoxItem.IsSelected.BackgroundColor" Color="{StaticResource Gray-200}"/>
+      <SolidColorBrush x:Key="ListBoxItem.IsMouseOver.BorderColor"     Color="{StaticResource Primary-500}"/>
+      <SolidColorBrush x:Key="ListBoxItem.IsMouseOver.BackgroundColor" Color="{StaticResource Primary-200}"/>
+      <SolidColorBrush x:Key="ListBoxItem.IsSelected.BorderColor"      Color="{StaticResource Gray-500}"/>
+      <SolidColorBrush x:Key="ListBoxItem.IsSelected.BackgroundColor"  Color="{StaticResource Gray-200}"/>
     </Style.Resources>
     <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Padding" Value="2"/>

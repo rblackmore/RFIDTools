@@ -87,6 +87,7 @@ public partial class App : Application
     await this.host.StartAsync();
     base.OnStartup(e);
   }
+
   protected override async void OnExit(ExitEventArgs e)
   {
     await this.host.StopAsync();

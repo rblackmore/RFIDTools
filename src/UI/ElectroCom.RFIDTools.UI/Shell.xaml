@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ElectroCom.RFIDTools.UI"
         xmlns:views="clr-namespace:ElectroCom.RFIDTools.UI.Views" 
-        xmlns:controls="clr-namespace:ElectroCom.RFIDTools.UI.Controls"
         mc:Ignorable="d"
         Height="750" Width="1200"
         Title="RFID Tools"
@@ -13,94 +12,93 @@
         ResizeMode="CanResize"
         MinWidth="1000"
         MinHeight="700">
-    <Window.DataContext>
-        <Binding Source="{StaticResource shellVML}" Path="ViewModel"/>
-    </Window.DataContext>
-    <Border CornerRadius="0" 
+  <Window.DataContext>
+    <Binding Source="{StaticResource shellVML}" Path="ViewModel"/>
+  </Window.DataContext>
+  <Border CornerRadius="0" 
             BorderThickness="0"
             BorderBrush="{StaticResource BorderBrush}" 
             Background="{StaticResource BackgroundBrush}">
-        <Grid>
-            <!--<Grid.RowDefinitions>
+    <Grid>
+      <!--<Grid.RowDefinitions>
                 <RowDefinition Height="48"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>-->
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="208"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="208"/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
 
-            <!-- Window Title Bar -->
-            <!--<controls:WindowTitleBar Grid.ColumnSpan="2" 
+      <!-- Window Title Bar -->
+      <!--<controls:WindowTitleBar Grid.ColumnSpan="2" 
                                      CloseButton="WindowTitleBar_CloseButton"
                                      MaximizeButton="WindowTitleBar_MaximizeButton"
                                      MinimizeButton="WindowTitleBar_MinimizeButton"
                                      WindowMouseDown="WindowTitleBar_WindowMouseDown"/>-->
 
-            <!-- Side Bar -->
-            <Border Grid.Row="0"
+      <!-- Side Bar -->
+      <Border Grid.Row="0"
                     Background="{StaticResource BackgroundSidebarBrush}"
                     BorderThickness="0,0,1,0"
                     BorderBrush="{StaticResource BorderBrush}">
-                <Border.CornerRadius>
-                    <CornerRadius BottomLeft="{StaticResource WinCornerRadiusValue}"/>
-                </Border.CornerRadius>
-                <Grid>
+        <Border.CornerRadius>
+          <CornerRadius BottomLeft="0"/>
+        </Border.CornerRadius>
+        <Grid>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="56"/>
-                    </Grid.RowDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="56"/>
+          </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" 
+          <StackPanel Grid.Row="0" 
                         Orientation="Vertical"
                         Background="Transparent"
                         Margin="0">
-                        <Button Style="{StaticResource NavigationButton}"
+            <Button Style="{StaticResource NavigationButton}"
                                 Command="{Binding NavigateToSettings}">
-                            <StackPanel Orientation="Horizontal">
-                                <Path Style="{StaticResource SettingsIcon}"
+              <StackPanel Orientation="Horizontal">
+                <Path Style="{StaticResource SettingsIcon}"
                                       Fill="{StaticResource ForegroundBrush}"
                                       Width="20" Height="20"
                                       Stretch="Uniform"
                                       VerticalAlignment="Center"/>
-                                <TextBlock VerticalAlignment="Center"  Text="Settings" Margin="8,0,0,0"/>
-                            </StackPanel>
-                        </Button>
+                <TextBlock VerticalAlignment="Center"  Text="Settings" Margin="8,0,0,0"/>
+              </StackPanel>
+            </Button>
 
-                        <Button Style="{StaticResource NavigationButton}"
+            <Button Style="{StaticResource NavigationButton}"
                                 Command="{Binding NavigateToInventory}">
-                            <StackPanel Orientation="Horizontal">
-                                <Path Style="{StaticResource PlayIcon}"
+              <StackPanel Orientation="Horizontal">
+                <Path Style="{StaticResource PlayIcon}"
                                       Fill="{StaticResource ForegroundBrush}"
                                       Width="20" Height="20"
                                       Stretch="Uniform"
                                       VerticalAlignment="Center"/>
-                                <TextBlock VerticalAlignment="Center" Text="Inventory" Margin="8,0,0,0"/>
-                            </StackPanel>
-                        </Button>
+                <TextBlock VerticalAlignment="Center" Text="Inventory" Margin="8,0,0,0"/>
+              </StackPanel>
+            </Button>
 
-                    </StackPanel>
-                    <Border Grid.Row="1"
+          </StackPanel>
+          <Border Grid.Row="1"
                             BorderThickness="0,1,0,0"
                             BorderBrush="{StaticResource BorderBrush}">
 
-                        <views:ReaderConnectionStatusView/>
-                    </Border>
+            <views:ReaderConnectionStatusView/>
+          </Border>
 
-                </Grid>
-            </Border>
-
-            <!-- Main Content -->
-            <Border Grid.Column="1" Grid.Row="0">
-                <Border.CornerRadius>
-                    <CornerRadius BottomRight="{StaticResource WinCornerRadiusValue}"/>
-                </Border.CornerRadius>
-                <ContentControl Content="{Binding Path=NavigationService.CurrentViewModel}"/>
-            </Border>
         </Grid>
+      </Border>
 
-    </Border>
+      <!-- Main Content -->
+      <Border Grid.Column="1" Grid.Row="0">
+        <Border.CornerRadius>
+          <CornerRadius BottomRight="0"/>
+        </Border.CornerRadius>
+        <ContentControl Content="{Binding Path=NavigationService.CurrentViewModel}"/>
+      </Border>
+    </Grid>
+
+  </Border>
 </Window>
-        

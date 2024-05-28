@@ -2,15 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="./Colours/LightThemeColours.xaml"/>
-    <ResourceDictionary Source="./Colours/ComponentColours.xaml"/>
-
-    <ResourceDictionary Source="./Styles/ButtonStyles.xaml"/>
-    <ResourceDictionary Source="./Styles/IconStyleData.xaml"/>
-
-    <ResourceDictionary Source="./Styles/ScalableListBox/ListBox.ItemPanelTemplates.xaml"/>
+    <!--<ResourceDictionary Source="./Colours/LightThemeColours.xaml"/>-->
     <ResourceDictionary Source="./Styles/ScalableListBox/ListBoxItem.Styles.xaml"/>
     <ResourceDictionary Source="./Styles/ScalableListBox/ListBoxItem.TagEntry.DataTemplates.xaml"/>
+    <ResourceDictionary Source="./Styles/ScalableListBox/ListBox.ItemPanelTemplates.xaml"/>
+    <ResourceDictionary Source="./Styles/ButtonStyles.xaml"/>
+    <ResourceDictionary Source="./Colours/ComponentColours.xaml"/>
+    <ResourceDictionary Source="./Styles/IconStyleData.xaml"/>
 
   </ResourceDictionary.MergedDictionaries>
 

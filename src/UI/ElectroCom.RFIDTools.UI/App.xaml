@@ -3,26 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ElectroCom.RFIDTools.UI"
              xmlns:vms="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic"
-             xmlns:views="clr-namespace:ElectroCom.RFIDTools.UI.Views">
+             xmlns:views="clr-namespace:ElectroCom.RFIDTools.UI.Views"
+             >
   <Application.Resources>
     <ResourceDictionary>
 
-      <!-- View Model View Mapper -->
-      <DataTemplate DataType="{x:Type TypeName=vms:InventoryViewModel}">
-        <views:InventoryView/>
-      </DataTemplate>
-
-      <DataTemplate DataType="{x:Type TypeName=vms:SettingsViewModel}">
-        <views:SettingsView/>
-      </DataTemplate>
-
-      <!-- Themes -->
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/ElectroCom.Common.Styling;component/CommonDesign.xaml"/>
-        
-        <ResourceDictionary Source="pack://application:,,,/ElectroCom.RFIDTools.UI.Logic;component/Resources/ViewModelLocators.xaml"/>
-        
+
+        <!--<ResourceDictionary Source="/ElectroCom.Common.Styling;component/Colours/LightThemeColours.xaml"/>
+        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Colours/ComponentColours.xaml"/>
+        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Styles/IconStyleData.xaml"/>
+        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Styles/ButtonStyles.xaml"/>
+        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Styles/ScalableListBox/ListBoxItem.Styles.xaml"/>
+        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Styles/ScalableListBox/ListBoxItem.TagEntry.DataTemplates.xaml"/>
+        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Styles/ScalableListBox/ListBox.ItemPanelTemplates.xaml"/>-->
+
+        <ResourceDictionary Source="./ViewModelLocators.xaml"/>
+        <ResourceDictionary Source="./ViewToViewModelMapper.xaml"/>
       </ResourceDictionary.MergedDictionaries>
+      
+      <Style TargetType="{x:Type Rectangle}"/>
 
     </ResourceDictionary>
   </Application.Resources>

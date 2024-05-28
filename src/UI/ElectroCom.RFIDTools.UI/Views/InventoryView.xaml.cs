@@ -3,7 +3,8 @@
 using System.Windows;
 using System.Windows.Controls;
 
-using ElectroCom.RFIDTools.UI.Controls;
+using ElectroCom.Common.Controls.ItemsControls;
+
 
 /// <summary>
 /// Interaction logic for InventoryView.xaml
