@@ -1,9 +1,9 @@
-﻿namespace ElectroCom.RFIDTools.UI.Controls;
+﻿namespace ElectroCom.Common.Controls.ItemsControls;
 
 using System.Windows;
 using System.Windows.Controls;
 
-using ElectroCom.RFIDTools.UI.Controls.Selectors;
+using ElectroCom.Common.Controls.Selectors;
 
 public enum Layout
 {
@@ -36,8 +36,8 @@ public class ScalableListBox : ListBox
     var slb = (ScalableListBox)d;
     var newValue = (double)baseValue;
 
-    newValue = (newValue < slb.MinScale) ? slb.MinScale : newValue;
-    newValue = (newValue > slb.MaxScale) ? slb.MaxScale : newValue;
+    newValue = newValue < slb.MinScale ? slb.MinScale : newValue;
+    newValue = newValue > slb.MaxScale ? slb.MaxScale : newValue;
 
     return newValue;
   }

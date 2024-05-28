@@ -1,4 +1,4 @@
-﻿namespace ElectroCom.RFIDTools.UI.Controls.Selectors;
+﻿namespace ElectroCom.Common.Controls.Selectors;
 
 using System.Windows;
 using System.Windows.Controls;

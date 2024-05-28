@@ -1,8 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:controls="clr-namespace:ElectroCom.RFIDTools.UI.Controls"
-                    xmlns:converters="clr-namespace:ElectroCom.RFIDTools.UI.Controls.Converters"
+                    xmlns:controls="clr-namespace:ElectroCom.Common.Controls.ItemsControls;assembly=ElectroCom.Common.Controls"
+                    xmlns:converters="clr-namespace:ElectroCom.Common.Controls.Converters;assembly=ElectroCom.Common.Controls"
+                    xmlns:selectors="clr-namespace:ElectroCom.Common.Controls.ItemsControls.Selectors;assembly=ElectroCom.Common.Controls"
                     xmlns:model="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic">
 
   <!-- TagEntry List Layout Template -->
@@ -146,7 +147,7 @@
     </Grid>
   </DataTemplate>
 
-  <controls:ScalableListBoxItemTemplateSelector
+  <selectors:ScalableListBoxItemTemplateSelector
     x:Key="ScalableListBox.ItemTemplate.Selector"
     ListItemTemplate="{StaticResource ListBoxItem.ListLayout.TagEntry.DataTemplate}"
     TileItemTemplate="{StaticResource ListBoxItem.TileLayout.TagEntry.DataTemplate}"/>

@@ -1,10 +1,13 @@
 ﻿#nullable disable
 
-namespace ElectroCom.RFIDTools.UI.Controls;
+namespace ElectroCom.Common.Controls.ItemsControls.Selectors;
 
 using System;
 using System.Windows;
 using System.Windows.Controls;
+
+using ElectroCom.Common.Controls.ItemsControls;
+
 public class ScalableListBoxItemContainerStyleSelector : StyleSelector
 {
 
@@ -15,16 +18,16 @@ public class ScalableListBoxItemContainerStyleSelector : StyleSelector
   {
     if (item is not Layout layout)
     {
-      throw new ArgumentException(("InvalidType"));
+      throw new ArgumentException("InvalidType");
     }
 
     if (layout is Layout.List)
     {
-      return this.ListContainerStyle;
+      return ListContainerStyle;
     }
     else if (layout is Layout.Tile)
     {
-      return this.TileContainerStyle;
+      return TileContainerStyle;
     }
 
     throw new ArgumentException($"Invalid Layout {item}");

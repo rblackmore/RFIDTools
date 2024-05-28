@@ -18,17 +18,7 @@
 
       <!-- Themes -->
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="./Themes/Colours/LightTheme.xaml"/>
-        <ResourceDictionary Source="./Themes/Colours/ColourBrushes.xaml"/>
-
-        <ResourceDictionary Source="./Themes/GlobalResources.xaml"/>
-
-        <ResourceDictionary Source="./Themes/Buttons.xaml"/>
-        <ResourceDictionary Source="./Themes/Icons.xaml"/>
-
-        <ResourceDictionary Source="./Themes/ScalableListBox/ListBox.ItemPanelTemplates.xaml"/>
-        <ResourceDictionary Source="./Themes/ScalableListBox/ListBoxItem.Styles.xaml"/>
-        <ResourceDictionary Source="./Themes/ScalableListBox/ListBoxItem.TagEntry.DataTemplates.xaml"/>
+        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/CommonDesign.xaml"/>
         
         <ResourceDictionary Source="pack://application:,,,/ElectroCom.RFIDTools.UI.Logic;component/Resources/ViewModelLocators.xaml"/>
         

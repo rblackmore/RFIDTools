@@ -1,11 +1,11 @@
 ﻿#nullable disable
-namespace ElectroCom.RFIDTools.UI.Controls;
+namespace ElectroCom.Common.Controls.ItemsControls.Selectors;
 
 using System;
 using System.Windows;
 using System.Windows.Controls;
 
-using ElectroCom.RFIDTools.UI.Controls.Selectors;
+using ElectroCom.Common.Controls.Selectors;
 
 public class ScalableListBoxItemsPanelTemplateSelector : ItemsPanelTemplateSelector
 {
@@ -16,16 +16,16 @@ public class ScalableListBoxItemsPanelTemplateSelector : ItemsPanelTemplateSelec
   {
     if (item is not Layout layout)
     {
-      throw new ArgumentException(("InvalidType"));
+      throw new ArgumentException("InvalidType");
     }
 
     if (layout is Layout.List)
     {
-      return this.ListPanelTemplate;
+      return ListPanelTemplate;
     }
     else if (layout is Layout.Tile)
     {
-      return this.TilePanelTemplate;
+      return TilePanelTemplate;
     }
 
     throw new ArgumentException($"Invalid Layout {item}");

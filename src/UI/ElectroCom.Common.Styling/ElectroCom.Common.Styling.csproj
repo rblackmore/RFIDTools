@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DataTemplate\" />
+    <Folder Include="Settings\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ElectroCom.Common.Controls\ElectroCom.Common.Controls.csproj" />
+    <ProjectReference Include="..\ElectroCom.RFIDTools.UI.Logic\ElectroCom.RFIDTools.UI.Logic.csproj" />
+  </ItemGroup>
+
+</Project>

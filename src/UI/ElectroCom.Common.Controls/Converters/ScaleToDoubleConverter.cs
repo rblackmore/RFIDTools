@@ -1,4 +1,4 @@
-﻿namespace ElectroCom.RFIDTools.UI.Controls.Converters;
+﻿namespace ElectroCom.Common.Controls.Converters;
 
 using System.Globalization;
 using System.Windows.Data;

@@ -1,8 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:controls="clr-namespace:ElectroCom.RFIDTools.UI.Controls"
-                    xmlns:converters="clr-namespace:ElectroCom.RFIDTools.UI.Controls.Converters">
+                    xmlns:controls="clr-namespace:ElectroCom.Common.Controls.ItemsControls;assembly=ElectroCom.Common.Controls"
+                    xmlns:selectros="clr-namespace:ElectroCom.Common.Controls.ItemsControls.Selectors;assembly=ElectroCom.Common.Controls"
+                    xmlns:converters="clr-namespace:ElectroCom.Common.Controls.Converters;assembly=ElectroCom.Common.Controls">
+
   <!-- List Layout Items Panel -->
   <ItemsPanelTemplate x:Key="ScalableListBox_ListLayoutPanel">
     <StackPanel Width="{Binding (FrameworkElement.ActualWidth),
@@ -41,9 +43,9 @@
       </WrapPanel.ItemWidth>
     </WrapPanel>
   </ItemsPanelTemplate>
-  
+
   <!-- Items Panel Template Selector -->
-  <controls:ScalableListBoxItemsPanelTemplateSelector
+  <selectros:ScalableListBoxItemsPanelTemplateSelector
     x:Key="ScalableListBox.ItemsPanel.TemplateSelector"
     ListPanelTemplate="{StaticResource ScalableListBox_ListLayoutPanel}"
     TilePanelTemplate="{StaticResource ScalableListBox_UniformTileLayoutPanel}"/>
