@@ -6,9 +6,9 @@
     <Setter Property="FontFamily" Value="Open Sans"/>
     <Setter Property="FontSize" Value="12"/>
     <Setter Property="FontWeight" Value="SemiBold"/>
-    <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
-    <Setter Property="Background" Value="{StaticResource ButtonBackground}"/>
-    <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+    <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
     <Setter Property="Padding" Value="8,4"/>
     <Setter Property="Template">
       <Setter.Value>
@@ -26,11 +26,11 @@
     </Setter>
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{StaticResource ButtonBackgroundHover}"/>
+        <Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Foreground" Value="{StaticResource ButtonDisabledForeground}"/>
-        <Setter Property="Background" Value="{StaticResource ButtonDisabledBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonDisabledForeground}"/>
+        <Setter Property="Background" Value="{DynamicResource ButtonDisabledBackground}"/>
         <Setter Property="Opacity" Value="0.5"/>
       </Trigger>
     </Style.Triggers>
@@ -87,7 +87,7 @@
         <ControlTemplate TargetType="{x:Type Button}">
           <Border Background="{TemplateBinding Background}" BorderThickness="0">
             <Border.CornerRadius>
-              <CornerRadius TopRight="{StaticResource WinCornerRadiusValue}"/>
+              <CornerRadius TopRight="{DynamicResource WinCornerRadiusValue}"/>
             </Border.CornerRadius>
             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
           </Border>
@@ -97,7 +97,7 @@
 
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{StaticResource ErrorBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource ErrorBrush}"/>
       </Trigger>
     </Style.Triggers>
   </Style>
@@ -116,8 +116,8 @@
 
   <!-- Connect / Disconnect Button Style -->
   <Style TargetType="Button" x:Key="ConnectDisconectButton" BasedOn="{StaticResource BasicButton}">
-    <Setter Property="BorderBrush" Value="{StaticResource SuccessBrush}"/>
-    <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="Template">
       <Setter.Value>

@@ -10,7 +10,7 @@
   <DataTemplate x:Key="ListBoxItem.ListLayout.TagEntry.DataTemplate" DataType="model:ObservableTagEntry">
     <DataTemplate.Resources>
       
-      <SolidColorBrush x:Key="TagEntry.ForegroundColor" Color="{StaticResource Gray-800}"/>
+      <SolidColorBrush x:Key="TagEntry.ForegroundColor" Color="{DynamicResource Gray-800}"/>
 
       <sys:Double x:Key="TagEntry.SerialNumber.FontSize">24</sys:Double>
       <sys:Double x:Key="TagEntry.Details.FontSize">18</sys:Double>
@@ -61,7 +61,7 @@
       </Grid.ColumnDefinitions>
       <Grid Grid.Column="0">
         <Viewbox StretchDirection="Both" Stretch="Uniform" Margin="4">
-          <Path Style="{StaticResource RFIDLabel}" 
+          <Path Style="{DynamicResource RFIDLabel}" 
                 Fill="{StaticResource TagEntry.ForegroundColor}" />
         </Viewbox>
       </Grid>
@@ -137,7 +137,7 @@
         <RowDefinition/>
       </Grid.RowDefinitions>
       <Viewbox Grid.Row="0" StretchDirection="Both" Margin="4">
-        <Path Style="{StaticResource RFIDLabel}" Fill="Black" />
+        <Path Style="{DynamicResource RFIDLabel}" Fill="Black" />
       </Viewbox>
       <Viewbox Grid.Row="1" Margin="4,0" VerticalAlignment="Center" Stretch="Fill">
         <TextBlock Text="{Binding SerialNumber}" Style="{StaticResource SerialNumberStyle}"/>

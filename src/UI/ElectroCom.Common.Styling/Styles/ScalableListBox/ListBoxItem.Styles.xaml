@@ -7,10 +7,10 @@
     <Style.Resources>
       <SolidColorBrush x:Key="ListBoxItem.BorderColor"                 Color="Transparent"/>
       <SolidColorBrush x:Key="ListBoxItem.BackgroundColor"             Color="Transparent"/>
-      <SolidColorBrush x:Key="ListBoxItem.IsMouseOver.BorderColor"     Color="{StaticResource Primary-500}"/>
-      <SolidColorBrush x:Key="ListBoxItem.IsMouseOver.BackgroundColor" Color="{StaticResource Primary-200}"/>
-      <SolidColorBrush x:Key="ListBoxItem.IsSelected.BorderColor"      Color="{StaticResource Gray-500}"/>
-      <SolidColorBrush x:Key="ListBoxItem.IsSelected.BackgroundColor"  Color="{StaticResource Gray-200}"/>
+      <SolidColorBrush x:Key="ListBoxItem.IsMouseOver.BorderColor"     Color="{DynamicResource Primary-500}"/>
+      <SolidColorBrush x:Key="ListBoxItem.IsMouseOver.BackgroundColor" Color="{DynamicResource Primary-200}"/>
+      <SolidColorBrush x:Key="ListBoxItem.IsSelected.BorderColor"      Color="{DynamicResource Gray-500}"/>
+      <SolidColorBrush x:Key="ListBoxItem.IsSelected.BackgroundColor"  Color="{DynamicResource Gray-200}"/>
     </Style.Resources>
     <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Padding" Value="2"/>
@@ -53,7 +53,7 @@
        TargetType="{x:Type ListBoxItem}" 
        BasedOn="{StaticResource ListBoxItem.ContainerStyle}">
     <Style.Resources>
-      <SolidColorBrush x:Key="ListBoxItem.TagEntry.SeenRecently.BackgroundColor" Color="{StaticResource Success-300}"/>
+      <SolidColorBrush x:Key="ListBoxItem.TagEntry.SeenRecently.BackgroundColor" Color="{DynamicResource Success-300}"/>
     </Style.Resources>
     <Style.Triggers>
       <DataTrigger Binding="{Binding Path=(vms:ObservableTagEntry.SeenRecently)}" Value="True">

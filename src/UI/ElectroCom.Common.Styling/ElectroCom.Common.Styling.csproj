@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Page Remove="Colours\ComponentColours.xaml" />
+    <Page Remove="Colours\LightThemeColours.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="DataTemplate\" />
     <Folder Include="Settings\" />
   </ItemGroup>
@@ -15,6 +20,11 @@
   <ItemGroup>
     <ProjectReference Include="..\ElectroCom.Common.Controls\ElectroCom.Common.Controls.csproj" />
     <ProjectReference Include="..\ElectroCom.RFIDTools.UI.Logic\ElectroCom.RFIDTools.UI.Logic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Colours\ComponentColours.xaml" />
+    <Resource Include="Colours\LightThemeColours.xaml" />
   </ItemGroup>
 
 </Project>
