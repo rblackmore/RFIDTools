@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ElectroCom.RFIDTools.UI"
         xmlns:views="clr-namespace:ElectroCom.RFIDTools.UI.Views" 
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:buttons="clr-namespace:ElectroCom.Common.Controls.Buttons;assembly=ElectroCom.Common.Controls"
+        xmlns:btns="clr-namespace:ElectroCom.Common.Controls.Buttons;assembly=ElectroCom.Common.Controls"
         mc:Ignorable="d"
         Height="750" Width="1200"
         Title="RFID Tools"
@@ -38,18 +38,9 @@
         <ItemsControl Style="{StaticResource NavigationBar.ItemsControl}"
                       Grid.Row="0"
                       Margin="0,10">
-          <ItemsControl.Resources>
-            <Style TargetType="{x:Type TextBlock}">
-              <Setter Property="FontSize" Value="16"/>
-              <Setter Property="Margin" Value="10,0,0,0"/>
-            </Style>
-            <sys:Double x:Key="IconSize">18</sys:Double>
-            <Style TargetType="{x:Type Path}">
-              <Setter Property="Height" Value="{StaticResource IconSize}"/>
-              <Setter Property="Width" Value="{StaticResource IconSize}"/>
-            </Style>
-          </ItemsControl.Resources>
-          <Button Command="{Binding NavigatToSettings}">
+          <btns:IconButton Command="{Binding NavigateToSettings}" Content="Settings" Icon="{StaticResource SettingsIconImage}"/>
+          <btns:IconButton Command="{Binding NavigateToInventory}" Content="Inventory" Icon="{StaticResource PlayIconImage}"/>
+          <!--<Button Command="{Binding NavigatToSettings}">
             <WrapPanel VerticalAlignment="Center">
               <Path Data="{StaticResource SettingsIconData}"
                     Fill="{StaticResource ForegroundBrush}"
@@ -64,7 +55,7 @@
                     Stretch="Uniform"/>
               <TextBlock VerticalAlignment="Center" Text="Inventory"/>
             </WrapPanel>
-          </Button>
+          </Button>-->
         </ItemsControl>
 
         <!--<StackPanel Grid.Row="0" 

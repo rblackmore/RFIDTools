@@ -9,19 +9,20 @@
   <DataTemplate x:Key="IconButton_Horizontal" DataType="buttons:IconButton">
     <Grid >
       <Grid.ColumnDefinitions>
-        <ColumnDefinition/>
-        <ColumnDefinition/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-      <Viewbox Grid.Column="0" VerticalAlignment="Center"
+      <Viewbox Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left"
                Width="{Binding Path=IconSize, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}"
                Height="{Binding Path=IconSize, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}"
                Margin="{Binding Path=IconMargin, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}">
-        <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center" 
+        <ContentControl HorizontalAlignment="Left" VerticalAlignment="Center" 
                         Content="{Binding Path=Icon, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}"/>
       </Viewbox>
 
       <ContentPresenter Grid.Column="1"
                         VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
                         Content="{Binding Path=Content, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}"/>
     </Grid>
   </DataTemplate>
