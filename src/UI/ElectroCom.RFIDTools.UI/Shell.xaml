@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ElectroCom.RFIDTools.UI"
         xmlns:views="clr-namespace:ElectroCom.RFIDTools.UI.Views" 
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:buttons="clr-namespace:ElectroCom.Common.Controls.Buttons;assembly=ElectroCom.Common.Controls"
         mc:Ignorable="d"
         Height="750" Width="1200"
         Title="RFID Tools"
@@ -19,7 +21,7 @@
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="224"/>
-      <ColumnDefinition/>
+      <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
     <!-- Side Bar -->
@@ -29,28 +31,38 @@
             Background="{StaticResource NavigationBar.Background}">
       <Grid>
         <Grid.RowDefinitions>
-          <RowDefinition/>
+          <RowDefinition Height="*"/>
           <RowDefinition Height="64"/>
         </Grid.RowDefinitions>
 
         <ItemsControl Style="{StaticResource NavigationBar.ItemsControl}"
-                      Margin="4,16">
+                      Grid.Row="0"
+                      Margin="0,10">
+          <ItemsControl.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+              <Setter Property="FontSize" Value="16"/>
+              <Setter Property="Margin" Value="10,0,0,0"/>
+            </Style>
+            <sys:Double x:Key="IconSize">18</sys:Double>
+            <Style TargetType="{x:Type Path}">
+              <Setter Property="Height" Value="{StaticResource IconSize}"/>
+              <Setter Property="Width" Value="{StaticResource IconSize}"/>
+            </Style>
+          </ItemsControl.Resources>
           <Button Command="{Binding NavigatToSettings}">
             <WrapPanel VerticalAlignment="Center">
-              <Path Style="{StaticResource SettingsIcon}"
+              <Path Data="{StaticResource SettingsIconData}"
                     Fill="{StaticResource ForegroundBrush}"
-                    Width="24" Height="24"
                     Stretch="Uniform"/>
-              <TextBlock VerticalAlignment="Center" FontSize="20" Text="Settings" Margin="16,0,0,0"/>
+              <TextBlock VerticalAlignment="Center" Text="Settings"/>
             </WrapPanel>
           </Button>
           <Button Command="{Binding NavigateToInventory}">
             <WrapPanel VerticalAlignment="Center">
-              <Path Style="{StaticResource PlayIcon}"
+              <Path Data="{StaticResource PlayIconData}"
                     Fill="{StaticResource ForegroundBrush}"
-                    Width="24" Height="24"
                     Stretch="Uniform"/>
-              <TextBlock VerticalAlignment="Center" FontSize="20" Text="Inventory" Margin="16,0,0,0"/>
+              <TextBlock VerticalAlignment="Center" Text="Inventory"/>
             </WrapPanel>
           </Button>
         </ItemsControl>

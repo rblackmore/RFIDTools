@@ -6,7 +6,7 @@
 
   <!-- Window Defaults -->
   <SolidColorBrush x:Key="Window.Background" Color="{DynamicResource Gray-200}"/>
-  <SolidColorBrush x:Key="Window.Foreground" Color="{DynamicResource Gray-800}"/>
+  <SolidColorBrush x:Key="Window.Foreground" Color="{DynamicResource Gray-700}"/>
 
   <SolidColorBrush x:Key="ForegroundBrush" Color="{DynamicResource Gray-800}"/>
   <SolidColorBrush x:Key="BorderBrush" Color="{DynamicResource Gray-700}"/>

@@ -1,0 +1,94 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:buttons="clr-namespace:ElectroCom.Common.Controls.Buttons"
+  xmlns:selectors="clr-namespace:ElectroCom.Common.Controls.Selectors"
+  xmlns:converters="clr-namespace:ElectroCom.Common.Controls.Converters">
+
+  <!-- Horizontal Layout for IconButton -->
+  <DataTemplate x:Key="IconButton_Horizontal" DataType="buttons:IconButton">
+    <Grid >
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <Viewbox Grid.Column="0" VerticalAlignment="Center"
+               Width="{Binding Path=IconSize, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}"
+               Height="{Binding Path=IconSize, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}"
+               Margin="{Binding Path=IconMargin, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}">
+        <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center" 
+                        Content="{Binding Path=Icon, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}"/>
+      </Viewbox>
+
+      <ContentPresenter Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Content="{Binding Path=Content, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}"/>
+    </Grid>
+  </DataTemplate>
+
+  <!-- Currently Unused for Vertical Icon Button Layout -->
+  <DataTemplate x:Key="IconButton_Vertical" DataType="buttons:IconButton">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+      <ContentControl Grid.Row="0"
+                      HorizontalAlignment="Center"
+                      Margin="{Binding Path=IconMargin, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}"
+                      Content="{Binding Path=Icon, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}"/>
+
+      <ContentPresenter Grid.Row="1" 
+                        Content="{Binding Path=Content, RelativeSource={RelativeSource AncestorType=buttons:IconButton}}"/>
+    </Grid>
+  </DataTemplate>
+
+  <!-- Default Styling for Icon Button -->
+  <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
+  <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
+  <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+  <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
+  <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
+  <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
+  <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+
+  <Style TargetType="{x:Type buttons:IconButton}" 
+         BasedOn="{StaticResource {x:Type Button}}">
+    <Setter Property="ContentTemplate" Value="{StaticResource IconButton_Horizontal}"/>
+    <Setter Property="Padding" Value="8"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type buttons:IconButton}">
+          <Border x:Name="bd"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}">
+            <ContentPresenter x:Name="contentPresent" 
+                              Focusable="False"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              Margin="{TemplateBinding Padding}"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter Property="Background" TargetName="bd" Value="{StaticResource Button.MouseOver.Background}"/>
+              <Setter Property="BorderBrush" TargetName="bd" Value="{StaticResource Button.MouseOver.Border}"/>
+              <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+              <Setter Property="Background" TargetName="bd" Value="{StaticResource Button.Pressed.Background}"/>
+              <Setter Property="BorderBrush" TargetName="bd" Value="{StaticResource Button.Pressed.Border}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+              <Setter Property="Background" TargetName="bd" Value="{StaticResource Button.Disabled.Background}"/>
+              <Setter Property="BorderBrush" TargetName="bd" Value="{StaticResource Button.Disabled.Border}"/>
+              <Setter Property="TextElement.Foreground" TargetName="contentPresent" Value="{StaticResource Button.Disabled.Foreground}"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+</ResourceDictionary>

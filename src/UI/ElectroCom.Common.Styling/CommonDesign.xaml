@@ -4,10 +4,10 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="./Colours/LightThemeColours.xaml"/>
     <ResourceDictionary Source="./Colours/ComponentColours.xaml"/>
-    
+
     <ResourceDictionary Source="./Styles/ButtonStyles.xaml"/>
     <ResourceDictionary Source="./Styles/IconStyleData.xaml"/>
-    
+
     <ResourceDictionary Source="./Styles/ScalableListBox/ListBoxItem.Styles.xaml"/>
     <ResourceDictionary Source="./Styles/ScalableListBox/ListBoxItem.TagEntry.DataTemplates.xaml"/>
     <ResourceDictionary Source="./Styles/ScalableListBox/ListBox.ItemPanelTemplates.xaml"/>
@@ -16,6 +16,7 @@
   </ResourceDictionary.MergedDictionaries>
 
   <!-- Default Style Properties for Controls -->
+  <!--
   <Style TargetType="{x:Type Control}">
     <Setter Property="FontSize" Value="12"/>
     <Setter Property="FontFamily" Value="Open Sans"/>
@@ -24,13 +25,15 @@
     <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
   </Style>
 
+  -->
   <!-- Default Style Properties for TextBlocks -->
+  <!--
   <Style TargetType="{x:Type TextBlock}">
     <Setter Property="FontSize" Value="12"/>
     <Setter Property="FontFamily" Value="Open Sans"/>
     <Setter Property="FontWeight" Value="Regular"/>
     <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
     <Setter Property="Background" Value="Transparent"/>
-  </Style>
-  
+  </Style>-->
+
 </ResourceDictionary>
