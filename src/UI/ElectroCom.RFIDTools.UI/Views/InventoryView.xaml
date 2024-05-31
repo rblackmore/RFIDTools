@@ -19,7 +19,7 @@
       <RowDefinition Height="40"/>
     </Grid.RowDefinitions>
     <!-- Top Row Button Controls -->
-    <Border Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+    <Border Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
       <Grid HorizontalAlignment="Stretch">
         <StackPanel Margin="12,0,0,0" Orientation="Horizontal" 
                             HorizontalAlignment="Left"
@@ -91,7 +91,7 @@
     </Border>
 
     <!-- Main Tag List control -->
-    <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent">
+    <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent" BorderThickness="0">
 
       <controls:ScalableListBox x:Name="slb_TagInventory" 
                                 ItemsSource="{Binding TagList}"
@@ -111,7 +111,7 @@
     </Border>
 
     <!-- Botton Status Bar and Controls -->
-    <Border Grid.Row="2" Background="Transparent" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1">
+    <Border Grid.Row="2" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
       <Grid HorizontalAlignment="Stretch">
         <Slider 
           Minimum="{Binding ElementName=slb_TagInventory, Path=MinScale}" 
