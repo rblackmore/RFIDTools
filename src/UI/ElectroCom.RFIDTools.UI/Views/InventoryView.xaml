@@ -7,19 +7,19 @@
              xmlns:vms="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic" 
              mc:Ignorable="d"
              Background="Transparent"
-             d:Background="{StaticResource BackgroundBrush}"
+             d:Background="Transparent"
              d:DesignHeight="600" d:DesignWidth="1080">
   <UserControl.DataContext>
     <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
   </UserControl.DataContext>
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="64"/>
+      <RowDefinition Height="80"/>
       <RowDefinition Height="*"/>
-      <RowDefinition Height="40"/>
+      <RowDefinition Height="64"/>
     </Grid.RowDefinitions>
     <!-- Top Row Button Controls -->
-    <Border Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+    <Border Style="{DynamicResource Segment}">
       <Grid HorizontalAlignment="Stretch">
         <StackPanel Margin="12,0,0,0" Orientation="Horizontal" 
                             HorizontalAlignment="Left"
@@ -91,9 +91,12 @@
     </Border>
 
     <!-- Main Tag List control -->
-    <Border Grid.Row="1" Padding="0" Margin="0" Background="Transparent" BorderThickness="0">
+    <Border Grid.Row="1" Style="{DynamicResource Segment}">
 
-      <controls:ScalableListBox x:Name="slb_TagInventory" 
+      <controls:ScalableListBox x:Name="slb_TagInventory"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                BorderBrush="Transparent"
                                 ItemsSource="{Binding TagList}"
                                 ItemsPanelTemplateSelector="{StaticResource ScalableListBox.ItemsPanel.TemplateSelector}"
                                 ItemContainerStyle="{StaticResource TagEntry.ListBoxItem.ContainerStyle}"
@@ -111,7 +114,7 @@
     </Border>
 
     <!-- Botton Status Bar and Controls -->
-    <Border Grid.Row="2" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+    <Border Grid.Row="2" Style="{DynamicResource Segment}">
       <Grid HorizontalAlignment="Stretch">
         <Slider 
           Minimum="{Binding ElementName=slb_TagInventory, Path=MinScale}" 

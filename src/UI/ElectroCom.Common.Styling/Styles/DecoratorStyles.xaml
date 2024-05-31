@@ -1,6 +1,21 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-
+  
+  <SolidColorBrush x:Key="Segment.Background" Color="{DynamicResource Gray-100}"/>
+  <SolidColorBrush x:Key="Segment.Border" Color="Transparent"/>
+  
+  <Style x:Key="Segment" TargetType="Border">
+    <Setter Property="Padding" Value="8"/>
+    <Setter Property="Margin" Value="8"/>
+    <Setter Property="Background" Value="{StaticResource Segment.Background}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource Segment.Border}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Border.CornerRadius" Value="4"/>
+    <Setter Property="Effect">
+      <Setter.Value>
+        <DropShadowEffect BlurRadius="5" Color="#c8c7c9" Direction="270" ShadowDepth="2" Opacity="0.75" />
+      </Setter.Value>
+    </Setter>
+  </Style>
 
 </ResourceDictionary>

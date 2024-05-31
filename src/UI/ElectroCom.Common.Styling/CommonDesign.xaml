@@ -5,6 +5,7 @@
     <ResourceDictionary Source="./Colours/LightThemeColours.xaml"/>
     <ResourceDictionary Source="./Colours/ComponentColours.xaml"/>
 
+    <ResourceDictionary Source="./Styles/DecoratorStyles.xaml"/>
     <ResourceDictionary Source="./Styles/ButtonStyles.xaml"/>
     <ResourceDictionary Source="./Styles/IconStyleData.xaml"/>
 
