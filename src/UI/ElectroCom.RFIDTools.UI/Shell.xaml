@@ -32,7 +32,7 @@
       <Grid>
         <Grid.RowDefinitions>
           <RowDefinition Height="*"/>
-          <RowDefinition Height="64"/>
+          <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
 
         <ItemsControl Style="{StaticResource NavigationBar.ItemsControl}"
@@ -87,9 +87,7 @@
           </Button>
 
         </StackPanel>-->
-        <Border Grid.Row="1"
-                BorderBrush="{StaticResource BorderBrush}" 
-                Padding="4">
+        <Border Grid.Row="1" Style="{DynamicResource Segment}">
           <views:ReaderConnectionStatusView/>
         </Border>
 
