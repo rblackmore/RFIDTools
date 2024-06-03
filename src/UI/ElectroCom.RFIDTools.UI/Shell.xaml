@@ -14,7 +14,8 @@
         Foreground="{StaticResource Window.Foreground}"
         ResizeMode="CanResize"
         MinWidth="1000"
-        MinHeight="700">
+        MinHeight="700"
+        WindowState="Maximized">
   <Window.DataContext>
     <Binding Source="{StaticResource shellVML}" Path="ViewModel"/>
   </Window.DataContext>
@@ -40,53 +41,7 @@
                       Margin="0,10">
           <btns:IconButton Command="{Binding NavigateToSettings}" Content="Settings" Icon="{StaticResource SettingsIconImage}"/>
           <btns:IconButton Command="{Binding NavigateToInventory}" Content="Inventory" Icon="{StaticResource PlayIconImage}"/>
-          <!--<Button Command="{Binding NavigatToSettings}">
-            <WrapPanel VerticalAlignment="Center">
-              <Path Data="{StaticResource SettingsIconData}"
-                    Fill="{StaticResource ForegroundBrush}"
-                    Stretch="Uniform"/>
-              <TextBlock VerticalAlignment="Center" Text="Settings"/>
-            </WrapPanel>
-          </Button>
-          <Button Command="{Binding NavigateToInventory}">
-            <WrapPanel VerticalAlignment="Center">
-              <Path Data="{StaticResource PlayIconData}"
-                    Fill="{StaticResource ForegroundBrush}"
-                    Stretch="Uniform"/>
-              <TextBlock VerticalAlignment="Center" Text="Inventory"/>
-            </WrapPanel>
-          </Button>-->
         </ItemsControl>
-
-        <!--<StackPanel Grid.Row="0" 
-                    Orientation="Vertical"
-                    Background="Transparent"
-                    Margin="8">
-          <Button Style="{StaticResource NavigationButton}"
-                                Command="{Binding NavigateToSettings}">
-            <StackPanel Orientation="Horizontal">
-              <Path Style="{StaticResource SettingsIcon}"
-                                      Fill="{StaticResource ForegroundBrush}"
-                                      Width="20" Height="20"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"/>
-              <TextBlock VerticalAlignment="Center"  Text="Settings" Margin="8,0,0,0"/>
-            </StackPanel>
-          </Button>
-
-          <Button Style="{StaticResource NavigationButton}"
-                                Command="{Binding NavigateToInventory}">
-            <StackPanel Orientation="Horizontal">
-              <Path Style="{StaticResource PlayIcon}"
-                                      Fill="{StaticResource ForegroundBrush}"
-                                      Width="20" Height="20"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"/>
-              <TextBlock VerticalAlignment="Center" Text="Inventory" Margin="8,0,0,0"/>
-            </StackPanel>
-          </Button>
-
-        </StackPanel>-->
         <Border Grid.Row="1" Style="{DynamicResource Segment}">
           <views:ReaderConnectionStatusView/>
         </Border>
@@ -95,10 +50,7 @@
     </Border>
 
     <!-- Main Content -->
-    <Border Grid.Column="1" Grid.Row="0">
-      <Border.CornerRadius>
-        <CornerRadius BottomRight="0"/>
-      </Border.CornerRadius>
+    <Border Grid.Column="1" Grid.Row="0" BorderBrush="Transparent" BorderThickness="0" Margin="0">
       <ContentControl Content="{Binding Path=NavigationService.CurrentViewModel}"/>
     </Border>
   </Grid>

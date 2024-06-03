@@ -34,7 +34,6 @@
       <TextBlock Text="{Binding DeviceID}" d:Text="123456789" FontSize="12" FontWeight="Regular"/>
     </StackPanel>
     <btns:IconButton Grid.Column="2"
-                     Command="{Binding Conn}"
                      Icon="{StaticResource Plug-OutlineImage}" Content="Connect"
                      IconMargin="0,0,4,0"
                      VerticalAlignment="Center"
