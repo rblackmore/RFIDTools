@@ -6,43 +6,68 @@
              xmlns:local="clr-namespace:ElectroCom.RFIDTools.UI.Views"
              xmlns:btns="clr-namespace:ElectroCom.Common.Controls.Buttons;assembly=ElectroCom.Common.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="56" d:DesignWidth="208"
+             d:DesignHeight="64" d:DesignWidth="208"
              Background="Transparent"
-             d:Background="{StaticResource BackgroundBrush}">
+             d:Background="White">
   <UserControl.DataContext>
     <Binding Source="{StaticResource readerStatusVML}" Path="ViewModel"/>
   </UserControl.DataContext>
 
   <Grid>
+
+    <Grid.Resources>
+
+      <SolidColorBrush x:Key="Reader.Disconnected.Foreground" Color="{DynamicResource Error-300}"/>
+      <SolidColorBrush x:Key="Reader.Disconnected.Background" Color="{DynamicResource Error-500}"/>
+      <SolidColorBrush x:Key="Reader.Connected.Foreground" Color="{DynamicResource Success-500}"/>
+      <SolidColorBrush x:Key="Reader.Connected.Background" Color="{DynamicResource Success-400}"/>
+
+      <Style x:Key="ReaderDetail" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource Reader.Disconnected.Foreground}"/>
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding IsConnected}" Value="True">
+            <Setter Property="Foreground" Value="{StaticResource Reader.Connected.Foreground}"/>
+          </DataTrigger>
+        </Style.Triggers>
+      </Style>
+
+    </Grid.Resources>
+
     <Grid.ColumnDefinitions>
       <ColumnDefinition/>
-      <ColumnDefinition Width="88"/>
+      <ColumnDefinition/>
     </Grid.ColumnDefinitions>
 
-    <StackPanel Margin="8,0" Grid.Column="0" VerticalAlignment="Center">
-      <StackPanel.Resources>
-        <Style TargetType="TextBlock">
-          <Setter Property="Foreground" Value="{StaticResource ErrorBrush}"/>
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding IsConnected}" Value="True">
-              <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </StackPanel.Resources>
-      <TextBlock Text="{Binding DeviceName}" d:Text="ID.ISC.LRU1002" FontWeight="SemiBold" FontSize="14"/>
-      <TextBlock Text="{Binding DeviceID}" d:Text="123456789" FontSize="12" FontWeight="Regular"/>
-    </StackPanel>
-    <btns:IconButton Grid.Column="2"
-                     Icon="{StaticResource Plug-OutlineImage}" Content="Connect"
-                     IconMargin="0,0,4,0"
-                     VerticalAlignment="Center"
-                     HorizontalAlignment="Right">
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+
+    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+               Style="{StaticResource ReaderDetail}"
+               Text="{Binding DeviceName}"
+               VerticalAlignment="Bottom"
+               FontWeight="SemiBold" FontSize="14"
+               d:Text="RF.ID.ISC.LRU1002-FCC" 
+               />
+
+    <TextBlock Grid.Row="1" Grid.Column="0"
+               Style="{StaticResource ReaderDetail}"
+               Text="{Binding DeviceID}" 
+               VerticalAlignment="Top"
+               d:Text="123456789" 
+               FontSize="12" FontWeight="Regular"/>
+
+    <btns:IconButton Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"
+                     d:Content="Disconnect">
       <btns:IconButton.Style>
         <Style TargetType="{x:Type btns:IconButton}" 
                BasedOn="{StaticResource {x:Type btns:IconButton}}">
+          <Setter Property="HorizontalAlignment" Value="Right"/>
           <Setter Property="Background" Value="Transparent"/>
           <Setter Property="Border.CornerRadius" Value="4"/>
+          <Setter Property="Icon" Value="{StaticResource Plug-OutlineImage}"/>
+          <Setter Property="IconMargin" Value="0,0,4,0"/>
           <Setter Property="Template">
             <Setter.Value>
               <ControlTemplate TargetType="{x:Type btns:IconButton}">
@@ -56,8 +81,8 @@
                 </Border>
                 <ControlTemplate.Triggers>
                   <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource SuccessBrush-500}"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush-700}"/>
+                    <Setter Property="Icon" Value="{StaticResource Plug-FillImage}"/>
+                    <Setter Property="Background" Value="{StaticResource NavigationBar.NavigationItem.MouseOver.Background}"/>
                     <Setter Property="Cursor" Value="Hand"/>
                   </Trigger>
                 </ControlTemplate.Triggers>
@@ -67,50 +92,15 @@
           <Style.Triggers>
             <DataTrigger Binding="{Binding IsConnected}" Value="False">
               <Setter Property="Command" Value="{Binding ConnectReader}"/>
-              <Setter Property="Content">
-                <Setter.Value>
-                  <TextBlock Text="Connect"/>
-                </Setter.Value>
-              </Setter>
+              <Setter Property="Content" Value="Connect"/>
             </DataTrigger>
             <DataTrigger Binding="{Binding IsConnected}" Value="True">
               <Setter Property="Command" Value="{Binding DisconnectReader}"/>
-              <Setter Property="Content">
-                <Setter.Value>
-                  <TextBlock Text="Disconnect"/>
-                </Setter.Value>
-              </Setter>
+              <Setter Property="Content" Value="Disconnect"/>
             </DataTrigger>
           </Style.Triggers>
         </Style>
       </btns:IconButton.Style>
     </btns:IconButton>
-
-    <!--<Button Grid.Column="2" 
-                Margin="4,0">
-      <Button.Style>
-        <Style TargetType="Button" BasedOn="{StaticResource ConnectDisconectButton}">
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding IsConnected}" Value="False">
-              <Setter Property="Command" Value="{Binding ConnectReader}"/>
-              <Setter Property="Content">
-                <Setter.Value>
-                  <TextBlock Text="Connect"/>
-                </Setter.Value>
-              </Setter>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsConnected}" Value="True">
-              <Setter Property="BorderBrush" Value="{StaticResource ErrorBrush}"/>
-              <Setter Property="Command" Value="{Binding DisconnectReader}"/>
-              <Setter Property="Content">
-                <Setter.Value>
-                  <TextBlock Text="Disconnect"/>
-                </Setter.Value>
-              </Setter>
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </Button.Style>
-    </Button>-->
   </Grid>
 </UserControl>
