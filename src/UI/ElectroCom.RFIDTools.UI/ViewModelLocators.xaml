@@ -4,5 +4,5 @@
   <vms:ShellViewModelLocator x:Key="shellVML"/>
   <vms:InventoryViewModelLocator x:Key="inventoryVML"/>
   <vms:SettingsViewModelLocator x:Key="settingsVML"/>
-  <vms:ReaderManagementVMLocator x:Key="readerStatusVML"/>
+  <vms:SelectedReaderStatusVMLocator x:Key="readerStatusVML"/>
 </ResourceDictionary>

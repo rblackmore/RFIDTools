@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
     services.AddSingleton<IInventoryViewModel, InventoryViewModel>();
     services.AddSingleton<ISettingsViewModel, SettingsViewModel>();
     services.AddSingleton<IShellViewModel, ShellViewModel>();
-    services.AddSingleton<IReaderManagementVM, ReaderManagementVM>();
+    services.AddSingleton<ISelectedReaderStatusVM, SelectedReaderStatusVM>();
 
     services.AddReaderServices();
 

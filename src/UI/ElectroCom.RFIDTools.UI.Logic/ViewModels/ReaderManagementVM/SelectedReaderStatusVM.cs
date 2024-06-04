@@ -8,9 +8,9 @@ using ElectroCom.RFIDTools.ReaderServices;
 // TODO: Okay, I should update this to be a full Reader Selection ViewModel.
 // Update the view to match as well.
 // Display the currently selected Reader Details, included conneciton Status.
-public class ReaderManagementVM : ViewModel,
+public class SelectedReaderStatusVM : ViewModel,
   IDisposable,
-  IReaderManagementVM,
+  ISelectedReaderStatusVM,
   IRecipient<SelectedReaderChanged>,
   IRecipient<ReaderConnected>,
   IRecipient<ReaderDisconnected>
@@ -19,7 +19,7 @@ public class ReaderManagementVM : ViewModel,
   private readonly IReaderManager readerManager;
   private readonly IMessenger messenger;
 
-  public ReaderManagementVM(IReaderManager readerManager, IMessenger messenger)
+  public SelectedReaderStatusVM(IReaderManager readerManager, IMessenger messenger)
   {
     this.IsConnected = false;
     this.DeviceName = string.Empty;

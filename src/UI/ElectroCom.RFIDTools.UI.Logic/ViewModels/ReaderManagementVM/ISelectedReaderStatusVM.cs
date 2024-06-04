@@ -2,7 +2,7 @@
 
 using CommunityToolkit.Mvvm.Input;
 
-public interface IReaderManagementVM : IViewModel
+public interface ISelectedReaderStatusVM : IViewModel
 {
   bool IsConnected { get; }
   string DeviceName { get; }
