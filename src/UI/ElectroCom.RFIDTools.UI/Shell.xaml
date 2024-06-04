@@ -39,6 +39,7 @@
         <ItemsControl Style="{StaticResource NavigationBar.ItemsControl}"
                       Grid.Row="0"
                       Margin="0,10">
+          <btns:IconButton Command="{Binding NavigateToReaderManagement}" Content="Reader Management" Icon="{StaticResource SettingsIconImage}"/>
           <btns:IconButton Command="{Binding NavigateToSettings}" Content="Settings" Icon="{StaticResource SettingsIconImage}"/>
           <btns:IconButton Command="{Binding NavigateToInventory}" Content="Inventory" Icon="{StaticResource PlayIconImage}"/>
         </ItemsControl>

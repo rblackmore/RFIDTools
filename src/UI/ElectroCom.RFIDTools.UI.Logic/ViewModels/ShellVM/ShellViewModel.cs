@@ -1,5 +1,7 @@
 ﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
+using System;
+
 using CommunityToolkit.Mvvm.Input;
 
 public class ShellViewModel : ViewModel, IShellViewModel
@@ -11,7 +13,10 @@ public class ShellViewModel : ViewModel, IShellViewModel
     NavigationService = navigationService;
     NavigateToInventory = new RelayCommand(NavigateToInventoryExecute);
     NavigateToSettings = new RelayCommand(NavigateToSettingsExecute);
+    NavigateToReaderManagement = new RelayCommand(NavigateToReaderManagementExecute);
   }
+
+
 
   public INavigationService? NavigationService
   {
@@ -19,9 +24,11 @@ public class ShellViewModel : ViewModel, IShellViewModel
     private set { SetProperty(ref navigationService, value); }
   }
 
-  public IRelayCommand NavigateToInventory { get; set; }
+  public IRelayCommand NavigateToInventory { get; private set; }
 
-  public IRelayCommand NavigateToSettings { get; set; }
+  public IRelayCommand NavigateToSettings { get; private set; }
+
+  public IRelayCommand NavigateToReaderManagement { get; private set; }
 
   private void NavigateToInventoryExecute()
   {
@@ -31,5 +38,10 @@ public class ShellViewModel : ViewModel, IShellViewModel
   private void NavigateToSettingsExecute()
   {
     NavigationService?.NavigateTo<ISettingsViewModel>();
+  }
+
+  private void NavigateToReaderManagementExecute()
+  {
+    this.NavigationService?.NavigateTo<IReaderManagementVM>();
   }
 }

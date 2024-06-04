@@ -7,4 +7,5 @@ public interface IShellViewModel : IViewModel
   INavigationService? NavigationService { get; }
   IRelayCommand NavigateToInventory { get; }
   IRelayCommand NavigateToSettings { get; }
+  IRelayCommand NavigateToReaderManagement { get; }
 }
