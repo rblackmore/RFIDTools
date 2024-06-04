@@ -50,5 +50,8 @@ public class DesignInventoryVM : ViewModel, IInventoryViewModel
 
   public IRelayCommand OpenSettings => throw new NotImplementedException();
 
+  public IRelayCommand<object> DeleteSelectedItems => throw new NotImplementedException();
+
   ObservableCollection<PollingFeedback> IInventoryViewModel.PollingFeedback => throw new NotImplementedException();
+
 }

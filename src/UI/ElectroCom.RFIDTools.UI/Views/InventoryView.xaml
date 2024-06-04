@@ -47,6 +47,12 @@
             <TextBlock Text="Clear"/>
           </Button>
 
+          <Button Style="{StaticResource BasicButton}"
+                  Margin="16,0,0,0"
+                  CommandParameter="{Binding ElementName=slb_TagInventory, Path=SelectedItems}"
+                  Command="{Binding DeleteSelectedItems}"
+                  Content="Delete Selected"/>
+
         </StackPanel>
         <!-- Control Buttons -->
         <StackPanel Margin="0,0,12,0" 
@@ -83,6 +89,7 @@
                               Style="{StaticResource StopIcon}" 
                               Fill="{StaticResource ForegroundBrush}"/>
           </Button>
+
         </StackPanel>
 
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
@@ -97,6 +104,7 @@
                                 Background="Transparent"
                                 BorderThickness="0"
                                 BorderBrush="Transparent"
+                                SelectionMode="Multiple"
                                 ItemsSource="{Binding TagList}"
                                 ItemsPanelTemplateSelector="{StaticResource ScalableListBox.ItemsPanel.TemplateSelector}"
                                 ItemContainerStyle="{StaticResource TagEntry.ListBoxItem.ContainerStyle}"

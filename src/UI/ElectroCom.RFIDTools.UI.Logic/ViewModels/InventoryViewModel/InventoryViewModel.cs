@@ -1,10 +1,12 @@
 ﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -53,22 +55,26 @@ public class InventoryViewModel : ViewModel,
 
     this.messenger.RegisterAll(this);
 
-    ClearTagList =
+    this.ClearTagList =
       new RelayCommand(ClearTagListExecute);
 
-    OpenSettings =
+    this.OpenSettings =
       new RelayCommand(NavigateToSettingsMenuExecute);
 
-    StartInventoryAsync =
+    this.StartInventoryAsync =
       new AsyncRelayCommand(
         StartInventoryExecuteAsync,
         StartInventoryCanExecute);
 
-    StopInventoryAsync =
+    this.StopInventoryAsync =
       new AsyncRelayCommand(
         StopInventoryExecuteAsync,
         StopInventoryCanExecute);
+
+    this.DeleteSelectedItems = new RelayCommand<object>(DeleteSelectedItemsExecute, DelectSelectedItemsCanExecute);
   }
+
+
 
   public bool IsReaderConnected
   {
@@ -97,11 +103,35 @@ public class InventoryViewModel : ViewModel,
   public IAsyncRelayCommand StartInventoryAsync { get; private set; }
   public IAsyncRelayCommand StopInventoryAsync { get; private set; }
   public IRelayCommand OpenSettings { get; private set; }
+  public IRelayCommand<object> DeleteSelectedItems { get; private set; }
 
   private void ClearTagListExecute()
   {
     if (TagList.Any())
       TagList.Clear();
+  }
+
+  private void DeleteSelectedItemsExecute(object? obj)
+  {
+    if (obj is not IList selectedItems)
+    {
+      return;
+    }
+
+    var tagEntries = new ObservableTagEntry[selectedItems.Count];
+
+    selectedItems.CopyTo(tagEntries, 0);
+
+    foreach (var item in tagEntries)
+    {
+      var tagEntryToRemove = (ObservableTagEntry)item;
+      this.TagList.Remove(tagEntryToRemove);
+    }
+  }
+
+  private bool DelectSelectedItemsCanExecute(object? obj)
+  {
+    return true;
   }
 
   private void NavigateToSettingsMenuExecute()

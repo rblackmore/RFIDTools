@@ -19,4 +19,5 @@ public interface IInventoryViewModel : IViewModel
   IAsyncRelayCommand StartInventoryAsync { get; }
   IAsyncRelayCommand StopInventoryAsync { get; }
   IRelayCommand OpenSettings { get; }
+  IRelayCommand<object> DeleteSelectedItems { get; }
 }
