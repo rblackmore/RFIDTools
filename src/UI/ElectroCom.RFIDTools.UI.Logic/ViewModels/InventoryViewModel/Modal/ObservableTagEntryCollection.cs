@@ -28,11 +28,27 @@ public class ObservableTagEntryCollection : ObservableCollection<ObservableTagEn
     }
   }
 
+  private bool addNewReads = true;
+
+  public bool AddNewReads
+  {
+    get => this.addNewReads;
+    set
+    {
+      this.addNewReads = value;
+      OnPropertyChanged(new PropertyChangedEventArgs(nameof(AddNewReads)));
+    }
+  }
+
   protected override void InsertItem(int index, ObservableTagEntry item)
   {
     if (!IncrementReadCountOnAdd || !Contains(item))
     {
-      base.InsertItem(index, item);
+      if (this.AddNewReads)
+      {
+        base.InsertItem(index, item);
+      }
+
       return;
     }
 

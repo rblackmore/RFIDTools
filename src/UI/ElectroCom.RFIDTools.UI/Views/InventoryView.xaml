@@ -59,6 +59,10 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Orientation="Horizontal">
+          <CheckBox IsChecked="{Binding TagList.AddNewReads}"
+                    Content="Add New"
+                    VerticalAlignment="Center"
+                    Margin="0,0,8,0"/>
           <CheckBox IsChecked="{Binding TagList.IncrementReadCountOnAdd}" Content="Exclusive Tags" VerticalAlignment="Center"
                     Margin="0,0,8,0"/>
           <CheckBox IsChecked="{Binding ClearOnStart}" Content="Clear On Start" VerticalAlignment="Center"

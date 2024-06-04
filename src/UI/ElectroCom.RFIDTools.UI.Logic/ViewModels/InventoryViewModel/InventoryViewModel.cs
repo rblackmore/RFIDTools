@@ -93,7 +93,11 @@ public class InventoryViewModel : ViewModel,
   public ObservableTagEntryCollection TagList { get; }
 
   public ObservableCollection<PollingFeedback> PollingFeedback { get; }
-  public bool ClearOnStart { get => clearOnStart; set => SetProperty(ref clearOnStart, value); }
+  public bool ClearOnStart
+  {
+    get => this.clearOnStart;
+    set => SetProperty(ref this.clearOnStart, value);
+  }
 
   public bool Antenna1 { get => this.ant1; set => SetProperty(ref this.ant1, value); }
   public bool Antenna2 { get => this.ant2; set => SetProperty(ref this.ant2, value); }
