@@ -5,12 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ElectroCom.RFIDTools.UI.Views"
              xmlns:viewModels="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic" 
-             mc:Ignorable="d" 
+             xmlns:locators="clr-namespace:ElectroCom.RFIDTools.UI.Locator"
+             mc:Ignorable="d"
+             d:DataContext="{Binding Source={StaticResource VML}, Path=ViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.DataContext>
-        <Binding Source="{StaticResource settingsVML}" Path="ViewModel"/>
-    </UserControl.DataContext>
-    <Grid>
-        <TextBlock Text="{Binding Title}" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center">Settings View</TextBlock>
-    </Grid>
+  <UserControl.Resources>
+    <locators:SettingsViewModelLocator x:Key="VML"/>
+  </UserControl.Resources>
+  <UserControl.DataContext>
+    <Binding Source="{StaticResource VML}" Path="ViewModel"/>
+  </UserControl.DataContext>
+  <Grid>
+    <TextBlock Text="{Binding Title}" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center">Settings View</TextBlock>
+  </Grid>
 </UserControl>

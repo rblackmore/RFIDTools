@@ -1,6 +1,6 @@
-﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
+﻿namespace ElectroCom.RFIDTools.UI.Locator;
 
-using System;
+using ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
 public class SelectedReaderStatusVMLocator
   : ViewModelLocatorBase<ISelectedReaderStatusVM>

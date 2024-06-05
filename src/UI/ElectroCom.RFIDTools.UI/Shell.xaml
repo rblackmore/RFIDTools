@@ -7,17 +7,22 @@
         xmlns:views="clr-namespace:ElectroCom.RFIDTools.UI.Views" 
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:btns="clr-namespace:ElectroCom.Common.Controls.Buttons;assembly=ElectroCom.Common.Controls"
+        xmlns:locators="clr-namespace:ElectroCom.RFIDTools.UI.Locator"
         mc:Ignorable="d"
         Height="750" Width="1200"
         Title="RFID Tools"
         Background="{StaticResource Window.Background}"
         Foreground="{StaticResource Window.Foreground}"
+        d:DataContext="{Binding Source={StaticResource VML}, Path=ViewModel}}"
         ResizeMode="CanResize"
         MinWidth="1000"
         MinHeight="700"
         WindowState="Maximized">
+  <Window.Resources>
+    <locators:ShellViewModelLocator x:Key="VML"/>
+  </Window.Resources>
   <Window.DataContext>
-    <Binding Source="{StaticResource shellVML}" Path="ViewModel"/>
+    <Binding Source="{StaticResource VML}" Path="ViewModel"/>
   </Window.DataContext>
   <Grid>
     <Grid.ColumnDefinitions>

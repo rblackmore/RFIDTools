@@ -1,9 +1,12 @@
-﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
+﻿namespace ElectroCom.RFIDTools.UI.Locator;
 
+using System;
 using System.ComponentModel;
 using System.Windows;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+
+using ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,19 +19,13 @@ public abstract class ViewModelLocatorBase<TViewModel>
 
   private Func<Type, IViewModel>? viewModelFactory;
 
-  protected ViewModelLocatorBase()
-  {
-    this.viewModelFactory = ServiceLocator.ServiceProvider?.GetRequiredService<Func<Type, IViewModel>>();
-
-  }
-
   protected TViewModel RuntimeViewModel
   {
     get
     {
       if (runtimeViewModel is null)
       {
-        this.viewModelFactory = ServiceLocator.ServiceProvider.GetRequiredService<Func<Type, IViewModel>>();
+        this.viewModelFactory = App.Current.Services.GetRequiredService<Func<Type, IViewModel>>();
         this.runtimeViewModel = (TViewModel)viewModelFactory(typeof(TViewModel));
       }
 

@@ -5,12 +5,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:ElectroCom.Common.Controls.ItemsControls;assembly=Electrocom.Common.Controls"
              xmlns:vms="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic" 
+             xmlns:locators="clr-namespace:ElectroCom.RFIDTools.UI.Locator"
              mc:Ignorable="d"
              Background="Transparent"
              d:Background="Transparent"
              d:DesignHeight="600" d:DesignWidth="1080">
   <UserControl.Resources>
-    <vms:InventoryViewModelLocator x:Key="VML"/>
+    <locators:InventoryViewModelLocator x:Key="VML"/>
   </UserControl.Resources>
   <UserControl.DataContext>
     <Binding Source="{StaticResource VML}" Path="ViewModel"/>

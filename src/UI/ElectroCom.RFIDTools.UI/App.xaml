@@ -10,19 +10,9 @@
 
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/ElectroCom.Common.Styling;component/CommonDesign.xaml"/>
-
-        <!--<ResourceDictionary Source="/ElectroCom.Common.Styling;component/Colours/LightThemeColours.xaml"/>
-        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Colours/ComponentColours.xaml"/>
-        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Styles/IconStyleData.xaml"/>
-        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Styles/ButtonStyles.xaml"/>
-        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Styles/ScalableListBox/ListBoxItem.Styles.xaml"/>
-        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Styles/ScalableListBox/ListBoxItem.TagEntry.DataTemplates.xaml"/>
-        <ResourceDictionary Source="/ElectroCom.Common.Styling;component/Styles/ScalableListBox/ListBox.ItemPanelTemplates.xaml"/>-->
-
-        <ResourceDictionary Source="./ViewModelLocators.xaml"/>
         <ResourceDictionary Source="./ViewToViewModelMapper.xaml"/>
       </ResourceDictionary.MergedDictionaries>
-      
+
       <Style TargetType="{x:Type Rectangle}"/>
 
     </ResourceDictionary>

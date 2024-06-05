@@ -1,9 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:vms="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic">
-  <vms:ShellViewModelLocator x:Key="shellVML"/>
-  <vms:InventoryViewModelLocator x:Key="inventoryVML"/>
-  <vms:SettingsViewModelLocator x:Key="settingsVML"/>
-  <vms:SelectedReaderStatusVMLocator x:Key="readerStatusVML"/>
-  <vms:ReaderManagementVMLocator x:Key="readerManagementVML"/>
-</ResourceDictionary>
