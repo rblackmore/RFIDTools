@@ -10,10 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 public abstract class ViewModelLocatorBase<TViewModel>
   : ObservableObject where TViewModel : IViewModel
 {
+  private static bool? isInDesignMode;
   private TViewModel? runtimeViewModel;
   private TViewModel? designTimeViewModel;
 
-  private readonly Func<Type, IViewModel>? viewModelFactory;
+  private Func<Type, IViewModel>? viewModelFactory;
 
   protected ViewModelLocatorBase()
   {
@@ -26,7 +27,10 @@ public abstract class ViewModelLocatorBase<TViewModel>
     get
     {
       if (runtimeViewModel is null)
+      {
+        this.viewModelFactory = ServiceLocator.ServiceProvider.GetRequiredService<Func<Type, IViewModel>>();
         this.runtimeViewModel = (TViewModel)viewModelFactory(typeof(TViewModel));
+      }
 
       return runtimeViewModel!;
     }
@@ -41,5 +45,15 @@ public abstract class ViewModelLocatorBase<TViewModel>
   public TViewModel ViewModel =>
     IsInDesignMode ? DesignTimeViewModel : RuntimeViewModel;
 
-  private static bool IsInDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
+  private static bool IsInDesignMode
+  {
+    get
+    {
+      if (!isInDesignMode.HasValue)
+      {
+        isInDesignMode = DesignerProperties.GetIsInDesignMode(new DependencyObject());
+      }
+      return isInDesignMode.Value;
+    }
+  }
 }

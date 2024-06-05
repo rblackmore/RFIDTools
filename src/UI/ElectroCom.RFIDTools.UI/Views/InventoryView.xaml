@@ -9,8 +9,11 @@
              Background="Transparent"
              d:Background="Transparent"
              d:DesignHeight="600" d:DesignWidth="1080">
+  <UserControl.Resources>
+    <vms:InventoryViewModelLocator x:Key="VML"/>
+  </UserControl.Resources>
   <UserControl.DataContext>
-    <Binding Source="{StaticResource inventoryVML}" Path="ViewModel"/>
+    <Binding Source="{StaticResource VML}" Path="ViewModel"/>
   </UserControl.DataContext>
   <Grid>
     <Grid.RowDefinitions>
