@@ -39,8 +39,16 @@ public abstract class ViewModelLocatorBase<TViewModel>
     protected set => SetProperty(ref designTimeViewModel, value);
   }
 
-  public TViewModel ViewModel =>
-    IsInDesignMode ? DesignTimeViewModel : RuntimeViewModel;
+  public TViewModel ViewModel
+  {
+    get
+    {
+      if (IsInDesignMode)
+        return DesignTimeViewModel;
+      else
+        return RuntimeViewModel;
+    }
+  }
 
   private static bool IsInDesignMode
   {

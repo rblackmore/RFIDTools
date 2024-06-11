@@ -13,7 +13,6 @@
         Title="RFID Tools"
         Background="{StaticResource Window.Background}"
         Foreground="{StaticResource Window.Foreground}"
-        d:DataContext="{Binding Source={StaticResource VML}, Path=ViewModel}}"
         ResizeMode="CanResize"
         MinWidth="1000"
         MinHeight="700"
@@ -48,7 +47,9 @@
           <btns:IconButton Command="{Binding NavigateToSettings}" Content="Settings" Icon="{StaticResource SettingsIconImage}"/>
           <btns:IconButton Command="{Binding NavigateToInventory}" Content="Inventory" Icon="{StaticResource PlayIconImage}"/>
         </ItemsControl>
-        <Border Grid.Row="1" Style="{DynamicResource Segment}">
+        
+        <Border Grid.Row="1" Style="{DynamicResource Segment}"
+                Margin="4">
           <views:ReaderConnectionStatusView/>
         </Border>
 

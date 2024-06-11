@@ -78,7 +78,7 @@ public partial class App : Application
 
     var navigation = this.host.Services.GetRequiredService<INavigationService>();
 
-    navigation.NavigateTo<IInventoryViewModel>();
+    navigation.NavigateTo<IReaderManagementVM>();
 
     var shell = this.host.Services.GetRequiredService<Shell>();
 

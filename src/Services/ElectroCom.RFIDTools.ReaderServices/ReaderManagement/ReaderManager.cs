@@ -35,10 +35,10 @@ public class ReaderManager : IReaderManager
     if (this.readerDefinitions.Contains(rd))
       return;
 
-    this.readerDefinitions.Add(rd);
-
     rd.ReaderConnected += ReaderConnected_Handler;
     rd.ReaderDisconnected += ReaderDisconnected_Handler;
+
+    this.readerDefinitions.Add(rd);
 
     this.mediator.Publish(new ReaderRegistered(rd));
 

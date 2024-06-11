@@ -6,7 +6,6 @@
   
   <Style x:Key="Segment" TargetType="Border">
     <Setter Property="Padding" Value="8"/>
-    <Setter Property="Margin" Value="8"/>
     <Setter Property="Background" Value="{StaticResource Segment.Background}"/>
     <Setter Property="BorderBrush" Value="{StaticResource Segment.Border}"/>
     <Setter Property="BorderThickness" Value="0"/>

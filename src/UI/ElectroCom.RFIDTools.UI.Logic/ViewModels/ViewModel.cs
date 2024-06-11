@@ -1,8 +1,10 @@
 ﻿namespace ElectroCom.RFIDTools.UI.Logic.ViewModels;
 
+using System.ComponentModel;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
-public interface IViewModel
+public interface IViewModel : INotifyPropertyChanged
 {
 
 }

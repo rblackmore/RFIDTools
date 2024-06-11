@@ -48,8 +48,7 @@ public abstract class ReaderDefinition
       if (deviceId.HasValue && this.deviceId is not 0)
         return this.deviceId.Value;
 
-      if (!IsInfoValid())
-        this.readerInfo = ReadReaderInfo();
+      DetectReader();
 
       this.deviceId = this.readerInfo.deviceId();
 
@@ -61,8 +60,7 @@ public abstract class ReaderDefinition
   {
     get
     {
-      if (!IsInfoValid())
-        this.readerInfo = ReadReaderInfo();
+      DetectReader();
 
       return this.readerInfo.readerTypeToString();
     }
@@ -147,6 +145,12 @@ public abstract class ReaderDefinition
     }
 
     return this.ReaderModule.info();
+  }
+
+  public void DetectReader()
+  {
+    if (!IsInfoValid())
+      this.readerInfo = ReadReaderInfo();
   }
 
   private void OnReaderConnected()

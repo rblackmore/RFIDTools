@@ -5,10 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:ElectroCom.Common.Controls.ItemsControls;assembly=Electrocom.Common.Controls"
              xmlns:vms="clr-namespace:ElectroCom.RFIDTools.UI.Logic.ViewModels;assembly=ElectroCom.RFIDTools.UI.Logic" 
-             xmlns:locators="clr-namespace:ElectroCom.RFIDTools.UI.Locator"
+             xmlns:locators="clr-namespace:ElectroCom.RFIDTools.UI.Locator" 
              mc:Ignorable="d"
              Background="Transparent"
-             d:Background="Transparent"
+             d:Background="{StaticResource Window.Background}"
              d:DesignHeight="600" d:DesignWidth="1080">
   <UserControl.Resources>
     <locators:InventoryViewModelLocator x:Key="VML"/>
@@ -23,7 +23,7 @@
       <RowDefinition Height="64"/>
     </Grid.RowDefinitions>
     <!-- Top Row Button Controls -->
-    <Border Style="{DynamicResource Segment}">
+    <Border Style="{DynamicResource Segment}" Margin="8">
       <Grid HorizontalAlignment="Stretch">
         <StackPanel Margin="12,0,0,0" Orientation="Horizontal" 
                             HorizontalAlignment="Left"
@@ -106,7 +106,7 @@
     </Border>
 
     <!-- Main Tag List control -->
-    <Border Grid.Row="1" Style="{DynamicResource Segment}">
+    <Border Grid.Row="1" Style="{DynamicResource Segment}" Margin="12,8">
 
       <controls:ScalableListBox x:Name="slb_TagInventory"
                                 Background="Transparent"
@@ -130,7 +130,7 @@
     </Border>
 
     <!-- Botton Status Bar and Controls -->
-    <Border Grid.Row="2" Style="{DynamicResource Segment}">
+    <Border Grid.Row="2" Style="{DynamicResource Segment}" Margin="8">
       <Grid HorizontalAlignment="Stretch">
         <Slider 
           Minimum="{Binding ElementName=slb_TagInventory, Path=MinScale}" 

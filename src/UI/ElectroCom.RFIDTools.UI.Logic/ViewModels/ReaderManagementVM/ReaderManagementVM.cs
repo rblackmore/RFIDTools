@@ -8,7 +8,9 @@ using Microsoft.Extensions.Logging;
 
 public class ReaderManagementVM : ViewModel,
   IReaderManagementVM,
-  IRecipient<ReaderRegistered>
+  IDisposable,
+  IRecipient<ReaderRegistered>,
+  IRecipient<ReaderUnregistered>
 {
   private ILogger<ReaderManagementVM> logger;
   private IMessenger messenger;
@@ -21,18 +23,45 @@ public class ReaderManagementVM : ViewModel,
   {
     this.logger = logger;
     this.messenger = messenger;
+    this.messenger.RegisterAll(this);
     this.readerManager = readerManager;
     this.Readers = [];
-    foreach (var reader in this.readerManager.GetReaderDefinitions())
-    {
-      this.Readers.Add(new ObservableReaderDetails(reader));
-    }
+
+    this.UpdateReaderList();
   }
 
   public ObservableReaderDetailsCollection Readers { get; private set; }
 
   public void Receive(ReaderRegistered message)
   {
-    this.Readers.Add(new ObservableReaderDetails(message.ReaderDefinition));
+    this.UpdateReaderList();
   }
+
+  public void Receive(ReaderUnregistered message)
+  {
+    this.UpdateReaderList();
+  }
+
+  /// <summary>
+  /// Updates <see cref="Readers"/> When a change in the readers on the readermanager changes.
+  /// </summary>
+  private void UpdateReaderList()
+  {
+    DispatcherHelper.CheckBeginInvokeOnUI(() =>
+    {
+      this.Readers.Clear();
+
+      foreach (var reader in this.readerManager.GetReaderDefinitions())
+      {
+        reader.DetectReader();
+        this.Readers.Add(new ObservableReaderDetails(reader));
+      }
+    });
+  }
+
+  public void Dispose()
+  {
+    this.messenger.UnregisterAll(this);
+  }
+
 }
