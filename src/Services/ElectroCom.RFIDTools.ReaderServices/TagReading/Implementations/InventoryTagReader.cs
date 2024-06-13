@@ -38,6 +38,8 @@ public class InventoryTagReader : ITagReader
 
   public bool IsRunning => this.readingTask?.Status < TaskStatus.RanToCompletion;
 
+  public bool CanStart => !IsRunning && this.readerDefinition.IsConnected;
+
   public async Task<TagReaderChannels> StartReadingAsync(CancellationToken token = default)
   {
     if (!this.readerDefinition.IsConnected)

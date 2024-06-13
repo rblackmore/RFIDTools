@@ -8,6 +8,9 @@ using ElectroCom.RFIDTools.ReaderServices.Model;
 
 using Microsoft.Extensions.Logging;
 
+/// <summary>
+/// This class is incomplete, it's meant to simulate tag reading when a Reader is not connected.
+/// </summary>
 public class NullTagReader : ITagReader
 {
   private readonly ILogger<NullTagReader> logger;
@@ -26,6 +29,8 @@ public class NullTagReader : ITagReader
   }
 
   public bool IsRunning => throw new NotImplementedException();
+
+  public bool CanStart => true;
 
   public async Task<TagReaderChannels> StartReadingAsync(CancellationToken token = default)
   {

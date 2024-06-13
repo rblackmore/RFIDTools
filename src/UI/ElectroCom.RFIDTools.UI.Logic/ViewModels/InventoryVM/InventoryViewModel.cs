@@ -71,10 +71,11 @@ public class InventoryViewModel : ViewModel,
         StopInventoryExecuteAsync,
         StopInventoryCanExecute);
 
-    this.DeleteSelectedItems = new RelayCommand<object>(DeleteSelectedItemsExecute, DelectSelectedItemsCanExecute);
+    this.DeleteSelectedItems =
+      new RelayCommand<object>(
+        DeleteSelectedItemsExecute,
+        DelectSelectedItemsCanExecute);
   }
-
-
 
   public bool IsReaderConnected
   {
@@ -161,6 +162,11 @@ public class InventoryViewModel : ViewModel,
 
     this.tagReader = this.tagReaderFactory.Create(options);
 
+    if (!this.tagReader.CanStart)
+    {
+      return;
+    }
+
     try
     {
       if (this.ClearOnStart)
@@ -228,12 +234,12 @@ public class InventoryViewModel : ViewModel,
 
   private bool StartInventoryCanExecute()
   {
-    if (this.tagReader is not null && this.tagReader.IsRunning)
+    if (this.tagReader is not null && !this.tagReader.CanStart)
     {
       return false;
     }
 
-    return IsReaderConnected;
+    return true;
   }
 
   private bool StopInventoryCanExecute()
@@ -262,7 +268,6 @@ public class InventoryViewModel : ViewModel,
   {
     if (message.IsSelectedReader && message.ReaderDefinition.IsConnected)
     {
-      this.IsReaderConnected = true;
       DispatcherHelper.CheckBeginInvokeOnUI(OnInventoryTaskCanExecuteChanged);
     }
   }
@@ -271,7 +276,6 @@ public class InventoryViewModel : ViewModel,
   {
     if (message.IsSelectedReader && !message.ReaderDefinition.IsConnected)
     {
-      this.IsReaderConnected = false;
       DispatcherHelper.CheckBeginInvokeOnUI(OnInventoryTaskCanExecuteChanged);
     }
   }
